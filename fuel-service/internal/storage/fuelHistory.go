@@ -88,6 +88,14 @@ func (s *FuelSt) ListFuelHistoriesByFuelID(ctx context.Context, req *genprotos.L
 }
 
 func (s *FuelSt) ListFuelHistoriesByType(ctx context.Context, req *genprotos.ListFuelHistoriesByTypeRequest) (*genprotos.ListFuelHistoriesByTypeResponse, error) {
+	var choice string
+	if req.Choice == "type" {
+		choice = "type"
+	} else if req.Choice == "name" {
+		choice = "name"
+	} else {
+		return nil, fmt.Errorf("invalid choice: %s", req.Choice)
+	}
 	query, args, err := s.queryBuilder.Select(
 		"fh.id",
 		"fh.fuel_id",
@@ -97,7 +105,7 @@ func (s *FuelSt) ListFuelHistoriesByType(ctx context.Context, req *genprotos.Lis
 	).
 		From("fuel_history fh").
 		Join("fuel_management fm ON fh.fuel_id = fm.id").
-		Where(sq.Eq{"fm.type": req.Type}).
+		Where(sq.Eq{"fm."+choice: req.Message}).
 		ToSql()
 
 	if err != nil {

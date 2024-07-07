@@ -54,7 +54,8 @@ message DeleteFuelRequest {
 }
 
 message ListFuelsByTypeRequest {
-    string type = 1;
+    string choice = 1;
+    string message = 2;
 }
 
 message ListFuelsByTypeResponse {
@@ -84,7 +85,8 @@ message ListFuelHistoriesByFuelIDResponse {
 }
 
 message ListFuelHistoriesByTypeRequest {
-    string type = 1;
+    string choice = 1;
+    string message = 2;
 }
 
 message ListFuelHistoriesByTypeResponse {

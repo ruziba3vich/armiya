@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"log"
 	"time"
 
@@ -151,9 +152,17 @@ func (s *FuelSt) DeleteFuel(ctx context.Context, req *genprotos.DeleteFuelReques
 }
 
 func (s *FuelSt) ListFuelByType(ctx context.Context, req *genprotos.ListFuelsByTypeRequest) (*genprotos.ListFuelsByTypeResponse, error) {
+	var choice string
+	if req.Choice == "type" {
+		choice = "type"
+	} else if req.Choice == "name" {
+		choice = "name"
+	} else {
+		return nil, fmt.Errorf("invalid choice: %s", req.Choice)
+	}
 	query, args, err := s.queryBuilder.Select("id", "name", "type", "quantity", "last_update").
 		From("fuel_management").
-		Where(sq.Eq{"type": req.Type}).
+		Where(sq.Eq{choice: req.Message}).
 		ToSql()
 	if err != nil {
 		log.Println("Error generating SQL:", err)
