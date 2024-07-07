@@ -151,7 +151,7 @@ func (s *FuelSt) DeleteFuel(ctx context.Context, req *genprotos.DeleteFuelReques
 	return nil, nil
 }
 
-func (s *FuelSt) ListFuelByType(ctx context.Context, req *genprotos.ListFuelsByTypeRequest) (*genprotos.ListFuelsByTypeResponse, error) {
+func (s *FuelSt) ListFuelByChoice(ctx context.Context, req *genprotos.ListFuelsByChoiceRequest) (*genprotos.ListFuelsByChoiceResponse, error) {
 	var choice string
 	if req.Choice == "type" {
 		choice = "type"
@@ -196,7 +196,7 @@ func (s *FuelSt) ListFuelByType(ctx context.Context, req *genprotos.ListFuelsByT
 		response = append(response, &fuel)
 	}
 
-	return &genprotos.ListFuelsByTypeResponse{Fuels: response}, nil
+	return &genprotos.ListFuelsByChoiceResponse{Fuels: response}, nil
 }
 
 func (s *FuelSt) ListFuels(ctx context.Context, req *genprotos.Empty) (*genprotos.ListFuelsResponse, error) {

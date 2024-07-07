@@ -45,9 +45,9 @@ func (s *FuelServiceSt) DeleteFuel(ctx context.Context, req *genprotos.DeleteFue
 	return s.service.DeleteFuel(ctx, req)
 }
 
-func (s *FuelServiceSt) ListFuelByType(ctx context.Context, req *genprotos.ListFuelsByTypeRequest) (*genprotos.ListFuelsByTypeResponse, error) {
+func (s *FuelServiceSt) ListFuelByChoice(ctx context.Context, req *genprotos.ListFuelsByChoiceRequest) (*genprotos.ListFuelsByChoiceResponse, error) {
 	s.logger.Println("list fuel by name request")
-	return s.service.ListFuelByType(ctx, req)
+	return s.service.ListFuelByChoice(ctx, req)
 }
 
 func (s *FuelServiceSt) ListFuels(ctx context.Context, req *genprotos.Empty) (*genprotos.ListFuelsResponse, error) {
@@ -67,9 +67,9 @@ func (s *FuelServiceSt) ListFuelHistoriesByFuelID(ctx context.Context, req *genp
 	return s.service.ListFuelHistoriesByFuelID(ctx, req)
 }
 
-func (s *FuelServiceSt) ListFuelHistoriesByType(ctx context.Context, req *genprotos.ListFuelHistoriesByTypeRequest) (*genprotos.ListFuelHistoriesByTypeResponse, error) {
+func (s *FuelServiceSt) ListFuelHistoriesByChoice(ctx context.Context, req *genprotos.ListFuelHistoriesByChoiceRequest) (*genprotos.ListFuelHistoriesByChoiceResponse, error) {
 	s.logger.Println("list fuel histories by name request")
-	return s.service.ListFuelHistoriesByType(ctx, req)
+	return s.service.ListFuelHistoriesByChoice(ctx, req)
 }
 
 func (s *FuelServiceSt) ListFuelHistoriesByDate(ctx context.Context, req *genprotos.ListFuelHistoriesByDateRequest) (*genprotos.ListFuelHistoriesByDateResponse, error) {

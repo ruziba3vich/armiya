@@ -87,7 +87,7 @@ func (s *FuelSt) ListFuelHistoriesByFuelID(ctx context.Context, req *genprotos.L
 	return &genprotos.ListFuelHistoriesByFuelIDResponse{FuelHistories: response}, nil
 }
 
-func (s *FuelSt) ListFuelHistoriesByType(ctx context.Context, req *genprotos.ListFuelHistoriesByTypeRequest) (*genprotos.ListFuelHistoriesByTypeResponse, error) {
+func (s *FuelSt) ListFuelHistoriesByChoice(ctx context.Context, req *genprotos.ListFuelHistoriesByChoiceRequest) (*genprotos.ListFuelHistoriesByChoiceResponse, error) {
 	var choice string
 	if req.Choice == "type" {
 		choice = "type"
@@ -142,7 +142,7 @@ func (s *FuelSt) ListFuelHistoriesByType(ctx context.Context, req *genprotos.Lis
 		return nil, err
 	}
 
-	return &genprotos.ListFuelHistoriesByTypeResponse{FuelHistories: response}, nil
+	return &genprotos.ListFuelHistoriesByChoiceResponse{FuelHistories: response}, nil
 }
 
 func (s *FuelSt) ListFuelHistoriesByDate(ctx context.Context, req *genprotos.ListFuelHistoriesByDateRequest) (*genprotos.ListFuelHistoriesByDateResponse, error) {
