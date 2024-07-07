@@ -19,166 +19,166 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	CountryService_CreateCountry_FullMethodName     = "/CountryService/CreateCountry"
-	CountryService_GetClosestCountry_FullMethodName = "/CountryService/GetClosestCountry"
-	CountryService_GetCountryById_FullMethodName    = "/CountryService/GetCountryById"
+	EquipmentService_CreateEquipment_FullMethodName  = "/EquipmentService/CreateEquipment"
+	EquipmentService_GetEquipment_FullMethodName     = "/EquipmentService/GetEquipment"
+	EquipmentService_GetAllEquipments_FullMethodName = "/EquipmentService/GetAllEquipments"
 )
 
-// CountryServiceClient is the client API for CountryService service.
+// EquipmentServiceClient is the client API for EquipmentService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type CountryServiceClient interface {
-	CreateCountry(ctx context.Context, in *RawCountry, opts ...grpc.CallOption) (*Country, error)
-	GetClosestCountry(ctx context.Context, in *GetCountryRequest, opts ...grpc.CallOption) (*GetClosestCountryResponse, error)
-	GetCountryById(ctx context.Context, in *GetCountryRequest, opts ...grpc.CallOption) (*Country, error)
+type EquipmentServiceClient interface {
+	CreateEquipment(ctx context.Context, in *Equipment, opts ...grpc.CallOption) (*Equipment, error)
+	GetEquipment(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Equipment, error)
+	GetAllEquipments(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponse, error)
 }
 
-type countryServiceClient struct {
+type equipmentServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewCountryServiceClient(cc grpc.ClientConnInterface) CountryServiceClient {
-	return &countryServiceClient{cc}
+func NewEquipmentServiceClient(cc grpc.ClientConnInterface) EquipmentServiceClient {
+	return &equipmentServiceClient{cc}
 }
 
-func (c *countryServiceClient) CreateCountry(ctx context.Context, in *RawCountry, opts ...grpc.CallOption) (*Country, error) {
+func (c *equipmentServiceClient) CreateEquipment(ctx context.Context, in *Equipment, opts ...grpc.CallOption) (*Equipment, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Country)
-	err := c.cc.Invoke(ctx, CountryService_CreateCountry_FullMethodName, in, out, cOpts...)
+	out := new(Equipment)
+	err := c.cc.Invoke(ctx, EquipmentService_CreateEquipment_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *countryServiceClient) GetClosestCountry(ctx context.Context, in *GetCountryRequest, opts ...grpc.CallOption) (*GetClosestCountryResponse, error) {
+func (c *equipmentServiceClient) GetEquipment(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Equipment, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetClosestCountryResponse)
-	err := c.cc.Invoke(ctx, CountryService_GetClosestCountry_FullMethodName, in, out, cOpts...)
+	out := new(Equipment)
+	err := c.cc.Invoke(ctx, EquipmentService_GetEquipment_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *countryServiceClient) GetCountryById(ctx context.Context, in *GetCountryRequest, opts ...grpc.CallOption) (*Country, error) {
+func (c *equipmentServiceClient) GetAllEquipments(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Country)
-	err := c.cc.Invoke(ctx, CountryService_GetCountryById_FullMethodName, in, out, cOpts...)
+	out := new(GetAllResponse)
+	err := c.cc.Invoke(ctx, EquipmentService_GetAllEquipments_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// CountryServiceServer is the server API for CountryService service.
-// All implementations must embed UnimplementedCountryServiceServer
+// EquipmentServiceServer is the server API for EquipmentService service.
+// All implementations must embed UnimplementedEquipmentServiceServer
 // for forward compatibility
-type CountryServiceServer interface {
-	CreateCountry(context.Context, *RawCountry) (*Country, error)
-	GetClosestCountry(context.Context, *GetCountryRequest) (*GetClosestCountryResponse, error)
-	GetCountryById(context.Context, *GetCountryRequest) (*Country, error)
-	mustEmbedUnimplementedCountryServiceServer()
+type EquipmentServiceServer interface {
+	CreateEquipment(context.Context, *Equipment) (*Equipment, error)
+	GetEquipment(context.Context, *GetRequest) (*Equipment, error)
+	GetAllEquipments(context.Context, *GetAllRequest) (*GetAllResponse, error)
+	mustEmbedUnimplementedEquipmentServiceServer()
 }
 
-// UnimplementedCountryServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedCountryServiceServer struct {
+// UnimplementedEquipmentServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedEquipmentServiceServer struct {
 }
 
-func (UnimplementedCountryServiceServer) CreateCountry(context.Context, *RawCountry) (*Country, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateCountry not implemented")
+func (UnimplementedEquipmentServiceServer) CreateEquipment(context.Context, *Equipment) (*Equipment, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateEquipment not implemented")
 }
-func (UnimplementedCountryServiceServer) GetClosestCountry(context.Context, *GetCountryRequest) (*GetClosestCountryResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetClosestCountry not implemented")
+func (UnimplementedEquipmentServiceServer) GetEquipment(context.Context, *GetRequest) (*Equipment, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEquipment not implemented")
 }
-func (UnimplementedCountryServiceServer) GetCountryById(context.Context, *GetCountryRequest) (*Country, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetCountryById not implemented")
+func (UnimplementedEquipmentServiceServer) GetAllEquipments(context.Context, *GetAllRequest) (*GetAllResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllEquipments not implemented")
 }
-func (UnimplementedCountryServiceServer) mustEmbedUnimplementedCountryServiceServer() {}
+func (UnimplementedEquipmentServiceServer) mustEmbedUnimplementedEquipmentServiceServer() {}
 
-// UnsafeCountryServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to CountryServiceServer will
+// UnsafeEquipmentServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to EquipmentServiceServer will
 // result in compilation errors.
-type UnsafeCountryServiceServer interface {
-	mustEmbedUnimplementedCountryServiceServer()
+type UnsafeEquipmentServiceServer interface {
+	mustEmbedUnimplementedEquipmentServiceServer()
 }
 
-func RegisterCountryServiceServer(s grpc.ServiceRegistrar, srv CountryServiceServer) {
-	s.RegisterService(&CountryService_ServiceDesc, srv)
+func RegisterEquipmentServiceServer(s grpc.ServiceRegistrar, srv EquipmentServiceServer) {
+	s.RegisterService(&EquipmentService_ServiceDesc, srv)
 }
 
-func _CountryService_CreateCountry_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RawCountry)
+func _EquipmentService_CreateEquipment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Equipment)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CountryServiceServer).CreateCountry(ctx, in)
+		return srv.(EquipmentServiceServer).CreateEquipment(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CountryService_CreateCountry_FullMethodName,
+		FullMethod: EquipmentService_CreateEquipment_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CountryServiceServer).CreateCountry(ctx, req.(*RawCountry))
+		return srv.(EquipmentServiceServer).CreateEquipment(ctx, req.(*Equipment))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CountryService_GetClosestCountry_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetCountryRequest)
+func _EquipmentService_GetEquipment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CountryServiceServer).GetClosestCountry(ctx, in)
+		return srv.(EquipmentServiceServer).GetEquipment(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CountryService_GetClosestCountry_FullMethodName,
+		FullMethod: EquipmentService_GetEquipment_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CountryServiceServer).GetClosestCountry(ctx, req.(*GetCountryRequest))
+		return srv.(EquipmentServiceServer).GetEquipment(ctx, req.(*GetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CountryService_GetCountryById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetCountryRequest)
+func _EquipmentService_GetAllEquipments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CountryServiceServer).GetCountryById(ctx, in)
+		return srv.(EquipmentServiceServer).GetAllEquipments(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CountryService_GetCountryById_FullMethodName,
+		FullMethod: EquipmentService_GetAllEquipments_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CountryServiceServer).GetCountryById(ctx, req.(*GetCountryRequest))
+		return srv.(EquipmentServiceServer).GetAllEquipments(ctx, req.(*GetAllRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// CountryService_ServiceDesc is the grpc.ServiceDesc for CountryService service.
+// EquipmentService_ServiceDesc is the grpc.ServiceDesc for EquipmentService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var CountryService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "CountryService",
-	HandlerType: (*CountryServiceServer)(nil),
+var EquipmentService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "EquipmentService",
+	HandlerType: (*EquipmentServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateCountry",
-			Handler:    _CountryService_CreateCountry_Handler,
+			MethodName: "CreateEquipment",
+			Handler:    _EquipmentService_CreateEquipment_Handler,
 		},
 		{
-			MethodName: "GetClosestCountry",
-			Handler:    _CountryService_GetClosestCountry_Handler,
+			MethodName: "GetEquipment",
+			Handler:    _EquipmentService_GetEquipment_Handler,
 		},
 		{
-			MethodName: "GetCountryById",
-			Handler:    _CountryService_GetCountryById_Handler,
+			MethodName: "GetAllEquipments",
+			Handler:    _EquipmentService_GetAllEquipments_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

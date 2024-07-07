@@ -1,12 +1,17 @@
 package main
 
 import (
+	"armiya/equipment-service/api"
+	"armiya/equipment-service/internal/config"
+	"armiya/equipment-service/internal/service"
+	"armiya/equipment-service/internal/storage"
 	"log"
+	"os"
 
-	"github.com/ruziba3vich/countries/api"
-	"github.com/ruziba3vich/countries/internal/config"
-	"github.com/ruziba3vich/countries/internal/service"
-	"github.com/ruziba3vich/countries/internal/storage"
+	"github.com/golang-migrate/migrate/v4"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
+	"github.com/k0kubun/pp"
 )
 
 func main() {
@@ -14,6 +19,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	migrateDB()
+
 	storage, err := storage.New(configs)
 	if err != nil {
 		log.Fatal(err)
@@ -22,4 +30,27 @@ func main() {
 	api := api.New(service.New(*storage))
 
 	log.Fatal(api.RUN(configs))
+}
+
+func migrateDB() {
+	databaseURL, ok := os.LookupEnv("PG_URL")
+	if !ok || len(databaseURL) == 0 {
+		log.Fatalf("migrate: environment variable PG_URL not declared or empty")
+	}
+
+	m, err := migrate.New("file://migrations", databaseURL)
+	if err != nil {
+		log.Fatalf("Migrate: error creating migrate instance: %v", err)
+	}
+
+	err = m.Up()
+	if err != nil {
+		if err.Error() == "no change" {
+			log.Printf("Migrate: no change")
+		} else {
+			log.Fatalf("Migrate: error applying migrations: %v", err)
+		}
+	} else {
+		pp.Printf("Migrate: up success")
+	}
 }

@@ -29,7 +29,7 @@ migrate-file: generate-env ### create a new migration file
 	@source .generated_env && migrate create -ext sql -dir migrations/ -seq init_tables
 .PHONY: migrate-file
 
-generate-rpc:
+proto:
 	protoc \
 	--go_out=. \
 	--go-grpc_out=. \
@@ -38,3 +38,11 @@ generate-rpc:
 give-permissions:
 	- chmod +x additional.sh
 	- chmod +x generate_db_url.sh
+
+
+.PHONY: migrate run
+
+.PHONY: migrate run
+
+psql:
+	psql -U postgres -d postgres

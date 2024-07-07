@@ -6,7 +6,7 @@ import (
 	"log"
 
 	_ "github.com/lib/pq"
-	"github.com/ruziba3vich/countries/internal/config"
+	"armiya/equipment-service/internal/config"
 )
 
 func ConnectDB(config config.Config) (*sql.DB, error) {

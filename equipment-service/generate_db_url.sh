@@ -6,10 +6,8 @@ if [ -f .env ]; then
 fi
 
 # Construct the DB_URL
-DB_URL="postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable"
+export DB_URL="postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable"
 
 # Print DB_URL
 echo "DB_URL=${DB_URL}"
 
-
-# chmod +x generate_db_url.sh

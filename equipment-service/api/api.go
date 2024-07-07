@@ -4,18 +4,18 @@ import (
 	"log"
 	"net"
 
-	"github.com/ruziba3vich/countries/genprotos"
-	"github.com/ruziba3vich/countries/internal/config"
+	"armiya/equipment-service/genprotos"
+	"armiya/equipment-service/internal/config"
 	"google.golang.org/grpc"
 )
 
 type (
 	API struct {
-		service genprotos.CountryServiceServer
+		service genprotos.EquipmentServiceServer
 	}
 )
 
-func New(service genprotos.CountryServiceServer) *API {
+func New(service genprotos.EquipmentServiceServer) *API {
 	return &API{
 		service: service,
 	}
@@ -28,7 +28,7 @@ func (a *API) RUN(config *config.Config) error {
 	}
 
 	serverRegisterer := grpc.NewServer()
-	genprotos.RegisterCountryServiceServer(serverRegisterer, a.service)
+	genprotos.RegisterEquipmentServiceServer(serverRegisterer, a.service)
 
 	log.Println("server has started running on port", config.Server.Port)
 
