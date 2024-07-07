@@ -23,10 +23,12 @@ const (
 	FuelService_GetFuel_FullMethodName                   = "/FuelService/GetFuel"
 	FuelService_UpdateFuel_FullMethodName                = "/FuelService/UpdateFuel"
 	FuelService_DeleteFuel_FullMethodName                = "/FuelService/DeleteFuel"
+	FuelService_ListFuelByType_FullMethodName            = "/FuelService/ListFuelByType"
 	FuelService_ListFuels_FullMethodName                 = "/FuelService/ListFuels"
 	FuelService_CreateFuelHistory_FullMethodName         = "/FuelService/CreateFuelHistory"
-	FuelService_GetFuelHistory_FullMethodName            = "/FuelService/GetFuelHistory"
 	FuelService_ListFuelHistoriesByFuelID_FullMethodName = "/FuelService/ListFuelHistoriesByFuelID"
+	FuelService_ListFuelHistoriesByType_FullMethodName   = "/FuelService/ListFuelHistoriesByType"
+	FuelService_ListFuelHistoriesByDate_FullMethodName   = "/FuelService/ListFuelHistoriesByDate"
 	FuelService_ListFuelHistories_FullMethodName         = "/FuelService/ListFuelHistories"
 )
 
@@ -39,11 +41,13 @@ type FuelServiceClient interface {
 	GetFuel(ctx context.Context, in *GetFuelRequest, opts ...grpc.CallOption) (*FuelResponse, error)
 	UpdateFuel(ctx context.Context, in *UpdateFuelRequest, opts ...grpc.CallOption) (*FuelResponse, error)
 	DeleteFuel(ctx context.Context, in *DeleteFuelRequest, opts ...grpc.CallOption) (*Empty, error)
+	ListFuelByType(ctx context.Context, in *ListFuelsByTypeRequest, opts ...grpc.CallOption) (*ListFuelsByTypeResponse, error)
 	ListFuels(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListFuelsResponse, error)
 	// fuel_history
 	CreateFuelHistory(ctx context.Context, in *CreateFuelHistoryRequest, opts ...grpc.CallOption) (*FuelHistoryResponse, error)
-	GetFuelHistory(ctx context.Context, in *GetFuelHistoryRequest, opts ...grpc.CallOption) (*FuelHistoryResponse, error)
 	ListFuelHistoriesByFuelID(ctx context.Context, in *ListFuelHistoriesByFuelIDRequest, opts ...grpc.CallOption) (*ListFuelHistoriesByFuelIDResponse, error)
+	ListFuelHistoriesByType(ctx context.Context, in *ListFuelHistoriesByTypeRequest, opts ...grpc.CallOption) (*ListFuelHistoriesByTypeResponse, error)
+	ListFuelHistoriesByDate(ctx context.Context, in *ListFuelHistoriesByDateRequest, opts ...grpc.CallOption) (*ListFuelHistoriesByDateResponse, error)
 	ListFuelHistories(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListFuelHistoriesResponse, error)
 }
 
@@ -95,6 +99,16 @@ func (c *fuelServiceClient) DeleteFuel(ctx context.Context, in *DeleteFuelReques
 	return out, nil
 }
 
+func (c *fuelServiceClient) ListFuelByType(ctx context.Context, in *ListFuelsByTypeRequest, opts ...grpc.CallOption) (*ListFuelsByTypeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListFuelsByTypeResponse)
+	err := c.cc.Invoke(ctx, FuelService_ListFuelByType_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *fuelServiceClient) ListFuels(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListFuelsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListFuelsResponse)
@@ -115,20 +129,30 @@ func (c *fuelServiceClient) CreateFuelHistory(ctx context.Context, in *CreateFue
 	return out, nil
 }
 
-func (c *fuelServiceClient) GetFuelHistory(ctx context.Context, in *GetFuelHistoryRequest, opts ...grpc.CallOption) (*FuelHistoryResponse, error) {
+func (c *fuelServiceClient) ListFuelHistoriesByFuelID(ctx context.Context, in *ListFuelHistoriesByFuelIDRequest, opts ...grpc.CallOption) (*ListFuelHistoriesByFuelIDResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(FuelHistoryResponse)
-	err := c.cc.Invoke(ctx, FuelService_GetFuelHistory_FullMethodName, in, out, cOpts...)
+	out := new(ListFuelHistoriesByFuelIDResponse)
+	err := c.cc.Invoke(ctx, FuelService_ListFuelHistoriesByFuelID_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fuelServiceClient) ListFuelHistoriesByFuelID(ctx context.Context, in *ListFuelHistoriesByFuelIDRequest, opts ...grpc.CallOption) (*ListFuelHistoriesByFuelIDResponse, error) {
+func (c *fuelServiceClient) ListFuelHistoriesByType(ctx context.Context, in *ListFuelHistoriesByTypeRequest, opts ...grpc.CallOption) (*ListFuelHistoriesByTypeResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListFuelHistoriesByFuelIDResponse)
-	err := c.cc.Invoke(ctx, FuelService_ListFuelHistoriesByFuelID_FullMethodName, in, out, cOpts...)
+	out := new(ListFuelHistoriesByTypeResponse)
+	err := c.cc.Invoke(ctx, FuelService_ListFuelHistoriesByType_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *fuelServiceClient) ListFuelHistoriesByDate(ctx context.Context, in *ListFuelHistoriesByDateRequest, opts ...grpc.CallOption) (*ListFuelHistoriesByDateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListFuelHistoriesByDateResponse)
+	err := c.cc.Invoke(ctx, FuelService_ListFuelHistoriesByDate_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -154,11 +178,13 @@ type FuelServiceServer interface {
 	GetFuel(context.Context, *GetFuelRequest) (*FuelResponse, error)
 	UpdateFuel(context.Context, *UpdateFuelRequest) (*FuelResponse, error)
 	DeleteFuel(context.Context, *DeleteFuelRequest) (*Empty, error)
+	ListFuelByType(context.Context, *ListFuelsByTypeRequest) (*ListFuelsByTypeResponse, error)
 	ListFuels(context.Context, *Empty) (*ListFuelsResponse, error)
 	// fuel_history
 	CreateFuelHistory(context.Context, *CreateFuelHistoryRequest) (*FuelHistoryResponse, error)
-	GetFuelHistory(context.Context, *GetFuelHistoryRequest) (*FuelHistoryResponse, error)
 	ListFuelHistoriesByFuelID(context.Context, *ListFuelHistoriesByFuelIDRequest) (*ListFuelHistoriesByFuelIDResponse, error)
+	ListFuelHistoriesByType(context.Context, *ListFuelHistoriesByTypeRequest) (*ListFuelHistoriesByTypeResponse, error)
+	ListFuelHistoriesByDate(context.Context, *ListFuelHistoriesByDateRequest) (*ListFuelHistoriesByDateResponse, error)
 	ListFuelHistories(context.Context, *Empty) (*ListFuelHistoriesResponse, error)
 	mustEmbedUnimplementedFuelServiceServer()
 }
@@ -179,17 +205,23 @@ func (UnimplementedFuelServiceServer) UpdateFuel(context.Context, *UpdateFuelReq
 func (UnimplementedFuelServiceServer) DeleteFuel(context.Context, *DeleteFuelRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteFuel not implemented")
 }
+func (UnimplementedFuelServiceServer) ListFuelByType(context.Context, *ListFuelsByTypeRequest) (*ListFuelsByTypeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListFuelByType not implemented")
+}
 func (UnimplementedFuelServiceServer) ListFuels(context.Context, *Empty) (*ListFuelsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListFuels not implemented")
 }
 func (UnimplementedFuelServiceServer) CreateFuelHistory(context.Context, *CreateFuelHistoryRequest) (*FuelHistoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateFuelHistory not implemented")
 }
-func (UnimplementedFuelServiceServer) GetFuelHistory(context.Context, *GetFuelHistoryRequest) (*FuelHistoryResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetFuelHistory not implemented")
-}
 func (UnimplementedFuelServiceServer) ListFuelHistoriesByFuelID(context.Context, *ListFuelHistoriesByFuelIDRequest) (*ListFuelHistoriesByFuelIDResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListFuelHistoriesByFuelID not implemented")
+}
+func (UnimplementedFuelServiceServer) ListFuelHistoriesByType(context.Context, *ListFuelHistoriesByTypeRequest) (*ListFuelHistoriesByTypeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListFuelHistoriesByType not implemented")
+}
+func (UnimplementedFuelServiceServer) ListFuelHistoriesByDate(context.Context, *ListFuelHistoriesByDateRequest) (*ListFuelHistoriesByDateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListFuelHistoriesByDate not implemented")
 }
 func (UnimplementedFuelServiceServer) ListFuelHistories(context.Context, *Empty) (*ListFuelHistoriesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListFuelHistories not implemented")
@@ -279,6 +311,24 @@ func _FuelService_DeleteFuel_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FuelService_ListFuelByType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListFuelsByTypeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FuelServiceServer).ListFuelByType(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FuelService_ListFuelByType_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FuelServiceServer).ListFuelByType(ctx, req.(*ListFuelsByTypeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _FuelService_ListFuels_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
@@ -315,24 +365,6 @@ func _FuelService_CreateFuelHistory_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FuelService_GetFuelHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetFuelHistoryRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FuelServiceServer).GetFuelHistory(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: FuelService_GetFuelHistory_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FuelServiceServer).GetFuelHistory(ctx, req.(*GetFuelHistoryRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _FuelService_ListFuelHistoriesByFuelID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListFuelHistoriesByFuelIDRequest)
 	if err := dec(in); err != nil {
@@ -347,6 +379,42 @@ func _FuelService_ListFuelHistoriesByFuelID_Handler(srv interface{}, ctx context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FuelServiceServer).ListFuelHistoriesByFuelID(ctx, req.(*ListFuelHistoriesByFuelIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FuelService_ListFuelHistoriesByType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListFuelHistoriesByTypeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FuelServiceServer).ListFuelHistoriesByType(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FuelService_ListFuelHistoriesByType_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FuelServiceServer).ListFuelHistoriesByType(ctx, req.(*ListFuelHistoriesByTypeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FuelService_ListFuelHistoriesByDate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListFuelHistoriesByDateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FuelServiceServer).ListFuelHistoriesByDate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FuelService_ListFuelHistoriesByDate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FuelServiceServer).ListFuelHistoriesByDate(ctx, req.(*ListFuelHistoriesByDateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -393,6 +461,10 @@ var FuelService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _FuelService_DeleteFuel_Handler,
 		},
 		{
+			MethodName: "ListFuelByType",
+			Handler:    _FuelService_ListFuelByType_Handler,
+		},
+		{
 			MethodName: "ListFuels",
 			Handler:    _FuelService_ListFuels_Handler,
 		},
@@ -401,12 +473,16 @@ var FuelService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _FuelService_CreateFuelHistory_Handler,
 		},
 		{
-			MethodName: "GetFuelHistory",
-			Handler:    _FuelService_GetFuelHistory_Handler,
-		},
-		{
 			MethodName: "ListFuelHistoriesByFuelID",
 			Handler:    _FuelService_ListFuelHistoriesByFuelID_Handler,
+		},
+		{
+			MethodName: "ListFuelHistoriesByType",
+			Handler:    _FuelService_ListFuelHistoriesByType_Handler,
+		},
+		{
+			MethodName: "ListFuelHistoriesByDate",
+			Handler:    _FuelService_ListFuelHistoriesByDate_Handler,
 		},
 		{
 			MethodName: "ListFuelHistories",
