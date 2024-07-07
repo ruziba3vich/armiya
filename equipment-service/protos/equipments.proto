@@ -11,7 +11,7 @@ message Equipment {
     string main_armament = 6;
     int64 crew_size = 7;
     float weight_kg = 8;
-    float length = 9;
+    float length_cm = 9;
     float width_cm = 10;
     float height_cm = 11;
     int64 max_speed_km = 12;
@@ -41,7 +41,7 @@ message Empty {
 
 
 service EquipmentService {
-    rpc CreateEquipment(Equipment) returns (Empty);
+    rpc CreateEquipment(Equipment) returns (Equipment);
     rpc GetEquipment(GetRequest) returns (Equipment);
     rpc GetAllEquipments(GetAllRequest) returns (GetAllResponse);
 }

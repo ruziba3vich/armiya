@@ -1,40 +1,39 @@
 package service
 
 import (
+	"armiya/equipment-service/genprotos"
+	"armiya/equipment-service/internal/storage"
 	"context"
 	"log"
 	"os"
-
-	"github.com/ruziba3vich/countries/genprotos"
-	"github.com/ruziba3vich/countries/internal/storage"
 )
 
 type (
-	CountryServiceSt struct {
-		genprotos.UnimplementedCountryServiceServer
-		service storage.CountrySt
+	EquipmentService struct {
+		genprotos.UnimplementedEquipmentServiceServer
+		service storage.Equipment
 		logger  *log.Logger
 	}
 )
 
-func New(service storage.CountrySt) *CountryServiceSt {
-	return &CountryServiceSt{
+func New(service storage.Equipment) *EquipmentService {
+	return &EquipmentService{
 		service: service,
 		logger:  log.New(os.Stdout, "INFO: ", log.Ldate|log.Ltime|log.Lshortfile),
 	}
 }
 
-func (s *CountryServiceSt) CreateCountry(ctx context.Context, req *genprotos.RawCountry) (*genprotos.Country, error) {
-	s.logger.Println("create country request")
-	return s.service.CreateCountry(ctx, req)
+func (s *EquipmentService) CreateEquipment(ctx context.Context, req *genprotos.Equipment) (*genprotos.Equipment, error) {
+	s.logger.Println("Create equipment request")
+	return s.service.CreateEquipment(ctx, req)
 }
 
-func (s *CountryServiceSt) GetClosestCountry(ctx context.Context, req *genprotos.GetCountryRequest) (*genprotos.GetClosestCountryResponse, error) {
-	s.logger.Println("get closest country request")
-	return s.service.GetClosestCountry(ctx, req)
+func (s *EquipmentService) GetEquipment(ctx context.Context, req *genprotos.GetRequest) (*genprotos.Equipment, error) {
+	s.logger.Println("Get equipment requset")
+	return s.service.GetEquipment(ctx, req)
 }
 
-func (s *CountryServiceSt) GetCountryById(ctx context.Context, req *genprotos.GetCountryRequest) (*genprotos.Country, error) {
-	s.logger.Println("get country by id request")
-	return s.service.GetCountryById(ctx, req)
+func (s *EquipmentService) GetAllEquipments(ctx context.Context, req *genprotos.GetAllRequest) (*genprotos.GetAllResponse, error) {
+	s.logger.Println("Get All Equipments request")
+	return s.service.GetAllEquipments(ctx, req)
 }

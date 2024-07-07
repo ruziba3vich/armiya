@@ -1,65 +1,224 @@
 package storage
 
 import (
+	"armiya/equipment-service/genprotos"
+	"armiya/equipment-service/internal/config"
 	"context"
 	"database/sql"
-	"log"
-
-	"github.com/ruziba3vich/countries/genprotos"
-	"github.com/ruziba3vich/countries/internal/config"
+	sql2 "database/sql"
+	"time"
 
 	sq "github.com/Masterminds/squirrel"
 )
 
 type (
-	CountrySt struct {
+	Equipment struct {
 		db           *sql.DB
 		queryBuilder sq.StatementBuilderType
 	}
 )
 
-func New(config *config.Config) (*CountrySt, error) {
+func New(config *config.Config) (*Equipment, error) {
 
 	db, err := ConnectDB(*config)
 	if err != nil {
 		return nil, err
 	}
 
-	return &CountrySt{
+	return &Equipment{
 		db:           db,
 		queryBuilder: sq.StatementBuilder.PlaceholderFormat(sq.Dollar),
 	}, nil
 }
 
-func (s *CountrySt) CreateEquipment(ctx context.Context, req *genprotos.Equipment) error {
-	query, args, err := s.queryBuilder.Insert("countries").
-		Columns("country_name", "latitude", "longitude").
-		Values(
-			req.CountryName,
-			req.Latitude,
-			req.Longitude).
-		Suffix("RETURNING country_id, country_name, latitude, longitude").
+// equipmentsSelectQuery constructs a SQL select query for the "equipments" table.
+// It selects multiple columns from the table.
+//
+// Returns:
+//
+//	sq.SelectBuilder - A builder for constructing SQL select queries.
+func equipmentsSelectQuery() sq.SelectBuilder {
+	query := sq.Select(
+		"name",
+		"description",
+		"origin_country",
+		"classification",
+		"quantity",
+		"main_armament",
+		"crew_size",
+		"weight_kg",
+		"length_kg",
+		"width_cm",
+		"height_cm",
+		"max_speed_kmh",
+		"operational_range_km",
+		"year_of_introduction",
+		"created_at",
+	).From("equipments")
+
+	return query
+}
+
+// CreateEquipment inserts a new equipment record into the database.
+// It takes a context and a request containing equipment details, and returns the created equipment or an error.
+//
+// Parameters:
+//
+//	ctx - The context for managing request-scoped values, cancellation, and deadlines.
+//	req - A pointer to a genprotos.Equipment struct containing the equipment details to be inserted.
+//
+// Returns:
+//
+//	*genprotos.Equipment - A pointer to the created equipment record.
+//	error - An error if the operation fails, otherwise nil.
+func (e *Equipment) CreateEquipment(ctx context.Context, req *genprotos.Equipment) (*genprotos.Equipment, error) {
+	data := map[string]interface{}{
+		"name":                 req.Name,
+		"description":          req.Description,
+		"origin_country":       req.OriginCountry,
+		"classification":       req.Classification,
+		"quantity":             req.Quantity,
+		"main_armament":        req.MainArmament,
+		"crew_size":            req.CrewSize,
+		"weight_kg":            req.WeightKg,
+		"length_kg":            req.LengthCm,
+		"width_cm":             req.WidthCm,
+		"height_cm":            req.HeightCm,
+		"max_speed_kmh":        req.MaxSpeedKm,
+		"operational_range_km": req.OperationalRangeKm,
+		"year_of_introduction": req.YearOfIntroduction,
+		"created_at":           time.Now().String(),
+	}
+	query, args, err := e.queryBuilder.Insert("equipments").
+		SetMap(data).
 		ToSql()
 	if err != nil {
-		log.Println("Error generating SQL:", err)
 		return nil, err
 	}
 
-	row := s.db.QueryRowContext(ctx, query, args...)
-
-	var response genprotos.Country
-
-	if err := row.Scan(
-		&response.CountryId,
-		&response.CountryName,
-		&response.Latitude,
-		&response.Longitude); err != nil {
-		log.Println("Scan error:", err)
+	if _, err = e.db.ExecContext(ctx, query, args...); err != nil {
 		return nil, err
 	}
-	if err := row.Err(); err != nil {
-		log.Println("Row error:", err)
+
+	return req, nil
+}
+
+// GetEquipment retrieves an equipment record from the database based on the provided request.
+// It takes a context and a request containing the equipment ID, and returns the retrieved equipment or an error.
+//
+// Parameters:
+//
+//	ctx - The context for managing request-scoped values, cancellation, and deadlines.
+//	req - A pointer to a genprotos.GetRequest struct containing the equipment ID to be retrieved.
+//
+// Returns:
+//
+//	*genprotos.Equipment - A pointer to the retrieved equipment record.
+//	error - An error if the operation fails, otherwise nil.
+func (e *Equipment) GetEquipment(ctx context.Context, req *genprotos.GetRequest) (*genprotos.Equipment, error) {
+	sql, args, err := equipmentsSelectQuery().Where(sq.Eq{
+		"id": req.Id,
+	}).ToSql()
+	if err != nil {
 		return nil, err
 	}
-	return &response, nil
+
+	row := e.db.QueryRowContext(ctx, sql, args...)
+	if row.Err() != nil {
+		return nil, row.Err()
+	}
+
+	equipment := &genprotos.Equipment{}
+	err = row.Scan(
+		&equipment.Name,
+		&equipment.Description,
+		&equipment.OriginCountry,
+		&equipment.Classification,
+		&equipment.Quantity,
+		&equipment.MainArmament,
+		&equipment.CrewSize,
+		&equipment.WeightKg,
+		&equipment.LengthCm,
+		&equipment.WidthCm,
+		&equipment.HeightCm,
+		&equipment.MaxSpeedKm,
+		&equipment.OperationalRangeKm,
+		&equipment.YearOfIntroduction,
+		&equipment.CreatedAt,
+	)
+	if err != nil {
+		if err == sql2.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return equipment, nil
+}
+
+// GetAllMessages retrieves paginated and ordered equipment records from the database.
+// It takes a context and a GetAllRequest, and returns a GetAllResponse or an error.
+//
+// Parameters:
+//
+//	ctx - The context for managing request-scoped values, cancellation, and deadlines.
+//	req - The GetAllRequest containing pagination and ordering information.
+//
+// Returns:
+//
+//	*genprotos.GetAllResponse - The response containing the retrieved equipment records and the total count.
+//	error - An error if the operation fails, otherwise nil.
+func (e *Equipment) GetAllEquipments(ctx context.Context, req *genprotos.GetAllRequest) (*genprotos.GetAllResponse, error) {
+	sql, args, err := equipmentsSelectQuery().
+		OrderBy(req.OrderBy).
+		Limit(uint64(req.Limit)).
+		Offset(uint64((req.Page - 1) * req.Limit)).
+		ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := e.db.QueryContext(ctx, sql, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var equipments []*genprotos.Equipment
+
+	for rows.Next() {
+		equipment := &genprotos.Equipment{}
+		err := rows.Scan(
+			&equipment.Name,
+			&equipment.Description,
+			&equipment.OriginCountry,
+			&equipment.Classification,
+			&equipment.Quantity,
+			&equipment.MainArmament,
+			&equipment.CrewSize,
+			&equipment.WeightKg,
+			&equipment.LengthCm,
+			&equipment.WidthCm,
+			&equipment.HeightCm,
+			&equipment.MaxSpeedKm,
+			&equipment.OperationalRangeKm,
+			&equipment.YearOfIntroduction,
+			&equipment.CreatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		equipments = append(equipments, equipment)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	response := &genprotos.GetAllResponse{
+		Equipments: equipments,
+		Count:      int64(len(equipments)),
+	}
+
+	return response, nil
 }

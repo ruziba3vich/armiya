@@ -28,7 +28,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EquipmentServiceClient interface {
-	CreateEquipment(ctx context.Context, in *Equipment, opts ...grpc.CallOption) (*Empty, error)
+	CreateEquipment(ctx context.Context, in *Equipment, opts ...grpc.CallOption) (*Equipment, error)
 	GetEquipment(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Equipment, error)
 	GetAllEquipments(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponse, error)
 }
@@ -41,9 +41,9 @@ func NewEquipmentServiceClient(cc grpc.ClientConnInterface) EquipmentServiceClie
 	return &equipmentServiceClient{cc}
 }
 
-func (c *equipmentServiceClient) CreateEquipment(ctx context.Context, in *Equipment, opts ...grpc.CallOption) (*Empty, error) {
+func (c *equipmentServiceClient) CreateEquipment(ctx context.Context, in *Equipment, opts ...grpc.CallOption) (*Equipment, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Empty)
+	out := new(Equipment)
 	err := c.cc.Invoke(ctx, EquipmentService_CreateEquipment_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func (c *equipmentServiceClient) GetAllEquipments(ctx context.Context, in *GetAl
 // All implementations must embed UnimplementedEquipmentServiceServer
 // for forward compatibility
 type EquipmentServiceServer interface {
-	CreateEquipment(context.Context, *Equipment) (*Empty, error)
+	CreateEquipment(context.Context, *Equipment) (*Equipment, error)
 	GetEquipment(context.Context, *GetRequest) (*Equipment, error)
 	GetAllEquipments(context.Context, *GetAllRequest) (*GetAllResponse, error)
 	mustEmbedUnimplementedEquipmentServiceServer()
@@ -85,7 +85,7 @@ type EquipmentServiceServer interface {
 type UnimplementedEquipmentServiceServer struct {
 }
 
-func (UnimplementedEquipmentServiceServer) CreateEquipment(context.Context, *Equipment) (*Empty, error) {
+func (UnimplementedEquipmentServiceServer) CreateEquipment(context.Context, *Equipment) (*Equipment, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateEquipment not implemented")
 }
 func (UnimplementedEquipmentServiceServer) GetEquipment(context.Context, *GetRequest) (*Equipment, error) {

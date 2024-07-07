@@ -38,3 +38,12 @@ proto:
 give-permissions:
 	- chmod +x additional.sh
 	- chmod +x generate_db_url.sh
+
+
+.PHONY: migrate run
+
+.PHONY: migrate run
+
+run:
+	go mod tidy && go mod download && \
+	go run cmd/main.go
