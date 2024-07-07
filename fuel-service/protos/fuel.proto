@@ -8,12 +8,14 @@ service FuelService {
     rpc GetFuel(GetFuelRequest) returns (FuelResponse);
     rpc UpdateFuel(UpdateFuelRequest) returns (FuelResponse);
     rpc DeleteFuel(DeleteFuelRequest) returns (Empty);
+    rpc ListFuelByChoice(ListFuelsByChoiceRequest) returns (ListFuelsByChoiceResponse);
     rpc ListFuels(Empty) returns (ListFuelsResponse);
 
     // fuel_history 
     rpc CreateFuelHistory(CreateFuelHistoryRequest) returns (FuelHistoryResponse);
-    rpc GetFuelHistory(GetFuelHistoryRequest) returns (FuelHistoryResponse);
     rpc ListFuelHistoriesByFuelID(ListFuelHistoriesByFuelIDRequest) returns (ListFuelHistoriesByFuelIDResponse);
+    rpc ListFuelHistoriesByChoice(ListFuelHistoriesByChoiceRequest) returns (ListFuelHistoriesByChoiceResponse);
+    rpc ListFuelHistoriesByDate(ListFuelHistoriesByDateRequest) returns (ListFuelHistoriesByDateResponse);
     rpc ListFuelHistories(Empty) returns (ListFuelHistoriesResponse);
 }
 
@@ -22,7 +24,7 @@ message Fuel {
     string name = 2;
     string type = 3;
     double quantity = 4;
-    string last_update = 5; // ISO 8601 format
+    string last_update = 5; 
 }
 
 message FuelHistory {
@@ -30,7 +32,7 @@ message FuelHistory {
     string fuel_id = 2;
     string action = 3;
     string actior_id = 4;
-    string action_timestamp = 5; // ISO 8601 format
+    string action_timestamp = 5; 
 }
 
 message CreateFuelRequest {
@@ -51,6 +53,15 @@ message DeleteFuelRequest {
     string id = 1;
 }
 
+message ListFuelsByChoiceRequest {
+    string choice = 1;
+    string message = 2;
+}
+
+message ListFuelsByChoiceResponse {
+    repeated Fuel fuels = 1;
+}
+
 message ListFuelsResponse {
     repeated Fuel fuels = 1;
 }
@@ -65,10 +76,6 @@ message CreateFuelHistoryRequest {
     string actior_id = 3;
 }
 
-message GetFuelHistoryRequest {
-    string id = 1;
-}
-
 message ListFuelHistoriesByFuelIDRequest {
     string fuel_id = 1;
 }
@@ -77,7 +84,24 @@ message ListFuelHistoriesByFuelIDResponse {
     repeated FuelHistory fuel_histories = 1;
 }
 
+message ListFuelHistoriesByChoiceRequest {
+    string choice = 1;
+    string message = 2;
+}
+
+message ListFuelHistoriesByChoiceResponse {
+    repeated FuelHistory fuel_histories = 1;
+}
+
 message ListFuelHistoriesResponse{
+    repeated FuelHistory fuel_histories = 1;
+}
+
+message ListFuelHistoriesByDateRequest {
+    string date = 1; 
+}
+
+message ListFuelHistoriesByDateResponse {
     repeated FuelHistory fuel_histories = 1;
 }
 
