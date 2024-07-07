@@ -3,21 +3,22 @@ syntax = "proto3";
 option go_package = "genprotos/";
 
 message Equipment {
-    string name = 1;
-    string description = 2;
-    string origin_country = 3;
-    string classification = 4;
-    int64 quantity = 5;
-    string main_armament = 6;
-    int64 crew_size = 7;
-    float weight_kg = 8;
-    float length_cm = 9;
-    float width_cm = 10;
-    float height_cm = 11;
-    int64 max_speed_km = 12;
-    float operational_range_km = 13;
-    int64 year_of_introduction = 14;
-    string created_at = 15;
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string origin_country = 4;
+    string classification = 5;
+    int64 quantity = 6;
+    string main_armament = 7;
+    int64 crew_size = 8;
+    float weight_kg = 9;
+    float length_cm = 10;
+    float width_cm = 11;
+    float height_cm = 12;
+    int64 max_speed_km = 13;
+    float operational_range_km = 14;
+    int64 year_of_introduction = 15;
+    string created_at = 16;
 }
 
 message GetRequest {

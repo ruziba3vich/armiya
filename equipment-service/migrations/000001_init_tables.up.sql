@@ -16,7 +16,7 @@ CREATE TABLE "equipments"(
     "origin_country" VARCHAR(100),
     "classification" VARCHAR(100),
     "quantity" BIGINT,
-    "main_armament" BIGINT,
+    "main_armament" TEXT,
     "crew_size" INTEGER,
     "weight_kg" DECIMAL(10, 2),
     "length_cm" DECIMAL(10, 2),

@@ -4,16 +4,16 @@ import (
 	"armiya/equipment-service/genprotos"
 	"armiya/equipment-service/internal/config"
 	"context"
-	"database/sql"
 	sql2 "database/sql"
 	"time"
 
 	sq "github.com/Masterminds/squirrel"
+	"github.com/google/uuid"
 )
 
 type (
 	Equipment struct {
-		db           *sql.DB
+		db           *sql2.DB
 		queryBuilder sq.StatementBuilderType
 	}
 )
@@ -47,7 +47,7 @@ func equipmentsSelectQuery() sq.SelectBuilder {
 		"main_armament",
 		"crew_size",
 		"weight_kg",
-		"length_kg",
+		"length_cm",
 		"width_cm",
 		"height_cm",
 		"max_speed_kmh",
@@ -73,6 +73,7 @@ func equipmentsSelectQuery() sq.SelectBuilder {
 //	error - An error if the operation fails, otherwise nil.
 func (e *Equipment) CreateEquipment(ctx context.Context, req *genprotos.Equipment) (*genprotos.Equipment, error) {
 	data := map[string]interface{}{
+		"id":                   uuid.NewString(),
 		"name":                 req.Name,
 		"description":          req.Description,
 		"origin_country":       req.OriginCountry,
@@ -81,13 +82,13 @@ func (e *Equipment) CreateEquipment(ctx context.Context, req *genprotos.Equipmen
 		"main_armament":        req.MainArmament,
 		"crew_size":            req.CrewSize,
 		"weight_kg":            req.WeightKg,
-		"length_kg":            req.LengthCm,
+		"length_cm":            req.LengthCm,
 		"width_cm":             req.WidthCm,
 		"height_cm":            req.HeightCm,
 		"max_speed_kmh":        req.MaxSpeedKm,
 		"operational_range_km": req.OperationalRangeKm,
 		"year_of_introduction": req.YearOfIntroduction,
-		"created_at":           time.Now().String(),
+		"created_at":           time.Now(),
 	}
 	query, args, err := e.queryBuilder.Insert("equipments").
 		SetMap(data).
@@ -100,7 +101,24 @@ func (e *Equipment) CreateEquipment(ctx context.Context, req *genprotos.Equipmen
 		return nil, err
 	}
 
-	return req, nil
+	return &genprotos.Equipment{
+		Id:                 data["id"].(string),
+		Name:               req.Name,
+		Description:        req.Description,
+		OriginCountry:      req.OriginCountry,
+		Classification:     req.Classification,
+		Quantity:           req.Quantity,
+		MainArmament:       req.MainArmament,
+		CrewSize:           req.CrewSize,
+		WeightKg:           req.WeightKg,
+		LengthCm:           req.LengthCm,
+		WidthCm:            req.WidthCm,
+		HeightCm:           req.HeightCm,
+		MaxSpeedKm:         req.MaxSpeedKm,
+		OperationalRangeKm: req.OperationalRangeKm,
+		YearOfIntroduction: req.YearOfIntroduction,
+		CreatedAt:          data["created_at"].(time.Time).Format(time.RFC1123),
+	}, nil
 }
 
 // GetEquipment retrieves an equipment record from the database based on the provided request.

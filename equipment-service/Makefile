@@ -44,6 +44,5 @@ give-permissions:
 
 .PHONY: migrate run
 
-run:
-	go mod tidy && go mod download && \
-	go run cmd/main.go
+psql:
+	psql -U postgres -d postgres
