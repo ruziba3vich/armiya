@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.4.0
 // - protoc             v3.12.4
-// source: protos/equipments.proto
+// source: equipments.proto
 
 package genprotos
 
@@ -19,9 +19,16 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	EquipmentService_CreateEquipment_FullMethodName  = "/EquipmentService/CreateEquipment"
-	EquipmentService_GetEquipment_FullMethodName     = "/EquipmentService/GetEquipment"
-	EquipmentService_GetAllEquipments_FullMethodName = "/EquipmentService/GetAllEquipments"
+	EquipmentService_CreateEquipment_FullMethodName          = "/EquipmentService/CreateEquipment"
+	EquipmentService_GetEquipment_FullMethodName             = "/EquipmentService/GetEquipment"
+	EquipmentService_GetAllEquipments_FullMethodName         = "/EquipmentService/GetAllEquipments"
+	EquipmentService_UpdateEquipment_FullMethodName          = "/EquipmentService/UpdateEquipment"
+	EquipmentService_DeleteEquipment_FullMethodName          = "/EquipmentService/DeleteEquipment"
+	EquipmentService_CreateEquipmentHistory_FullMethodName   = "/EquipmentService/CreateEquipmentHistory"
+	EquipmentService_GetEquipmentHistory_FullMethodName      = "/EquipmentService/GetEquipmentHistory"
+	EquipmentService_GetAllEquipmentHistories_FullMethodName = "/EquipmentService/GetAllEquipmentHistories"
+	EquipmentService_UpdateEquipmentHistory_FullMethodName   = "/EquipmentService/UpdateEquipmentHistory"
+	EquipmentService_DeleteEquipmentHistory_FullMethodName   = "/EquipmentService/DeleteEquipmentHistory"
 )
 
 // EquipmentServiceClient is the client API for EquipmentService service.
@@ -31,6 +38,13 @@ type EquipmentServiceClient interface {
 	CreateEquipment(ctx context.Context, in *Equipment, opts ...grpc.CallOption) (*Equipment, error)
 	GetEquipment(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Equipment, error)
 	GetAllEquipments(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponse, error)
+	UpdateEquipment(ctx context.Context, in *Equipment, opts ...grpc.CallOption) (*Equipment, error)
+	DeleteEquipment(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Empty, error)
+	CreateEquipmentHistory(ctx context.Context, in *EquipmentHistory, opts ...grpc.CallOption) (*EquipmentHistory, error)
+	GetEquipmentHistory(ctx context.Context, in *GetHistoryRequest, opts ...grpc.CallOption) (*EquipmentHistory, error)
+	GetAllEquipmentHistories(ctx context.Context, in *GetAllHistoryRequest, opts ...grpc.CallOption) (*GetAllHistoryResponse, error)
+	UpdateEquipmentHistory(ctx context.Context, in *EquipmentHistory, opts ...grpc.CallOption) (*EquipmentHistory, error)
+	DeleteEquipmentHistory(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type equipmentServiceClient struct {
@@ -71,6 +85,76 @@ func (c *equipmentServiceClient) GetAllEquipments(ctx context.Context, in *GetAl
 	return out, nil
 }
 
+func (c *equipmentServiceClient) UpdateEquipment(ctx context.Context, in *Equipment, opts ...grpc.CallOption) (*Equipment, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Equipment)
+	err := c.cc.Invoke(ctx, EquipmentService_UpdateEquipment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *equipmentServiceClient) DeleteEquipment(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, EquipmentService_DeleteEquipment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *equipmentServiceClient) CreateEquipmentHistory(ctx context.Context, in *EquipmentHistory, opts ...grpc.CallOption) (*EquipmentHistory, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EquipmentHistory)
+	err := c.cc.Invoke(ctx, EquipmentService_CreateEquipmentHistory_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *equipmentServiceClient) GetEquipmentHistory(ctx context.Context, in *GetHistoryRequest, opts ...grpc.CallOption) (*EquipmentHistory, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EquipmentHistory)
+	err := c.cc.Invoke(ctx, EquipmentService_GetEquipmentHistory_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *equipmentServiceClient) GetAllEquipmentHistories(ctx context.Context, in *GetAllHistoryRequest, opts ...grpc.CallOption) (*GetAllHistoryResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAllHistoryResponse)
+	err := c.cc.Invoke(ctx, EquipmentService_GetAllEquipmentHistories_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *equipmentServiceClient) UpdateEquipmentHistory(ctx context.Context, in *EquipmentHistory, opts ...grpc.CallOption) (*EquipmentHistory, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EquipmentHistory)
+	err := c.cc.Invoke(ctx, EquipmentService_UpdateEquipmentHistory_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *equipmentServiceClient) DeleteEquipmentHistory(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, EquipmentService_DeleteEquipmentHistory_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EquipmentServiceServer is the server API for EquipmentService service.
 // All implementations must embed UnimplementedEquipmentServiceServer
 // for forward compatibility
@@ -78,6 +162,13 @@ type EquipmentServiceServer interface {
 	CreateEquipment(context.Context, *Equipment) (*Equipment, error)
 	GetEquipment(context.Context, *GetRequest) (*Equipment, error)
 	GetAllEquipments(context.Context, *GetAllRequest) (*GetAllResponse, error)
+	UpdateEquipment(context.Context, *Equipment) (*Equipment, error)
+	DeleteEquipment(context.Context, *GetRequest) (*Empty, error)
+	CreateEquipmentHistory(context.Context, *EquipmentHistory) (*EquipmentHistory, error)
+	GetEquipmentHistory(context.Context, *GetHistoryRequest) (*EquipmentHistory, error)
+	GetAllEquipmentHistories(context.Context, *GetAllHistoryRequest) (*GetAllHistoryResponse, error)
+	UpdateEquipmentHistory(context.Context, *EquipmentHistory) (*EquipmentHistory, error)
+	DeleteEquipmentHistory(context.Context, *GetRequest) (*Empty, error)
 	mustEmbedUnimplementedEquipmentServiceServer()
 }
 
@@ -93,6 +184,27 @@ func (UnimplementedEquipmentServiceServer) GetEquipment(context.Context, *GetReq
 }
 func (UnimplementedEquipmentServiceServer) GetAllEquipments(context.Context, *GetAllRequest) (*GetAllResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllEquipments not implemented")
+}
+func (UnimplementedEquipmentServiceServer) UpdateEquipment(context.Context, *Equipment) (*Equipment, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateEquipment not implemented")
+}
+func (UnimplementedEquipmentServiceServer) DeleteEquipment(context.Context, *GetRequest) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteEquipment not implemented")
+}
+func (UnimplementedEquipmentServiceServer) CreateEquipmentHistory(context.Context, *EquipmentHistory) (*EquipmentHistory, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateEquipmentHistory not implemented")
+}
+func (UnimplementedEquipmentServiceServer) GetEquipmentHistory(context.Context, *GetHistoryRequest) (*EquipmentHistory, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEquipmentHistory not implemented")
+}
+func (UnimplementedEquipmentServiceServer) GetAllEquipmentHistories(context.Context, *GetAllHistoryRequest) (*GetAllHistoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllEquipmentHistories not implemented")
+}
+func (UnimplementedEquipmentServiceServer) UpdateEquipmentHistory(context.Context, *EquipmentHistory) (*EquipmentHistory, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateEquipmentHistory not implemented")
+}
+func (UnimplementedEquipmentServiceServer) DeleteEquipmentHistory(context.Context, *GetRequest) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteEquipmentHistory not implemented")
 }
 func (UnimplementedEquipmentServiceServer) mustEmbedUnimplementedEquipmentServiceServer() {}
 
@@ -161,6 +273,132 @@ func _EquipmentService_GetAllEquipments_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EquipmentService_UpdateEquipment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Equipment)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EquipmentServiceServer).UpdateEquipment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EquipmentService_UpdateEquipment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EquipmentServiceServer).UpdateEquipment(ctx, req.(*Equipment))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EquipmentService_DeleteEquipment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EquipmentServiceServer).DeleteEquipment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EquipmentService_DeleteEquipment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EquipmentServiceServer).DeleteEquipment(ctx, req.(*GetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EquipmentService_CreateEquipmentHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EquipmentHistory)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EquipmentServiceServer).CreateEquipmentHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EquipmentService_CreateEquipmentHistory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EquipmentServiceServer).CreateEquipmentHistory(ctx, req.(*EquipmentHistory))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EquipmentService_GetEquipmentHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetHistoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EquipmentServiceServer).GetEquipmentHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EquipmentService_GetEquipmentHistory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EquipmentServiceServer).GetEquipmentHistory(ctx, req.(*GetHistoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EquipmentService_GetAllEquipmentHistories_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllHistoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EquipmentServiceServer).GetAllEquipmentHistories(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EquipmentService_GetAllEquipmentHistories_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EquipmentServiceServer).GetAllEquipmentHistories(ctx, req.(*GetAllHistoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EquipmentService_UpdateEquipmentHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EquipmentHistory)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EquipmentServiceServer).UpdateEquipmentHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EquipmentService_UpdateEquipmentHistory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EquipmentServiceServer).UpdateEquipmentHistory(ctx, req.(*EquipmentHistory))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EquipmentService_DeleteEquipmentHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EquipmentServiceServer).DeleteEquipmentHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EquipmentService_DeleteEquipmentHistory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EquipmentServiceServer).DeleteEquipmentHistory(ctx, req.(*GetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // EquipmentService_ServiceDesc is the grpc.ServiceDesc for EquipmentService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -180,7 +418,35 @@ var EquipmentService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "GetAllEquipments",
 			Handler:    _EquipmentService_GetAllEquipments_Handler,
 		},
+		{
+			MethodName: "UpdateEquipment",
+			Handler:    _EquipmentService_UpdateEquipment_Handler,
+		},
+		{
+			MethodName: "DeleteEquipment",
+			Handler:    _EquipmentService_DeleteEquipment_Handler,
+		},
+		{
+			MethodName: "CreateEquipmentHistory",
+			Handler:    _EquipmentService_CreateEquipmentHistory_Handler,
+		},
+		{
+			MethodName: "GetEquipmentHistory",
+			Handler:    _EquipmentService_GetEquipmentHistory_Handler,
+		},
+		{
+			MethodName: "GetAllEquipmentHistories",
+			Handler:    _EquipmentService_GetAllEquipmentHistories_Handler,
+		},
+		{
+			MethodName: "UpdateEquipmentHistory",
+			Handler:    _EquipmentService_UpdateEquipmentHistory_Handler,
+		},
+		{
+			MethodName: "DeleteEquipmentHistory",
+			Handler:    _EquipmentService_DeleteEquipmentHistory_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "protos/equipments.proto",
+	Metadata: "equipments.proto",
 }

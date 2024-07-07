@@ -30,10 +30,14 @@ migrate-file: generate-env ### create a new migration file
 .PHONY: migrate-file
 
 proto:
-	protoc \
-	--go_out=. \
-	--go-grpc_out=. \
-	protos/equipments.proto
+	protoc --go_out=. \
+  		--go-grpc_out=. \
+  		--openapiv2_out=. \
+  		--openapiv2_opt=logtostderr=true \
+  		--proto_path=protos \
+  		--proto_path=googleapis \
+  		equipments.proto
+
 
 give-permissions:
 	- chmod +x additional.sh
