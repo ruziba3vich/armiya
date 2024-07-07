@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+option go_package = "genprotos/";
+
+service FuelService {
+    // fuel_management 
+    rpc CreateFuel(CreateFuelRequest) returns (FuelResponse);
+    rpc GetFuel(GetFuelRequest) returns (FuelResponse);
+    rpc UpdateFuel(UpdateFuelRequest) returns (FuelResponse);
+    rpc DeleteFuel(DeleteFuelRequest) returns (Empty);
+    rpc ListFuels(Empty) returns (ListFuelsResponse);
+
+    // fuel_history 
+    rpc CreateFuelHistory(CreateFuelHistoryRequest) returns (FuelHistoryResponse);
+    rpc GetFuelHistory(GetFuelHistoryRequest) returns (FuelHistoryResponse);
+    rpc ListFuelHistoriesByFuelID(ListFuelHistoriesByFuelIDRequest) returns (ListFuelHistoriesByFuelIDResponse);
+    rpc ListFuelHistories(Empty) returns (ListFuelHistoriesResponse);
+}
+
+message Fuel {
+    string id = 1;
+    string name = 2;
+    string type = 3;
+    double quantity = 4;
+    string last_update = 5; // ISO 8601 format
+}
+
+message FuelHistory {
+    string id = 1;
+    string fuel_id = 2;
+    string action = 3;
+    string actior_id = 4;
+    string action_timestamp = 5; // ISO 8601 format
+}
+
+message CreateFuelRequest {
+    string name = 1;
+    string type = 2;
+    double quantity = 3;
+}
+
+message GetFuelRequest {
+    string id = 1;
+}
+
+message UpdateFuelRequest {
+    Fuel fuel = 1;
+}
+
+message DeleteFuelRequest {
+    string id = 1;
+}
+
+message ListFuelsResponse {
+    repeated Fuel fuels = 1;
+}
+
+message FuelResponse {
+    Fuel fuel = 1;
+}
+
+message CreateFuelHistoryRequest {
+    string fuel_id = 1;
+    string action = 2;
+    string actior_id = 3;
+}
+
+message GetFuelHistoryRequest {
+    string id = 1;
+}
+
+message ListFuelHistoriesByFuelIDRequest {
+    string fuel_id = 1;
+}
+
+message ListFuelHistoriesByFuelIDResponse {
+    repeated FuelHistory fuel_histories = 1;
+}
+
+message ListFuelHistoriesResponse{
+    repeated FuelHistory fuel_histories = 1;
+}
+
+message FuelHistoryResponse {
+    FuelHistory fuel_history = 1;
+}
+
+message Empty {}
