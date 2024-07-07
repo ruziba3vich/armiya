@@ -1,0 +1,3 @@
+[submodule "soldiers-service/soldiers/soldiers"]
+	path = soldiers-service/soldiers/soldiers
+	url = https://github.com/ruziba3vich/soldiers.git
