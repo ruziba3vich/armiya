@@ -19,17 +19,17 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	FuelService_CreateFuel_FullMethodName                = "/FuelService/CreateFuel"
-	FuelService_GetFuel_FullMethodName                   = "/FuelService/GetFuel"
-	FuelService_UpdateFuel_FullMethodName                = "/FuelService/UpdateFuel"
-	FuelService_DeleteFuel_FullMethodName                = "/FuelService/DeleteFuel"
-	FuelService_ListFuelByChoice_FullMethodName          = "/FuelService/ListFuelByChoice"
-	FuelService_ListFuels_FullMethodName                 = "/FuelService/ListFuels"
-	FuelService_CreateFuelHistory_FullMethodName         = "/FuelService/CreateFuelHistory"
-	FuelService_ListFuelHistoriesByFuelID_FullMethodName = "/FuelService/ListFuelHistoriesByFuelID"
-	FuelService_ListFuelHistoriesByChoice_FullMethodName = "/FuelService/ListFuelHistoriesByChoice"
-	FuelService_ListFuelHistoriesByDate_FullMethodName   = "/FuelService/ListFuelHistoriesByDate"
-	FuelService_ListFuelHistories_FullMethodName         = "/FuelService/ListFuelHistories"
+	FuelService_CreateFuel_FullMethodName               = "/FuelService/CreateFuel"
+	FuelService_GetFuel_FullMethodName                  = "/FuelService/GetFuel"
+	FuelService_UpdateFuel_FullMethodName               = "/FuelService/UpdateFuel"
+	FuelService_DeleteFuel_FullMethodName               = "/FuelService/DeleteFuel"
+	FuelService_GetFuelByChoice_FullMethodName          = "/FuelService/GetFuelByChoice"
+	FuelService_GetFuels_FullMethodName                 = "/FuelService/GetFuels"
+	FuelService_CreateFuelHistory_FullMethodName        = "/FuelService/CreateFuelHistory"
+	FuelService_GetFuelHistoriesByID_FullMethodName     = "/FuelService/GetFuelHistoriesByID"
+	FuelService_GetFuelHistoriesByChoice_FullMethodName = "/FuelService/GetFuelHistoriesByChoice"
+	FuelService_GetFuelHistoriesByDate_FullMethodName   = "/FuelService/GetFuelHistoriesByDate"
+	FuelService_GetFuelHistories_FullMethodName         = "/FuelService/GetFuelHistories"
 )
 
 // FuelServiceClient is the client API for FuelService service.
@@ -41,14 +41,14 @@ type FuelServiceClient interface {
 	GetFuel(ctx context.Context, in *GetFuelRequest, opts ...grpc.CallOption) (*FuelResponse, error)
 	UpdateFuel(ctx context.Context, in *UpdateFuelRequest, opts ...grpc.CallOption) (*FuelResponse, error)
 	DeleteFuel(ctx context.Context, in *DeleteFuelRequest, opts ...grpc.CallOption) (*Empty, error)
-	ListFuelByChoice(ctx context.Context, in *ListFuelsByChoiceRequest, opts ...grpc.CallOption) (*ListFuelsByChoiceResponse, error)
-	ListFuels(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListFuelsResponse, error)
+	GetFuelByChoice(ctx context.Context, in *GetFuelsByChoiceRequest, opts ...grpc.CallOption) (*GetFuelsByChoiceResponse, error)
+	GetFuels(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetFuelsResponse, error)
 	// fuel_history
 	CreateFuelHistory(ctx context.Context, in *CreateFuelHistoryRequest, opts ...grpc.CallOption) (*FuelHistoryResponse, error)
-	ListFuelHistoriesByFuelID(ctx context.Context, in *ListFuelHistoriesByFuelIDRequest, opts ...grpc.CallOption) (*ListFuelHistoriesByFuelIDResponse, error)
-	ListFuelHistoriesByChoice(ctx context.Context, in *ListFuelHistoriesByChoiceRequest, opts ...grpc.CallOption) (*ListFuelHistoriesByChoiceResponse, error)
-	ListFuelHistoriesByDate(ctx context.Context, in *ListFuelHistoriesByDateRequest, opts ...grpc.CallOption) (*ListFuelHistoriesByDateResponse, error)
-	ListFuelHistories(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListFuelHistoriesResponse, error)
+	GetFuelHistoriesByID(ctx context.Context, in *GetFuelHistoriesByIdRequest, opts ...grpc.CallOption) (*GetFuelHistoriesByIdResponse, error)
+	GetFuelHistoriesByChoice(ctx context.Context, in *GetFuelHistoriesByChoiceRequest, opts ...grpc.CallOption) (*GetFuelHistoriesByChoiceResponse, error)
+	GetFuelHistoriesByDate(ctx context.Context, in *GetFuelHistoriesByDateRequest, opts ...grpc.CallOption) (*GetFuelHistoriesByDateResponse, error)
+	GetFuelHistories(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetFuelHistoriesResponse, error)
 }
 
 type fuelServiceClient struct {
@@ -99,20 +99,20 @@ func (c *fuelServiceClient) DeleteFuel(ctx context.Context, in *DeleteFuelReques
 	return out, nil
 }
 
-func (c *fuelServiceClient) ListFuelByChoice(ctx context.Context, in *ListFuelsByChoiceRequest, opts ...grpc.CallOption) (*ListFuelsByChoiceResponse, error) {
+func (c *fuelServiceClient) GetFuelByChoice(ctx context.Context, in *GetFuelsByChoiceRequest, opts ...grpc.CallOption) (*GetFuelsByChoiceResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListFuelsByChoiceResponse)
-	err := c.cc.Invoke(ctx, FuelService_ListFuelByChoice_FullMethodName, in, out, cOpts...)
+	out := new(GetFuelsByChoiceResponse)
+	err := c.cc.Invoke(ctx, FuelService_GetFuelByChoice_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fuelServiceClient) ListFuels(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListFuelsResponse, error) {
+func (c *fuelServiceClient) GetFuels(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetFuelsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListFuelsResponse)
-	err := c.cc.Invoke(ctx, FuelService_ListFuels_FullMethodName, in, out, cOpts...)
+	out := new(GetFuelsResponse)
+	err := c.cc.Invoke(ctx, FuelService_GetFuels_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -129,40 +129,40 @@ func (c *fuelServiceClient) CreateFuelHistory(ctx context.Context, in *CreateFue
 	return out, nil
 }
 
-func (c *fuelServiceClient) ListFuelHistoriesByFuelID(ctx context.Context, in *ListFuelHistoriesByFuelIDRequest, opts ...grpc.CallOption) (*ListFuelHistoriesByFuelIDResponse, error) {
+func (c *fuelServiceClient) GetFuelHistoriesByID(ctx context.Context, in *GetFuelHistoriesByIdRequest, opts ...grpc.CallOption) (*GetFuelHistoriesByIdResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListFuelHistoriesByFuelIDResponse)
-	err := c.cc.Invoke(ctx, FuelService_ListFuelHistoriesByFuelID_FullMethodName, in, out, cOpts...)
+	out := new(GetFuelHistoriesByIdResponse)
+	err := c.cc.Invoke(ctx, FuelService_GetFuelHistoriesByID_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fuelServiceClient) ListFuelHistoriesByChoice(ctx context.Context, in *ListFuelHistoriesByChoiceRequest, opts ...grpc.CallOption) (*ListFuelHistoriesByChoiceResponse, error) {
+func (c *fuelServiceClient) GetFuelHistoriesByChoice(ctx context.Context, in *GetFuelHistoriesByChoiceRequest, opts ...grpc.CallOption) (*GetFuelHistoriesByChoiceResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListFuelHistoriesByChoiceResponse)
-	err := c.cc.Invoke(ctx, FuelService_ListFuelHistoriesByChoice_FullMethodName, in, out, cOpts...)
+	out := new(GetFuelHistoriesByChoiceResponse)
+	err := c.cc.Invoke(ctx, FuelService_GetFuelHistoriesByChoice_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fuelServiceClient) ListFuelHistoriesByDate(ctx context.Context, in *ListFuelHistoriesByDateRequest, opts ...grpc.CallOption) (*ListFuelHistoriesByDateResponse, error) {
+func (c *fuelServiceClient) GetFuelHistoriesByDate(ctx context.Context, in *GetFuelHistoriesByDateRequest, opts ...grpc.CallOption) (*GetFuelHistoriesByDateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListFuelHistoriesByDateResponse)
-	err := c.cc.Invoke(ctx, FuelService_ListFuelHistoriesByDate_FullMethodName, in, out, cOpts...)
+	out := new(GetFuelHistoriesByDateResponse)
+	err := c.cc.Invoke(ctx, FuelService_GetFuelHistoriesByDate_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fuelServiceClient) ListFuelHistories(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListFuelHistoriesResponse, error) {
+func (c *fuelServiceClient) GetFuelHistories(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetFuelHistoriesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListFuelHistoriesResponse)
-	err := c.cc.Invoke(ctx, FuelService_ListFuelHistories_FullMethodName, in, out, cOpts...)
+	out := new(GetFuelHistoriesResponse)
+	err := c.cc.Invoke(ctx, FuelService_GetFuelHistories_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -178,14 +178,14 @@ type FuelServiceServer interface {
 	GetFuel(context.Context, *GetFuelRequest) (*FuelResponse, error)
 	UpdateFuel(context.Context, *UpdateFuelRequest) (*FuelResponse, error)
 	DeleteFuel(context.Context, *DeleteFuelRequest) (*Empty, error)
-	ListFuelByChoice(context.Context, *ListFuelsByChoiceRequest) (*ListFuelsByChoiceResponse, error)
-	ListFuels(context.Context, *Empty) (*ListFuelsResponse, error)
+	GetFuelByChoice(context.Context, *GetFuelsByChoiceRequest) (*GetFuelsByChoiceResponse, error)
+	GetFuels(context.Context, *Empty) (*GetFuelsResponse, error)
 	// fuel_history
 	CreateFuelHistory(context.Context, *CreateFuelHistoryRequest) (*FuelHistoryResponse, error)
-	ListFuelHistoriesByFuelID(context.Context, *ListFuelHistoriesByFuelIDRequest) (*ListFuelHistoriesByFuelIDResponse, error)
-	ListFuelHistoriesByChoice(context.Context, *ListFuelHistoriesByChoiceRequest) (*ListFuelHistoriesByChoiceResponse, error)
-	ListFuelHistoriesByDate(context.Context, *ListFuelHistoriesByDateRequest) (*ListFuelHistoriesByDateResponse, error)
-	ListFuelHistories(context.Context, *Empty) (*ListFuelHistoriesResponse, error)
+	GetFuelHistoriesByID(context.Context, *GetFuelHistoriesByIdRequest) (*GetFuelHistoriesByIdResponse, error)
+	GetFuelHistoriesByChoice(context.Context, *GetFuelHistoriesByChoiceRequest) (*GetFuelHistoriesByChoiceResponse, error)
+	GetFuelHistoriesByDate(context.Context, *GetFuelHistoriesByDateRequest) (*GetFuelHistoriesByDateResponse, error)
+	GetFuelHistories(context.Context, *Empty) (*GetFuelHistoriesResponse, error)
 	mustEmbedUnimplementedFuelServiceServer()
 }
 
@@ -205,26 +205,26 @@ func (UnimplementedFuelServiceServer) UpdateFuel(context.Context, *UpdateFuelReq
 func (UnimplementedFuelServiceServer) DeleteFuel(context.Context, *DeleteFuelRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteFuel not implemented")
 }
-func (UnimplementedFuelServiceServer) ListFuelByChoice(context.Context, *ListFuelsByChoiceRequest) (*ListFuelsByChoiceResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListFuelByChoice not implemented")
+func (UnimplementedFuelServiceServer) GetFuelByChoice(context.Context, *GetFuelsByChoiceRequest) (*GetFuelsByChoiceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFuelByChoice not implemented")
 }
-func (UnimplementedFuelServiceServer) ListFuels(context.Context, *Empty) (*ListFuelsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListFuels not implemented")
+func (UnimplementedFuelServiceServer) GetFuels(context.Context, *Empty) (*GetFuelsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFuels not implemented")
 }
 func (UnimplementedFuelServiceServer) CreateFuelHistory(context.Context, *CreateFuelHistoryRequest) (*FuelHistoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateFuelHistory not implemented")
 }
-func (UnimplementedFuelServiceServer) ListFuelHistoriesByFuelID(context.Context, *ListFuelHistoriesByFuelIDRequest) (*ListFuelHistoriesByFuelIDResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListFuelHistoriesByFuelID not implemented")
+func (UnimplementedFuelServiceServer) GetFuelHistoriesByID(context.Context, *GetFuelHistoriesByIdRequest) (*GetFuelHistoriesByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFuelHistoriesByID not implemented")
 }
-func (UnimplementedFuelServiceServer) ListFuelHistoriesByChoice(context.Context, *ListFuelHistoriesByChoiceRequest) (*ListFuelHistoriesByChoiceResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListFuelHistoriesByChoice not implemented")
+func (UnimplementedFuelServiceServer) GetFuelHistoriesByChoice(context.Context, *GetFuelHistoriesByChoiceRequest) (*GetFuelHistoriesByChoiceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFuelHistoriesByChoice not implemented")
 }
-func (UnimplementedFuelServiceServer) ListFuelHistoriesByDate(context.Context, *ListFuelHistoriesByDateRequest) (*ListFuelHistoriesByDateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListFuelHistoriesByDate not implemented")
+func (UnimplementedFuelServiceServer) GetFuelHistoriesByDate(context.Context, *GetFuelHistoriesByDateRequest) (*GetFuelHistoriesByDateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFuelHistoriesByDate not implemented")
 }
-func (UnimplementedFuelServiceServer) ListFuelHistories(context.Context, *Empty) (*ListFuelHistoriesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListFuelHistories not implemented")
+func (UnimplementedFuelServiceServer) GetFuelHistories(context.Context, *Empty) (*GetFuelHistoriesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFuelHistories not implemented")
 }
 func (UnimplementedFuelServiceServer) mustEmbedUnimplementedFuelServiceServer() {}
 
@@ -311,38 +311,38 @@ func _FuelService_DeleteFuel_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FuelService_ListFuelByChoice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListFuelsByChoiceRequest)
+func _FuelService_GetFuelByChoice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFuelsByChoiceRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FuelServiceServer).ListFuelByChoice(ctx, in)
+		return srv.(FuelServiceServer).GetFuelByChoice(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: FuelService_ListFuelByChoice_FullMethodName,
+		FullMethod: FuelService_GetFuelByChoice_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FuelServiceServer).ListFuelByChoice(ctx, req.(*ListFuelsByChoiceRequest))
+		return srv.(FuelServiceServer).GetFuelByChoice(ctx, req.(*GetFuelsByChoiceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FuelService_ListFuels_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _FuelService_GetFuels_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FuelServiceServer).ListFuels(ctx, in)
+		return srv.(FuelServiceServer).GetFuels(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: FuelService_ListFuels_FullMethodName,
+		FullMethod: FuelService_GetFuels_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FuelServiceServer).ListFuels(ctx, req.(*Empty))
+		return srv.(FuelServiceServer).GetFuels(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -365,74 +365,74 @@ func _FuelService_CreateFuelHistory_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FuelService_ListFuelHistoriesByFuelID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListFuelHistoriesByFuelIDRequest)
+func _FuelService_GetFuelHistoriesByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFuelHistoriesByIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FuelServiceServer).ListFuelHistoriesByFuelID(ctx, in)
+		return srv.(FuelServiceServer).GetFuelHistoriesByID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: FuelService_ListFuelHistoriesByFuelID_FullMethodName,
+		FullMethod: FuelService_GetFuelHistoriesByID_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FuelServiceServer).ListFuelHistoriesByFuelID(ctx, req.(*ListFuelHistoriesByFuelIDRequest))
+		return srv.(FuelServiceServer).GetFuelHistoriesByID(ctx, req.(*GetFuelHistoriesByIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FuelService_ListFuelHistoriesByChoice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListFuelHistoriesByChoiceRequest)
+func _FuelService_GetFuelHistoriesByChoice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFuelHistoriesByChoiceRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FuelServiceServer).ListFuelHistoriesByChoice(ctx, in)
+		return srv.(FuelServiceServer).GetFuelHistoriesByChoice(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: FuelService_ListFuelHistoriesByChoice_FullMethodName,
+		FullMethod: FuelService_GetFuelHistoriesByChoice_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FuelServiceServer).ListFuelHistoriesByChoice(ctx, req.(*ListFuelHistoriesByChoiceRequest))
+		return srv.(FuelServiceServer).GetFuelHistoriesByChoice(ctx, req.(*GetFuelHistoriesByChoiceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FuelService_ListFuelHistoriesByDate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListFuelHistoriesByDateRequest)
+func _FuelService_GetFuelHistoriesByDate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFuelHistoriesByDateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FuelServiceServer).ListFuelHistoriesByDate(ctx, in)
+		return srv.(FuelServiceServer).GetFuelHistoriesByDate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: FuelService_ListFuelHistoriesByDate_FullMethodName,
+		FullMethod: FuelService_GetFuelHistoriesByDate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FuelServiceServer).ListFuelHistoriesByDate(ctx, req.(*ListFuelHistoriesByDateRequest))
+		return srv.(FuelServiceServer).GetFuelHistoriesByDate(ctx, req.(*GetFuelHistoriesByDateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FuelService_ListFuelHistories_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _FuelService_GetFuelHistories_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FuelServiceServer).ListFuelHistories(ctx, in)
+		return srv.(FuelServiceServer).GetFuelHistories(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: FuelService_ListFuelHistories_FullMethodName,
+		FullMethod: FuelService_GetFuelHistories_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FuelServiceServer).ListFuelHistories(ctx, req.(*Empty))
+		return srv.(FuelServiceServer).GetFuelHistories(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -461,32 +461,32 @@ var FuelService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _FuelService_DeleteFuel_Handler,
 		},
 		{
-			MethodName: "ListFuelByChoice",
-			Handler:    _FuelService_ListFuelByChoice_Handler,
+			MethodName: "GetFuelByChoice",
+			Handler:    _FuelService_GetFuelByChoice_Handler,
 		},
 		{
-			MethodName: "ListFuels",
-			Handler:    _FuelService_ListFuels_Handler,
+			MethodName: "GetFuels",
+			Handler:    _FuelService_GetFuels_Handler,
 		},
 		{
 			MethodName: "CreateFuelHistory",
 			Handler:    _FuelService_CreateFuelHistory_Handler,
 		},
 		{
-			MethodName: "ListFuelHistoriesByFuelID",
-			Handler:    _FuelService_ListFuelHistoriesByFuelID_Handler,
+			MethodName: "GetFuelHistoriesByID",
+			Handler:    _FuelService_GetFuelHistoriesByID_Handler,
 		},
 		{
-			MethodName: "ListFuelHistoriesByChoice",
-			Handler:    _FuelService_ListFuelHistoriesByChoice_Handler,
+			MethodName: "GetFuelHistoriesByChoice",
+			Handler:    _FuelService_GetFuelHistoriesByChoice_Handler,
 		},
 		{
-			MethodName: "ListFuelHistoriesByDate",
-			Handler:    _FuelService_ListFuelHistoriesByDate_Handler,
+			MethodName: "GetFuelHistoriesByDate",
+			Handler:    _FuelService_GetFuelHistoriesByDate_Handler,
 		},
 		{
-			MethodName: "ListFuelHistories",
-			Handler:    _FuelService_ListFuelHistories_Handler,
+			MethodName: "GetFuelHistories",
+			Handler:    _FuelService_GetFuelHistories_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

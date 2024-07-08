@@ -47,10 +47,10 @@ func (s *FuelSt) CreateFuelHistory(ctx context.Context, req *genprotos.CreateFue
 	return &genprotos.FuelHistoryResponse{FuelHistory: &response}, nil
 }
 
-func (s *FuelSt) ListFuelHistoriesByFuelID(ctx context.Context, req *genprotos.ListFuelHistoriesByFuelIDRequest) (*genprotos.ListFuelHistoriesByFuelIDResponse, error) {
+func (s *FuelSt) GetFuelHistoriesByID(ctx context.Context, req *genprotos.GetFuelHistoriesByIdRequest) (*genprotos.GetFuelHistoriesByIdResponse, error) {
 	query, args, err := s.queryBuilder.Select("id", "fuel_id", "action", "actior_id", "action_timestamp").
 		From("fuel_history").
-		Where(sq.Eq{"fuel_id": req.FuelId}).
+		Where(sq.Eq{"id": req.Id}).
 		ToSql()
 	if err != nil {
 		log.Println("Error generating SQL:", err)
@@ -84,10 +84,10 @@ func (s *FuelSt) ListFuelHistoriesByFuelID(ctx context.Context, req *genprotos.L
 		response = append(response, &fuel)
 	}
 
-	return &genprotos.ListFuelHistoriesByFuelIDResponse{FuelHistories: response}, nil
+	return &genprotos.GetFuelHistoriesByIdResponse{FuelHistories: response}, nil
 }
 
-func (s *FuelSt) ListFuelHistoriesByChoice(ctx context.Context, req *genprotos.ListFuelHistoriesByChoiceRequest) (*genprotos.ListFuelHistoriesByChoiceResponse, error) {
+func (s *FuelSt) GetFuelHistoriesByChoice(ctx context.Context, req *genprotos.GetFuelHistoriesByChoiceRequest) (*genprotos.GetFuelHistoriesByChoiceResponse, error) {
 	var choice string
 	if req.Choice == "type" {
 		choice = "type"
@@ -142,10 +142,10 @@ func (s *FuelSt) ListFuelHistoriesByChoice(ctx context.Context, req *genprotos.L
 		return nil, err
 	}
 
-	return &genprotos.ListFuelHistoriesByChoiceResponse{FuelHistories: response}, nil
+	return &genprotos.GetFuelHistoriesByChoiceResponse{FuelHistories: response}, nil
 }
 
-func (s *FuelSt) ListFuelHistoriesByDate(ctx context.Context, req *genprotos.ListFuelHistoriesByDateRequest) (*genprotos.ListFuelHistoriesByDateResponse, error) {
+func (s *FuelSt) GetFuelHistoriesByDate(ctx context.Context, req *genprotos.GetFuelHistoriesByDateRequest) (*genprotos.GetFuelHistoriesByDateResponse, error) {
 	if _, err := time.Parse("2006-01-02", req.Date); err != nil {
 		log.Println("Invalid date format:", err)
 		return nil, fmt.Errorf("invalid date format: %v", err)
@@ -190,10 +190,10 @@ func (s *FuelSt) ListFuelHistoriesByDate(ctx context.Context, req *genprotos.Lis
 		return nil, err
 	}
 
-	return &genprotos.ListFuelHistoriesByDateResponse{FuelHistories: response}, nil
+	return &genprotos.GetFuelHistoriesByDateResponse{FuelHistories: response}, nil
 }
 
-func (s *FuelSt) ListFuelHistories(ctx context.Context, req *genprotos.Empty) (*genprotos.ListFuelHistoriesResponse, error) {
+func (s *FuelSt) GetFuelHistories(ctx context.Context, req *genprotos.Empty) (*genprotos.GetFuelHistoriesResponse, error) {
 	query, _, err := s.queryBuilder.Select("id", "fuel_id", "action", "actior_id", "action_timestamp").
 		From("fuel_history").
 		ToSql()
@@ -229,5 +229,5 @@ func (s *FuelSt) ListFuelHistories(ctx context.Context, req *genprotos.Empty) (*
 		response = append(response, &fuel)
 	}
 
-	return &genprotos.ListFuelHistoriesResponse{FuelHistories: response}, nil
+	return &genprotos.GetFuelHistoriesResponse{FuelHistories: response}, nil
 }
