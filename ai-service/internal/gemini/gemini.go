@@ -293,6 +293,158 @@ MY REQUEST IS: ` + string(jsonRequest)
 	return &response, nil
 }
 
+func (a *AI) ProvideFirstAidInsturctions(ctx context.Context, request *genprotos.InjuryDetails) (*genprotos.FirstAidInstructions, error) {
+	apiKey := os.Getenv("API_KEY")
+	if apiKey == "" {
+		log.Fatal(errorAPI_KEY_NOT_FOUND)
+	}
+	fmt.Println(infoAPI_KEY_SUCCESS)
+
+	client, err := genai.NewClient(ctx, option.WithAPIKey(apiKey))
+	if err != nil {
+		log.Fatalln(errorCREATING_NEW_CLIENT, err)
+	}
+	defer client.Close()
+
+	model := client.GenerativeModel(modelName)
+
+	model.SafetySettings = []*genai.SafetySetting{
+		{
+			Category:  genai.HarmCategoryHarassment,
+			Threshold: genai.HarmBlockOnlyHigh,
+		},
+		{
+			Category:  genai.HarmCategoryDangerousContent,
+			Threshold: genai.HarmBlockOnlyHigh,
+		},
+	}
+
+	model.GenerationConfig = genai.GenerationConfig{
+		ResponseMIMEType: responseMIMEType,
+	}
+
+	jsonRequest, err := json.Marshal(request)
+	if err != nil {
+		return nil, err
+	}
+
+	prompt := `I will give you injury details about soldier. You must provide answer to how to give hima first aid in json format like this and do not copy meaning of this sample, just copy format of it
+{
+"Ensure Scene Safety": "Ensure the scene is safe before approaching the injured soldier.",
+"Wear Protective Gloves": "Put on gloves from the first aid kit to protect yourself and the soldier from infection.",
+}
+INJURED SOLDIER DETAILS: ` + string(jsonRequest)
+
+	timeoutCtx, cancel := context.WithTimeout(ctx, 40*time.Second)
+	defer cancel()
+	resp, err := model.GenerateContent(timeoutCtx, genai.Text(prompt))
+	if err != nil {
+		log.Fatal(errorGENERATING_CONTENT, err)
+	}
+
+	if len(resp.Candidates) == 0 || len(resp.Candidates[0].Content.Parts) == 0 {
+		return nil, errors.New(errorNO_CONTENT)
+	}
+
+	temp, err := json.Marshal(resp.Candidates[0].Content.Parts[0])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	answerJSON, err := strconv.Unquote(string(temp))
+	if err != nil {
+		return nil, err
+	}
+
+	var response genprotos.FirstAidInstructions
+
+	var insturctions map[string]string
+
+	if err = json.Unmarshal([]byte(answerJSON), &insturctions); err != nil {
+		return nil, err
+	}
+
+	response.Instructions = insturctions
+
+	return &response, nil
+}
+
+func (a *AI) FoodRecommendForActivity(ctx context.Context, request *genprotos.FoodRecommendRequest) (*genprotos.FoodRecommendResponse, error) {
+	apiKey := os.Getenv("API_KEY")
+	if apiKey == "" {
+		log.Fatal(errorAPI_KEY_NOT_FOUND)
+	}
+	fmt.Println(infoAPI_KEY_SUCCESS)
+
+	client, err := genai.NewClient(ctx, option.WithAPIKey(apiKey))
+	if err != nil {
+		log.Fatalln(errorCREATING_NEW_CLIENT, err)
+	}
+	defer client.Close()
+
+	model := client.GenerativeModel(modelName)
+
+	model.SafetySettings = []*genai.SafetySetting{
+		{
+			Category:  genai.HarmCategoryHarassment,
+			Threshold: genai.HarmBlockOnlyHigh,
+		},
+		{
+			Category:  genai.HarmCategoryDangerousContent,
+			Threshold: genai.HarmBlockOnlyHigh,
+		},
+	}
+
+	model.GenerationConfig = genai.GenerationConfig{
+		ResponseMIMEType: responseMIMEType,
+	}
+
+	jsonRequest, err := json.Marshal(request)
+	if err != nil {
+		return nil, err
+	}
+
+	prompt := `I will give you activity name that soldier does. You must provide answer what foods that soldier must eat in format like this and do not copy meaning of this sample, just copy format of it
+{
+"Food-name": "This food is a very good for soldiers that works with given activity",
+"Another food name": "Description about food and cons of food to soldier",
+}
+SOLDIER'S ACTIVITY IS: ` + string(jsonRequest)
+
+	timeoutCtx, cancel := context.WithTimeout(ctx, 40*time.Second)
+	defer cancel()
+	resp, err := model.GenerateContent(timeoutCtx, genai.Text(prompt))
+	if err != nil {
+		log.Fatal(errorGENERATING_CONTENT, err)
+	}
+
+	if len(resp.Candidates) == 0 || len(resp.Candidates[0].Content.Parts) == 0 {
+		return nil, errors.New(errorNO_CONTENT)
+	}
+
+	temp, err := json.Marshal(resp.Candidates[0].Content.Parts[0])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	answerJSON, err := strconv.Unquote(string(temp))
+	if err != nil {
+		return nil, err
+	}
+
+	var response genprotos.FoodRecommendResponse
+
+	var foods map[string]string
+
+	if err = json.Unmarshal([]byte(answerJSON), &foods); err != nil {
+		return nil, err
+	}
+
+	response.Foods = foods
+
+	return &response, nil
+}
+
 func convertMapToEquipmentAI(carbine map[string]interface{}) *genprotos.EquipmentAI {
 	equipmentAI := &genprotos.EquipmentAI{
 		Name:        carbine["name"].(string),

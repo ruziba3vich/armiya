@@ -22,6 +22,8 @@ const (
 	AIService_GetEquipmentInfo_FullMethodName            = "/AIService/GetEquipmentInfo"
 	AIService_AssessThreat_FullMethodName                = "/AIService/AssessThreat"
 	AIService_PredictEquipmentMaintenance_FullMethodName = "/AIService/PredictEquipmentMaintenance"
+	AIService_ProvideFirstAidInstructions_FullMethodName = "/AIService/ProvideFirstAidInstructions"
+	AIService_FoodRecommendByActivity_FullMethodName     = "/AIService/FoodRecommendByActivity"
 )
 
 // AIServiceClient is the client API for AIService service.
@@ -31,6 +33,8 @@ type AIServiceClient interface {
 	GetEquipmentInfo(ctx context.Context, in *EquipmentRequestAI, opts ...grpc.CallOption) (*EquipmentAI, error)
 	AssessThreat(ctx context.Context, in *ThreatData, opts ...grpc.CallOption) (*ThreatAssessmentResponse, error)
 	PredictEquipmentMaintenance(ctx context.Context, in *EquipmentData, opts ...grpc.CallOption) (*EquipmentMaintenanceResponse, error)
+	ProvideFirstAidInstructions(ctx context.Context, in *InjuryDetails, opts ...grpc.CallOption) (*FirstAidInstructions, error)
+	FoodRecommendByActivity(ctx context.Context, in *FoodRecommendRequest, opts ...grpc.CallOption) (*FoodRecommendResponse, error)
 }
 
 type aIServiceClient struct {
@@ -71,6 +75,26 @@ func (c *aIServiceClient) PredictEquipmentMaintenance(ctx context.Context, in *E
 	return out, nil
 }
 
+func (c *aIServiceClient) ProvideFirstAidInstructions(ctx context.Context, in *InjuryDetails, opts ...grpc.CallOption) (*FirstAidInstructions, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FirstAidInstructions)
+	err := c.cc.Invoke(ctx, AIService_ProvideFirstAidInstructions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *aIServiceClient) FoodRecommendByActivity(ctx context.Context, in *FoodRecommendRequest, opts ...grpc.CallOption) (*FoodRecommendResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FoodRecommendResponse)
+	err := c.cc.Invoke(ctx, AIService_FoodRecommendByActivity_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AIServiceServer is the server API for AIService service.
 // All implementations must embed UnimplementedAIServiceServer
 // for forward compatibility
@@ -78,6 +102,8 @@ type AIServiceServer interface {
 	GetEquipmentInfo(context.Context, *EquipmentRequestAI) (*EquipmentAI, error)
 	AssessThreat(context.Context, *ThreatData) (*ThreatAssessmentResponse, error)
 	PredictEquipmentMaintenance(context.Context, *EquipmentData) (*EquipmentMaintenanceResponse, error)
+	ProvideFirstAidInstructions(context.Context, *InjuryDetails) (*FirstAidInstructions, error)
+	FoodRecommendByActivity(context.Context, *FoodRecommendRequest) (*FoodRecommendResponse, error)
 	mustEmbedUnimplementedAIServiceServer()
 }
 
@@ -93,6 +119,12 @@ func (UnimplementedAIServiceServer) AssessThreat(context.Context, *ThreatData) (
 }
 func (UnimplementedAIServiceServer) PredictEquipmentMaintenance(context.Context, *EquipmentData) (*EquipmentMaintenanceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PredictEquipmentMaintenance not implemented")
+}
+func (UnimplementedAIServiceServer) ProvideFirstAidInstructions(context.Context, *InjuryDetails) (*FirstAidInstructions, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProvideFirstAidInstructions not implemented")
+}
+func (UnimplementedAIServiceServer) FoodRecommendByActivity(context.Context, *FoodRecommendRequest) (*FoodRecommendResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FoodRecommendByActivity not implemented")
 }
 func (UnimplementedAIServiceServer) mustEmbedUnimplementedAIServiceServer() {}
 
@@ -161,6 +193,42 @@ func _AIService_PredictEquipmentMaintenance_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AIService_ProvideFirstAidInstructions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InjuryDetails)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AIServiceServer).ProvideFirstAidInstructions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AIService_ProvideFirstAidInstructions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AIServiceServer).ProvideFirstAidInstructions(ctx, req.(*InjuryDetails))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AIService_FoodRecommendByActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FoodRecommendRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AIServiceServer).FoodRecommendByActivity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AIService_FoodRecommendByActivity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AIServiceServer).FoodRecommendByActivity(ctx, req.(*FoodRecommendRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AIService_ServiceDesc is the grpc.ServiceDesc for AIService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -179,6 +247,14 @@ var AIService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PredictEquipmentMaintenance",
 			Handler:    _AIService_PredictEquipmentMaintenance_Handler,
+		},
+		{
+			MethodName: "ProvideFirstAidInstructions",
+			Handler:    _AIService_ProvideFirstAidInstructions_Handler,
+		},
+		{
+			MethodName: "FoodRecommendByActivity",
+			Handler:    _AIService_FoodRecommendByActivity_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

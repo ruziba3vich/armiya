@@ -39,8 +39,26 @@ message EquipmentMaintenanceResponse {
   repeated string predicted_failures = 2;
 }
 
+message InjuryDetails {
+  string details = 1;
+}
+
+message FirstAidInstructions {
+  map<string, string> instructions = 1;
+}
+
+message FoodRecommendRequest {
+  string prompt = 1;
+}
+
+message FoodRecommendResponse {
+  map<string, string> foods = 1;
+}
+
 service AIService {
     rpc GetEquipmentInfo (EquipmentRequestAI) returns (EquipmentAI);
     rpc AssessThreat (ThreatData) returns (ThreatAssessmentResponse);
     rpc PredictEquipmentMaintenance (EquipmentData) returns (EquipmentMaintenanceResponse);
+    rpc ProvideFirstAidInstructions (InjuryDetails) returns (FirstAidInstructions);
+    rpc FoodRecommendByActivity(FoodRecommendRequest) returns (FoodRecommendResponse);
 }

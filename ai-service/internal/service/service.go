@@ -37,3 +37,13 @@ func (s *AIService) PredictEquipmentMaintenance(ctx context.Context, req *genpro
 	s.logger.Println("Predict Equipment  Maintenance")
 	return s.aiService.EquipmentMaintenance(ctx, req)
 }
+
+func (s *AIService) ProvideFirstAidInstructions(ctx context.Context, req *genprotos.InjuryDetails) (*genprotos.FirstAidInstructions, error) {
+	s.logger.Println("Provide first aid instrcutions  Maintenance")
+	return s.aiService.ProvideFirstAidInsturctions(ctx, req)
+}
+
+func (s *AIService) FoodRecommendByActivity(ctx context.Context, req *genprotos.FoodRecommendRequest) (*genprotos.FoodRecommendResponse, error) {
+	s.logger.Println("Food Recommend By Activity")
+	return s.aiService.FoodRecommendForActivity(ctx, req)
+}
