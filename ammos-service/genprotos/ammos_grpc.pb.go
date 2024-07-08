@@ -27,6 +27,7 @@ const (
 	AmmosService_CreateAmmoHistory_FullMethodName      = "/AmmosService/CreateAmmoHistory"
 	AmmosService_GetAmmoHistoryByChoice_FullMethodName = "/AmmosService/GetAmmoHistoryByChoice"
 	AmmosService_GetAmmoHistoryById_FullMethodName     = "/AmmosService/GetAmmoHistoryById"
+	AmmosService_GetAmmoHistoryByDate_FullMethodName   = "/AmmosService/GetAmmoHistoryByDate"
 	AmmosService_UpdateAmmoHistoryById_FullMethodName  = "/AmmosService/UpdateAmmoHistoryById"
 	AmmosService_DeleteAmmoHistoryById_FullMethodName  = "/AmmosService/DeleteAmmoHistoryById"
 	AmmosService_GetAmmoHistory_FullMethodName         = "/AmmosService/GetAmmoHistory"
@@ -46,6 +47,7 @@ type AmmosServiceClient interface {
 	CreateAmmoHistory(ctx context.Context, in *CreateAmmoHistoryRequest, opts ...grpc.CallOption) (*AmmoHistory, error)
 	GetAmmoHistoryByChoice(ctx context.Context, in *GetAmmoHistoryByChoiceRequest, opts ...grpc.CallOption) (*GetAmmoHistoryByChoiceResponse, error)
 	GetAmmoHistoryById(ctx context.Context, in *GetAmmoHistoryByIdRequest, opts ...grpc.CallOption) (*AmmoHistory, error)
+	GetAmmoHistoryByDate(ctx context.Context, in *GetAmmoHistoryByDateRequest, opts ...grpc.CallOption) (*GetAmmoHistoryByDateResponse, error)
 	UpdateAmmoHistoryById(ctx context.Context, in *UpdateAmmoHistoryByIdRequest, opts ...grpc.CallOption) (*AmmoHistory, error)
 	DeleteAmmoHistoryById(ctx context.Context, in *DeleteAmmoHistoryByIdRequest, opts ...grpc.CallOption) (*Empty, error)
 	GetAmmoHistory(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetAmmoHistoryResponse, error)
@@ -139,6 +141,16 @@ func (c *ammosServiceClient) GetAmmoHistoryById(ctx context.Context, in *GetAmmo
 	return out, nil
 }
 
+func (c *ammosServiceClient) GetAmmoHistoryByDate(ctx context.Context, in *GetAmmoHistoryByDateRequest, opts ...grpc.CallOption) (*GetAmmoHistoryByDateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAmmoHistoryByDateResponse)
+	err := c.cc.Invoke(ctx, AmmosService_GetAmmoHistoryByDate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *ammosServiceClient) UpdateAmmoHistoryById(ctx context.Context, in *UpdateAmmoHistoryByIdRequest, opts ...grpc.CallOption) (*AmmoHistory, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(AmmoHistory)
@@ -183,6 +195,7 @@ type AmmosServiceServer interface {
 	CreateAmmoHistory(context.Context, *CreateAmmoHistoryRequest) (*AmmoHistory, error)
 	GetAmmoHistoryByChoice(context.Context, *GetAmmoHistoryByChoiceRequest) (*GetAmmoHistoryByChoiceResponse, error)
 	GetAmmoHistoryById(context.Context, *GetAmmoHistoryByIdRequest) (*AmmoHistory, error)
+	GetAmmoHistoryByDate(context.Context, *GetAmmoHistoryByDateRequest) (*GetAmmoHistoryByDateResponse, error)
 	UpdateAmmoHistoryById(context.Context, *UpdateAmmoHistoryByIdRequest) (*AmmoHistory, error)
 	DeleteAmmoHistoryById(context.Context, *DeleteAmmoHistoryByIdRequest) (*Empty, error)
 	GetAmmoHistory(context.Context, *Empty) (*GetAmmoHistoryResponse, error)
@@ -216,6 +229,9 @@ func (UnimplementedAmmosServiceServer) GetAmmoHistoryByChoice(context.Context, *
 }
 func (UnimplementedAmmosServiceServer) GetAmmoHistoryById(context.Context, *GetAmmoHistoryByIdRequest) (*AmmoHistory, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAmmoHistoryById not implemented")
+}
+func (UnimplementedAmmosServiceServer) GetAmmoHistoryByDate(context.Context, *GetAmmoHistoryByDateRequest) (*GetAmmoHistoryByDateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAmmoHistoryByDate not implemented")
 }
 func (UnimplementedAmmosServiceServer) UpdateAmmoHistoryById(context.Context, *UpdateAmmoHistoryByIdRequest) (*AmmoHistory, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateAmmoHistoryById not implemented")
@@ -383,6 +399,24 @@ func _AmmosService_GetAmmoHistoryById_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AmmosService_GetAmmoHistoryByDate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAmmoHistoryByDateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AmmosServiceServer).GetAmmoHistoryByDate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AmmosService_GetAmmoHistoryByDate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AmmosServiceServer).GetAmmoHistoryByDate(ctx, req.(*GetAmmoHistoryByDateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AmmosService_UpdateAmmoHistoryById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateAmmoHistoryByIdRequest)
 	if err := dec(in); err != nil {
@@ -475,6 +509,10 @@ var AmmosService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAmmoHistoryById",
 			Handler:    _AmmosService_GetAmmoHistoryById_Handler,
+		},
+		{
+			MethodName: "GetAmmoHistoryByDate",
+			Handler:    _AmmosService_GetAmmoHistoryByDate_Handler,
 		},
 		{
 			MethodName: "UpdateAmmoHistoryById",

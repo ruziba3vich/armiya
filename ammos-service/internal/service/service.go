@@ -68,6 +68,11 @@ func (s *AmmosServiceSt) GetAmmoHistoryById(ctx context.Context, req *genprotos.
 	return s.service.GetAmmoHistoryById(ctx, req)
 }
 
+func (s *AmmosServiceSt) GetAmmoHistoryByDate(ctx context.Context, req *genprotos.GetAmmoHistoryByDateRequest) (*genprotos.GetAmmoHistoryByDateResponse, error) {
+	s.logger.Println("get ammo history by date request")
+	return s.service.GetAmmoHistoryByDate(ctx, req)
+}
+
 func (s *AmmosServiceSt) UpdateAmmoHistoryById(ctx context.Context, req *genprotos.UpdateAmmoHistoryByIdRequest) (*genprotos.AmmoHistory, error) {
 	s.logger.Println("update ammo history by id request")
 	return s.service.UpdateAmmoHistoryById(ctx, req)

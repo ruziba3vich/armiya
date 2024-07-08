@@ -135,6 +135,53 @@ func (s *AmmosSt) GetAmmoHistoryById(ctx context.Context, req *genprotos.GetAmmo
 	return &response, nil
 }
 
+func (s *AmmosSt) GetAmmoHistoryByDate(ctx context.Context, req *genprotos.GetAmmoHistoryByDateRequest) (*genprotos.GetAmmoHistoryByDateResponse, error) {
+	if _, err := time.Parse("2006-01-02", req.Date); err != nil {
+		log.Println("Invalid date format:", err)
+		return nil, fmt.Errorf("invalid date format: %v", err)
+	}
+
+	query, args, err := s.queryBuilder.Select("id", "ammo_id", "action", "actor_id", "action_timestamp").
+		From("ammo_history").
+		Where("DATE(action_timestamp) = ?", req.Date).
+		ToSql()
+
+	if err != nil {
+		log.Println("Error generating SQL:", err)
+		return nil, err
+	}
+	rows, err := s.db.QueryContext(ctx, query, args...)
+	if err != nil {
+		log.Println("Error querying rows:", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var response []*genprotos.AmmoHistory
+
+	for rows.Next() {
+		var ammoHistory genprotos.AmmoHistory
+		err = rows.Scan(
+			&ammoHistory.Id,
+			&ammoHistory.AmmoId,
+			&ammoHistory.Action,
+			&ammoHistory.ActorId,
+			&ammoHistory.ActionTimestamp,
+		)
+		if err != nil {
+			log.Println("Error scanning row:", err)
+			return nil, err
+		}
+		response = append(response, &ammoHistory)
+	}
+	if err = rows.Err(); err != nil {
+		log.Println("Error with rows:", err)
+		return nil, err
+	}
+
+	return &genprotos.GetAmmoHistoryByDateResponse{AmmoHistory: response}, nil
+}
+
 func (s *AmmosSt) UpdateAmmoHistoryById(ctx context.Context, req *genprotos.UpdateAmmoHistoryByIdRequest) (*genprotos.AmmoHistory, error) {
 	action_timestamp := time.Now()
 	query, args, err := s.queryBuilder.Update("ammo_history").

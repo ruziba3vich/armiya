@@ -14,6 +14,7 @@ service AmmosService {
     rpc CreateAmmoHistory(CreateAmmoHistoryRequest) returns (AmmoHistory);
     rpc GetAmmoHistoryByChoice(GetAmmoHistoryByChoiceRequest) returns (GetAmmoHistoryByChoiceResponse);
     rpc GetAmmoHistoryById(GetAmmoHistoryByIdRequest) returns (AmmoHistory);
+    rpc GetAmmoHistoryByDate(GetAmmoHistoryByDateRequest) returns (GetAmmoHistoryByDateResponse);
     rpc UpdateAmmoHistoryById(UpdateAmmoHistoryByIdRequest) returns (AmmoHistory);
     rpc DeleteAmmoHistoryById(DeleteAmmoHistoryByIdRequest) returns (Empty);
     rpc GetAmmoHistory(Empty) returns (GetAmmoHistoryResponse);
@@ -109,4 +110,12 @@ message UpdateAmmoHistoryByIdRequest{
 
 message GetAmmoHistoryByIdRequest{
     string id = 1;
+}
+
+message GetAmmoHistoryByDateRequest{
+    string date = 1;
+}
+
+message GetAmmoHistoryByDateResponse{
+    repeated AmmoHistory ammo_history = 1;
 }
