@@ -1,0 +1,34 @@
+syntax = "proto3";
+option go_package = "genprotos/";
+
+message EquipmentAI {
+    string name = 1;
+    string description = 2;
+    string ammo_type = 3;
+    repeated UsageTutorialStepAI usage_tutorial = 4;
+}
+
+message UsageTutorialStepAI {
+    string step_number = 1;
+    string step = 2;
+}
+
+message EquipmentRequestAI {
+    string prompt = 1;
+}
+
+message ThreatData {
+  string location = 1;
+  string time = 2;
+  string details = 3;
+}
+
+message ThreatAssessmentResponse {
+  string threat_level = 1;
+  repeated string recommended_actions = 2;
+}
+
+service AIService {
+    rpc GetEquipmentInfo (EquipmentRequestAI) returns (EquipmentAI);
+    rpc AssessThreat (ThreatData) returns (ThreatAssessmentResponse);
+}

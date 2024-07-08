@@ -1,0 +1,13 @@
+Give me tutorial for how to use this weapon or machine
+
+body:
+{
+    "name": "give me information about ak 47"
+}
+
+i will send this string to AI, it must give me response like:
+{
+    "type": "name". for example: "weapon": "ak47" or  "grenade": "hl"
+}
+
+

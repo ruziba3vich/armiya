@@ -1,0 +1,12 @@
+I will give you a one sentence. it will be about any military equipment like tanks, weapons or other things.
+you must write me answer like this.
+You must extract it from sentence and write answer in this json format:
+{
+    "name": "you will write extracted equipment name here",
+    "description": "you will write description about this equipment",
+    "ammo_type": "You will write which ammo type is used for this equipment. If this equipment dont uses ammo, write here "nil"",
+    "usage_tutorial": {
+        "1": "You will write here tutorial step by step",
+        "2": "You will write here titorial step by step"
+    }
+}
