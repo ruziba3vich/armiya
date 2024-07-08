@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+option go_package = "genprotos/";
+
+service AmmosService {
+    // Ammos
+    rpc CreateAmmo(CreateAmmoRequest) returns (AmmoResponse);
+    rpc GetAmmoByChoice(GetAmmoByChoiceRequest) returns (GetAmmoByChoiceResponse);
+    rpc UpdateAmmoById(UpdateAmmoByIdRequest) returns (AmmoResponse);
+    rpc DeleteAmmoById(DeleteAmmoByIdRequest) returns (Empty);
+    rpc GetAmmo(Empty) returns (GetAmmoResponse);
+
+    // Ammo History
+    rpc CreateAmmoHistory(CreateAmmoHistoryRequest) returns (AmmoHistory);
+    rpc GetAmmoHistoryByChoice(GetAmmoHistoryByChoiceRequest) returns (GetAmmoHistoryByChoiceResponse);
+    rpc GetAmmoHistoryById(GetAmmoHistoryByIdRequest) returns (AmmoHistory);
+    rpc GetAmmoHistoryByDate(GetAmmoHistoryByDateRequest) returns (GetAmmoHistoryByDateResponse);
+    rpc UpdateAmmoHistoryById(UpdateAmmoHistoryByIdRequest) returns (AmmoHistory);
+    rpc DeleteAmmoHistoryById(DeleteAmmoHistoryByIdRequest) returns (Empty);
+    rpc GetAmmoHistory(Empty) returns (GetAmmoHistoryResponse);
+}
+
+message Ammo {
+    string id = 1;
+    string name = 2;
+    string caliber = 3;
+    string description = 4;
+    string type = 5;
+    int64 quantity = 6;
+    string last_update = 7;
+}
+
+message AmmoHistory {
+    string id = 1;
+    string ammo_id = 2;
+    string action = 3;
+    string actor_id = 4;
+    string action_timestamp = 5;
+}
+
+message Empty {}
+
+message CreateAmmoRequest {
+    string name = 1;
+    string caliber = 2;
+    string description = 3;
+    string type = 4;
+    int64 quantity = 5;
+}
+
+message AmmoResponse {
+    Ammo ammo = 1;
+}
+
+message GetAmmoResponse {
+    repeated Ammo ammo = 1;
+}
+
+message GetAmmoByChoiceRequest{
+    string choice = 1;
+    string message = 2;
+}
+
+message UpdateAmmoByIdRequest{
+    string id = 1;
+    string name = 2;
+    string caliber = 3;
+    string description = 4;
+    string type = 5;
+    int64 quantity = 6;
+}
+
+message DeleteAmmoByIdRequest{
+    string id = 1;
+}
+
+message CreateAmmoHistoryRequest{
+    string ammo_id = 1;
+    string action = 2;
+    string actor_id = 3;
+}
+
+message DeleteAmmoHistoryByIdRequest{
+    string id = 1;
+}
+
+message GetAmmoHistoryResponse{
+    repeated AmmoHistory ammo_history = 1;
+}
+
+message GetAmmoHistoryByChoiceRequest{
+    string choice = 1;
+    string message = 2;
+}
+
+message GetAmmoHistoryByChoiceResponse{
+    repeated AmmoHistory ammo_history = 1;
+}
+
+message GetAmmoByChoiceResponse{
+    repeated Ammo ammo = 1;
+}
+
+message UpdateAmmoHistoryByIdRequest{
+    string id = 1;
+    string ammo_id = 2;
+    string action = 3;
+    string actor_id = 4;
+}
+
+message GetAmmoHistoryByIdRequest{
+    string id = 1;
+}
+
+message GetAmmoHistoryByDateRequest{
+    string date = 1;
+}
+
+message GetAmmoHistoryByDateResponse{
+    repeated AmmoHistory ammo_history = 1;
+}

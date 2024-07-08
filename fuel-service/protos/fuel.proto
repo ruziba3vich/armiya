@@ -8,15 +8,15 @@ service FuelService {
     rpc GetFuel(GetFuelRequest) returns (FuelResponse);
     rpc UpdateFuel(UpdateFuelRequest) returns (FuelResponse);
     rpc DeleteFuel(DeleteFuelRequest) returns (Empty);
-    rpc ListFuelByChoice(ListFuelsByChoiceRequest) returns (ListFuelsByChoiceResponse);
-    rpc ListFuels(Empty) returns (ListFuelsResponse);
+    rpc GetFuelByChoice(GetFuelsByChoiceRequest) returns (GetFuelsByChoiceResponse);
+    rpc GetFuels(Empty) returns (GetFuelsResponse);
 
     // fuel_history 
     rpc CreateFuelHistory(CreateFuelHistoryRequest) returns (FuelHistoryResponse);
-    rpc ListFuelHistoriesByFuelID(ListFuelHistoriesByFuelIDRequest) returns (ListFuelHistoriesByFuelIDResponse);
-    rpc ListFuelHistoriesByChoice(ListFuelHistoriesByChoiceRequest) returns (ListFuelHistoriesByChoiceResponse);
-    rpc ListFuelHistoriesByDate(ListFuelHistoriesByDateRequest) returns (ListFuelHistoriesByDateResponse);
-    rpc ListFuelHistories(Empty) returns (ListFuelHistoriesResponse);
+    rpc GetFuelHistoriesByID(GetFuelHistoriesByIdRequest) returns (GetFuelHistoriesByIdResponse);
+    rpc GetFuelHistoriesByChoice(GetFuelHistoriesByChoiceRequest) returns (GetFuelHistoriesByChoiceResponse);
+    rpc GetFuelHistoriesByDate(GetFuelHistoriesByDateRequest) returns (GetFuelHistoriesByDateResponse);
+    rpc GetFuelHistories(Empty) returns (GetFuelHistoriesResponse);
 }
 
 message Fuel {
@@ -46,23 +46,26 @@ message GetFuelRequest {
 }
 
 message UpdateFuelRequest {
-    Fuel fuel = 1;
+    string id = 1;
+    string name = 2;
+    string type = 3;
+    double quantity = 4;
 }
 
 message DeleteFuelRequest {
     string id = 1;
 }
 
-message ListFuelsByChoiceRequest {
+message GetFuelsByChoiceRequest {
     string choice = 1;
     string message = 2;
 }
 
-message ListFuelsByChoiceResponse {
+message GetFuelsByChoiceResponse {
     repeated Fuel fuels = 1;
 }
 
-message ListFuelsResponse {
+message GetFuelsResponse {
     repeated Fuel fuels = 1;
 }
 
@@ -76,32 +79,32 @@ message CreateFuelHistoryRequest {
     string actior_id = 3;
 }
 
-message ListFuelHistoriesByFuelIDRequest {
-    string fuel_id = 1;
+message GetFuelHistoriesByIdRequest {
+    string id = 1;
 }
 
-message ListFuelHistoriesByFuelIDResponse {
+message GetFuelHistoriesByIdResponse {
     repeated FuelHistory fuel_histories = 1;
 }
 
-message ListFuelHistoriesByChoiceRequest {
+message GetFuelHistoriesByChoiceRequest {
     string choice = 1;
     string message = 2;
 }
 
-message ListFuelHistoriesByChoiceResponse {
+message GetFuelHistoriesByChoiceResponse {
     repeated FuelHistory fuel_histories = 1;
 }
 
-message ListFuelHistoriesResponse{
+message GetFuelHistoriesResponse{
     repeated FuelHistory fuel_histories = 1;
 }
 
-message ListFuelHistoriesByDateRequest {
+message GetFuelHistoriesByDateRequest {
     string date = 1; 
 }
 
-message ListFuelHistoriesByDateResponse {
+message GetFuelHistoriesByDateResponse {
     repeated FuelHistory fuel_histories = 1;
 }
 

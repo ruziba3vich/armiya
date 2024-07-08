@@ -104,11 +104,11 @@ func (s *FuelSt) GetFuel(ctx context.Context, req *genprotos.GetFuelRequest) (*g
 
 func (s *FuelSt) UpdateFuel(ctx context.Context, req *genprotos.UpdateFuelRequest) (*genprotos.FuelResponse, error) {
 	query, args, err := s.queryBuilder.Update("fuel_management").
-		Set("name", req.Fuel.Name).
-		Set("type", req.Fuel.Type).
-		Set("quantity", req.Fuel.Quantity).
+		Set("name", req.Name).
+		Set("type", req.Type).
+		Set("quantity", req.Quantity).
 		Set("last_update", time.Now()).
-		Where(sq.Eq{"id": req.Fuel.Id}).
+		Where(sq.Eq{"id": req.Id}).
 		ToSql()
 	if err != nil {
 		log.Println("Error generating SQL:", err)
@@ -122,10 +122,10 @@ func (s *FuelSt) UpdateFuel(ctx context.Context, req *genprotos.UpdateFuelReques
 	}
 
 	response := genprotos.Fuel{
-		Id:         req.Fuel.Id,
-		Name:       req.Fuel.Name,
-		Type:       req.Fuel.Type,
-		Quantity:   req.Fuel.Quantity,
+		Id:         req.Id,
+		Name:       req.Name,
+		Type:       req.Type,
+		Quantity:   req.Quantity,
 		LastUpdate: time.Now().Format("2006-01-02 15:04:05"),
 	}
 
@@ -151,7 +151,7 @@ func (s *FuelSt) DeleteFuel(ctx context.Context, req *genprotos.DeleteFuelReques
 	return nil, nil
 }
 
-func (s *FuelSt) ListFuelByChoice(ctx context.Context, req *genprotos.ListFuelsByChoiceRequest) (*genprotos.ListFuelsByChoiceResponse, error) {
+func (s *FuelSt) GetFuelByChoice(ctx context.Context, req *genprotos.GetFuelsByChoiceRequest) (*genprotos.GetFuelsByChoiceResponse, error) {
 	var choice string
 	if req.Choice == "type" {
 		choice = "type"
@@ -196,10 +196,10 @@ func (s *FuelSt) ListFuelByChoice(ctx context.Context, req *genprotos.ListFuelsB
 		response = append(response, &fuel)
 	}
 
-	return &genprotos.ListFuelsByChoiceResponse{Fuels: response}, nil
+	return &genprotos.GetFuelsByChoiceResponse{Fuels: response}, nil
 }
 
-func (s *FuelSt) ListFuels(ctx context.Context, req *genprotos.Empty) (*genprotos.ListFuelsResponse, error) {
+func (s *FuelSt) GetFuels(ctx context.Context, req *genprotos.Empty) (*genprotos.GetFuelsResponse, error) {
 	query, _, err := s.queryBuilder.Select("id", "name", "type", "quantity", "last_update").
 		From("fuel_management").
 		ToSql()
@@ -235,5 +235,5 @@ func (s *FuelSt) ListFuels(ctx context.Context, req *genprotos.Empty) (*genproto
 		response = append(response, &fuel)
 	}
 
-	return &genprotos.ListFuelsResponse{Fuels: response}, nil
+	return &genprotos.GetFuelsResponse{Fuels: response}, nil
 }

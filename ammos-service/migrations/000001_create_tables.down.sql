@@ -1,0 +1,7 @@
+BEGIN;
+
+DROP TABLE IF EXISTS ammos_history;
+
+DROP TABLE IF EXISTS ammos;
+
+COMMIT;
