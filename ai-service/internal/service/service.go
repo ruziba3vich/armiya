@@ -24,6 +24,16 @@ func New(service gemini.AI) *AIService {
 }
 
 func (s *AIService) GetEquipmentInfo(ctx context.Context, req *genprotos.EquipmentRequestAI) (*genprotos.EquipmentAI, error) {
-	s.logger.Println("Create equipment request")
+	s.logger.Println("Get Equipment Info")
 	return s.aiService.GetEquipmentInfo(ctx, req)
+}
+
+func (s *AIService) AssessThreat(ctx context.Context, req *genprotos.ThreatData) (*genprotos.ThreatAssessmentResponse, error) {
+	s.logger.Println("Assess Threat request")
+	return s.aiService.AssessThreat(ctx, req)
+}
+
+func (s *AIService) PredictEquipmentMaintenance(ctx context.Context, req *genprotos.EquipmentData) (*genprotos.EquipmentMaintenanceResponse, error) {
+	s.logger.Println("Predict Equipment  Maintenance")
+	return s.aiService.EquipmentMaintenance(ctx, req)
 }

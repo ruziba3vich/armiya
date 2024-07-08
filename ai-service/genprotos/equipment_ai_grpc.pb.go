@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	AIService_GetEquipmentInfo_FullMethodName = "/AIService/GetEquipmentInfo"
-	AIService_AssessThreat_FullMethodName     = "/AIService/AssessThreat"
+	AIService_GetEquipmentInfo_FullMethodName            = "/AIService/GetEquipmentInfo"
+	AIService_AssessThreat_FullMethodName                = "/AIService/AssessThreat"
+	AIService_PredictEquipmentMaintenance_FullMethodName = "/AIService/PredictEquipmentMaintenance"
 )
 
 // AIServiceClient is the client API for AIService service.
@@ -29,6 +30,7 @@ const (
 type AIServiceClient interface {
 	GetEquipmentInfo(ctx context.Context, in *EquipmentRequestAI, opts ...grpc.CallOption) (*EquipmentAI, error)
 	AssessThreat(ctx context.Context, in *ThreatData, opts ...grpc.CallOption) (*ThreatAssessmentResponse, error)
+	PredictEquipmentMaintenance(ctx context.Context, in *EquipmentData, opts ...grpc.CallOption) (*EquipmentMaintenanceResponse, error)
 }
 
 type aIServiceClient struct {
@@ -59,12 +61,23 @@ func (c *aIServiceClient) AssessThreat(ctx context.Context, in *ThreatData, opts
 	return out, nil
 }
 
+func (c *aIServiceClient) PredictEquipmentMaintenance(ctx context.Context, in *EquipmentData, opts ...grpc.CallOption) (*EquipmentMaintenanceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EquipmentMaintenanceResponse)
+	err := c.cc.Invoke(ctx, AIService_PredictEquipmentMaintenance_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AIServiceServer is the server API for AIService service.
 // All implementations must embed UnimplementedAIServiceServer
 // for forward compatibility
 type AIServiceServer interface {
 	GetEquipmentInfo(context.Context, *EquipmentRequestAI) (*EquipmentAI, error)
 	AssessThreat(context.Context, *ThreatData) (*ThreatAssessmentResponse, error)
+	PredictEquipmentMaintenance(context.Context, *EquipmentData) (*EquipmentMaintenanceResponse, error)
 	mustEmbedUnimplementedAIServiceServer()
 }
 
@@ -77,6 +90,9 @@ func (UnimplementedAIServiceServer) GetEquipmentInfo(context.Context, *Equipment
 }
 func (UnimplementedAIServiceServer) AssessThreat(context.Context, *ThreatData) (*ThreatAssessmentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AssessThreat not implemented")
+}
+func (UnimplementedAIServiceServer) PredictEquipmentMaintenance(context.Context, *EquipmentData) (*EquipmentMaintenanceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PredictEquipmentMaintenance not implemented")
 }
 func (UnimplementedAIServiceServer) mustEmbedUnimplementedAIServiceServer() {}
 
@@ -127,6 +143,24 @@ func _AIService_AssessThreat_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AIService_PredictEquipmentMaintenance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EquipmentData)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AIServiceServer).PredictEquipmentMaintenance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AIService_PredictEquipmentMaintenance_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AIServiceServer).PredictEquipmentMaintenance(ctx, req.(*EquipmentData))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AIService_ServiceDesc is the grpc.ServiceDesc for AIService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -141,6 +175,10 @@ var AIService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AssessThreat",
 			Handler:    _AIService_AssessThreat_Handler,
+		},
+		{
+			MethodName: "PredictEquipmentMaintenance",
+			Handler:    _AIService_PredictEquipmentMaintenance_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

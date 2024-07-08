@@ -17,6 +17,16 @@ import (
 	"google.golang.org/api/option"
 )
 
+const (
+	responseMIMEType         = "application/json"
+	errorAPI_KEY_NOT_FOUND   = "API_KEY environment variable not set"
+	infoAPI_KEY_SUCCESS      = "API Key Loaded Successfully"
+	errorCREATING_NEW_CLIENT = "Error creating new client"
+	modelName                = "gemini-1.5-flash"
+	errorGENERATING_CONTENT  = "Error generating content: "
+	errorNO_CONTENT          = "no content generated"
+)
+
 type (
 	AI struct {
 		model *genai.GenerativeModel
@@ -33,22 +43,21 @@ func New(config *config.Config) (*AI, error) {
 	return &AI{
 		model: model,
 	}, nil
+
 }
 
 func (a *AI) GetEquipmentInfo(ctx context.Context, request *genprotos.EquipmentRequestAI) (*genprotos.EquipmentAI, error) {
 	apiKey := os.Getenv("API_KEY")
 	if apiKey == "" {
-		log.Fatal("API_KEY environment variable not set")
+		log.Fatal(errorAPI_KEY_NOT_FOUND)
 	}
-	fmt.Println("API Key Loaded Successfully")
+	fmt.Println(infoAPI_KEY_SUCCESS)
 
 	client, err := genai.NewClient(ctx, option.WithAPIKey(apiKey))
 	if err != nil {
-		log.Fatalf("Error creating client: %v", err)
+		log.Fatalln(errorCREATING_NEW_CLIENT, err)
 	}
 	defer client.Close()
-
-	modelName := "gemini-1.5-flash"
 
 	model := client.GenerativeModel(modelName)
 
@@ -64,7 +73,7 @@ func (a *AI) GetEquipmentInfo(ctx context.Context, request *genprotos.EquipmentR
 	}
 
 	model.GenerationConfig = genai.GenerationConfig{
-		ResponseMIMEType: "application/json",
+		ResponseMIMEType: responseMIMEType,
 	}
 	prompt := `I will give you a one sentence. it will be about any military equipment like tanks, weapons or other things.
 You must extract it from sentence and write answer in this json format. do not double unescape json please:
@@ -90,11 +99,11 @@ IN USAGE TUTORIAL, WRITE EACH STEP like {1: "go into tank or give weapon hands o
 	defer cancel()
 	resp, err := model.GenerateContent(timeoutCtx, genai.Text(prompt))
 	if err != nil {
-		log.Fatalf("Error generating content: %v", err)
+		log.Fatal(errorGENERATING_CONTENT, err)
 	}
 
 	if len(resp.Candidates) == 0 || len(resp.Candidates[0].Content.Parts) == 0 {
-		return nil, errors.New("no content generated")
+		return nil, errors.New(errorNO_CONTENT)
 	}
 
 	temp, err := json.Marshal(resp.Candidates[0].Content.Parts[0])
@@ -121,17 +130,15 @@ IN USAGE TUTORIAL, WRITE EACH STEP like {1: "go into tank or give weapon hands o
 func (a *AI) AssessThreat(ctx context.Context, request *genprotos.ThreatData) (*genprotos.ThreatAssessmentResponse, error) {
 	apiKey := os.Getenv("API_KEY")
 	if apiKey == "" {
-		log.Fatal("API_KEY environment variable not set")
+		log.Fatal(errorAPI_KEY_NOT_FOUND)
 	}
-	fmt.Println("API Key Loaded Successfully")
+	fmt.Println(infoAPI_KEY_SUCCESS)
 
 	client, err := genai.NewClient(ctx, option.WithAPIKey(apiKey))
 	if err != nil {
-		log.Fatalf("Error creating client: %v", err)
+		log.Fatalln(errorCREATING_NEW_CLIENT, err)
 	}
 	defer client.Close()
-
-	modelName := "gemini-1.5-flash"
 
 	model := client.GenerativeModel(modelName)
 
@@ -149,17 +156,37 @@ func (a *AI) AssessThreat(ctx context.Context, request *genprotos.ThreatData) (*
 	model.GenerationConfig = genai.GenerationConfig{
 		ResponseMIMEType: "application/json",
 	}
-	prompt := `I will give you request with this JSON format: `
+
+	jsonRequest, err := json.Marshal(request)
+	if err != nil {
+		return nil, err
+	}
+
+	prompt := `I will give you request like this: {
+  "threat_data": {
+    "location": "Sector 5",
+    "time": "2024-07-08T14:30:00Z",
+    "details": "Suspicious movement detected near the perimeter"
+  }
+}
+
+
+you must give me response using this JSON. recommended_actions must be atleast 7  response json example: {
+  "threat_level": "High",
+  "recommended_actions": ["Increase patrol in Sector 5", "Deploy drones for surveillance", "Alert response team"]
+}
+
+YOU ARE RESPONSIBLE FOR HUMAR LIFE. IF ANYONE DIES, YOU WILL DIE TOO. So give me clear instructions for saving humans being killed. dont just say monitor and contact someone. SAY ME GO AND FIX THIS action. FOR RESPONSE, DO NOT USE ANY MARKDOWN. GIVE ME RESPONSE AS JSON ` + string(jsonRequest)
 
 	timeoutCtx, cancel := context.WithTimeout(ctx, 40*time.Second)
 	defer cancel()
 	resp, err := model.GenerateContent(timeoutCtx, genai.Text(prompt))
 	if err != nil {
-		log.Fatalf("Error generating content: %v", err)
+		log.Fatal(errorGENERATING_CONTENT, err)
 	}
 
 	if len(resp.Candidates) == 0 || len(resp.Candidates[0].Content.Parts) == 0 {
-		return nil, errors.New("no content generated")
+		return nil, errors.New(errorNO_CONTENT)
 	}
 
 	temp, err := json.Marshal(resp.Candidates[0].Content.Parts[0])
@@ -167,21 +194,103 @@ func (a *AI) AssessThreat(ctx context.Context, request *genprotos.ThreatData) (*
 		log.Fatal(err)
 	}
 
-	unescapedData, err := strconv.Unquote(string(temp))
+	answerJSON, err := strconv.Unquote(string(temp))
 	if err != nil {
-		pp.Println(err)
-	}
-
-	var carbine map[string]interface{}
-	err = json.Unmarshal([]byte(unescapedData), &carbine)
-	if err != nil {
-		fmt.Println("Error unmarshalling JSON:", err)
 		return nil, err
 	}
 
-	equipmentAI := convertMapToEquipmentAI(carbine)
-	pp.Println("ERROR YOQ", equipmentAI)
-	return equipmentAI, nil
+	var response genprotos.ThreatAssessmentResponse
+
+	if err = json.Unmarshal([]byte(answerJSON), &response); err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}
+
+func (a *AI) EquipmentMaintenance(ctx context.Context, request *genprotos.EquipmentData) (*genprotos.EquipmentMaintenanceResponse, error) {
+	apiKey := os.Getenv("API_KEY")
+	if apiKey == "" {
+		log.Fatal(errorAPI_KEY_NOT_FOUND)
+	}
+	fmt.Println(infoAPI_KEY_SUCCESS)
+
+	client, err := genai.NewClient(ctx, option.WithAPIKey(apiKey))
+	if err != nil {
+		log.Fatalln(errorCREATING_NEW_CLIENT, err)
+	}
+	defer client.Close()
+
+	model := client.GenerativeModel(modelName)
+
+	model.SafetySettings = []*genai.SafetySetting{
+		{
+			Category:  genai.HarmCategoryHarassment,
+			Threshold: genai.HarmBlockOnlyHigh,
+		},
+		{
+			Category:  genai.HarmCategoryDangerousContent,
+			Threshold: genai.HarmBlockOnlyHigh,
+		},
+	}
+
+	model.GenerationConfig = genai.GenerationConfig{
+		ResponseMIMEType: responseMIMEType,
+	}
+
+	jsonRequest, err := json.Marshal(request)
+	if err != nil {
+		return nil, err
+	}
+
+	prompt := `predict me  maintenance needs for equipment IT CAN BE TANK, WEAPON or another type of army equipment and suggests schedules based on usage history and current condition. I WILL GIVE YOU SAMPLE REQUEST AND RESPONSE STRUCTRES BELOW
+
+SAMPLE Request STRUCTURE: {
+  "equipment_data": {
+    "id": "i will give equipment name here",
+    "usage_history": ["1000 hours operation", "Last serviced 3 months ago", "and another usage history data like these"],
+    "current_condition": "Operational or another condition. I will give you condition to you"
+  }
+}
+
+
+
+Expected Response STRUCTUE:{
+  "maintenance_schedule": ["Next service in 1 month", "Oil change in 2 weeks", or another maintenance schedule for ],
+  "predicted_failures": ["Possible engine overheating in 50 hours"]
+}
+  
+
+MY REQUEST IS: ` + string(jsonRequest)
+
+	timeoutCtx, cancel := context.WithTimeout(ctx, 40*time.Second)
+	defer cancel()
+	resp, err := model.GenerateContent(timeoutCtx, genai.Text(prompt))
+	if err != nil {
+		log.Fatal(errorGENERATING_CONTENT, err)
+	}
+
+	if len(resp.Candidates) == 0 || len(resp.Candidates[0].Content.Parts) == 0 {
+		return nil, errors.New(errorNO_CONTENT)
+	}
+
+	temp, err := json.Marshal(resp.Candidates[0].Content.Parts[0])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	answerJSON, err := strconv.Unquote(string(temp))
+	if err != nil {
+		return nil, err
+	}
+
+	var response genprotos.EquipmentMaintenanceResponse
+
+	if err = json.Unmarshal([]byte(answerJSON), &response); err != nil {
+		return nil, err
+	}
+
+	return &response, nil
 }
 
 func convertMapToEquipmentAI(carbine map[string]interface{}) *genprotos.EquipmentAI {
