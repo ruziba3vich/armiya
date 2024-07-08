@@ -12,6 +12,8 @@ import (
 	sq "github.com/Masterminds/squirrel"
 )
 
+// ammosHistory
+
 func (s *AmmosSt) CreateAmmoHistory(ctx context.Context, req *genprotos.CreateAmmoHistoryRequest) (*genprotos.AmmoHistory, error) {
 	id := uuid.New().String()
 	action_timestamp := time.Now()

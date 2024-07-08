@@ -192,7 +192,7 @@ func (s *AmmosSt) GetAmmo(ctx context.Context, req *genprotos.Empty) (*genprotos
 	defer rows.Close()
 
 	var response []*genprotos.Ammo
-	
+
 	for rows.Next() {
 		var ammo genprotos.Ammo
 		err = rows.Scan(
