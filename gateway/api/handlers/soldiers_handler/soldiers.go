@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+
 	"github.com/gin-gonic/gin"
 	"github.com/ruziba3vich/armiya-gateway/api/handlers/auth"
 	genprotos "github.com/ruziba3vich/armiya-gateway/genprotos/soldiers_genprotos"
@@ -16,6 +17,16 @@ type SoldiersHandler struct {
 	auth   *auth.TokenManager
 }
 
+// CreateSoldierHandler creates a new soldier.
+// @Summary Create a new soldier
+// @Tags Soldiers
+// @Accept json
+// @Produce json
+// @Param soldier body genprotos.CreateSoldierRequest true "Soldier"
+// @Success 200 {object} genprotos.CreateSoldierResponse
+// @Failure 400 {object} gin.H{"error": string}
+// @Failure 401 {object} gin.H{"error": string}
+// @Router /soldiers [post]
 func (s *SoldiersHandler) CreateSoldierHandler(c *gin.Context) {
 	s.logger.Println("REQUEST RECEIVED INTO CreateSoldierHandler")
 	var req genprotos.CreateSoldierRequest
@@ -40,6 +51,15 @@ func (s *SoldiersHandler) CreateSoldierHandler(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, gin.H{"response": response})
 }
 
+// UpdateSoldier updates an existing soldier.
+// @Summary Update an existing soldier
+// @Tags Soldiers
+// @Accept json
+// @Produce json
+// @Param soldier body genprotos.UpdateSoldierRequest true "Soldier"
+// @Success 200 {object} genprotos.UpdateOrGetSoldierResponse
+// @Failure 400 {object} gin.H{"error": string}
+// @Router /soldiers/{soldier_id} [put]
 func (s *SoldiersHandler) UpdateSoldier(c *gin.Context) {
 	s.logger.Println("REQUEST RECEIVED INTO UpdateSoldier")
 	var req genprotos.UpdateSoldierRequest
@@ -57,6 +77,14 @@ func (s *SoldiersHandler) UpdateSoldier(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, gin.H{"response": response})
 }
 
+// GetSoldierByIdHandler retrieves a soldier by ID.
+// @Summary Get a soldier by ID
+// @Tags Soldiers
+// @Produce json
+// @Param soldier_id path string true "Soldier ID"
+// @Success 200 {object} genprotos.UpdateOrGetSoldierResponse
+// @Failure 400 {object} gin.H{"error": string}
+// @Router /soldiers/{soldier_id} [get]
 func (s *SoldiersHandler) GetSoldierByIdHandler(c *gin.Context) {
 	s.logger.Println("REQUEST RECEIVED INTO GetSoldierByIdHandler")
 	var req genprotos.GetByIdRequest
@@ -70,6 +98,14 @@ func (s *SoldiersHandler) GetSoldierByIdHandler(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, gin.H{"response": response})
 }
 
+// GetSoldiersByNameHandler retrieves soldiers by name.
+// @Summary Get soldiers by name
+// @Tags Soldiers
+// @Produce json
+// @Param soldier_name path string true "Soldier Name"
+// @Success 200 {object} genprotos.GetSoldiersResponse
+// @Failure 400 {object} gin.H{"error": string}
+// @Router /soldiers/name/{soldier_name} [get]
 func (s *SoldiersHandler) GetSoldiersByNameHandler(c *gin.Context) {
 	s.logger.Println("REQUEST RECEIVED INTO GetSoldiersByNameHandler")
 	var req genprotos.GetByName
@@ -83,6 +119,14 @@ func (s *SoldiersHandler) GetSoldiersByNameHandler(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, gin.H{"response": response})
 }
 
+// GetSoldiersBySurnameHandler retrieves soldiers by surname.
+// @Summary Get soldiers by surname
+// @Tags Soldiers
+// @Produce json
+// @Param soldier_surname path string true "Soldier Surname"
+// @Success 200 {object} genprotos.GetSoldiersResponse
+// @Failure 400 {object} gin.H{"error": string}
+// @Router /soldiers/surname/{soldier_surname} [get]
 func (s *SoldiersHandler) GetSoldiersBySurnameHandler(c *gin.Context) {
 	s.logger.Println("REQUEST RECEIVED INTO GetSoldiersBySurname")
 	var req genprotos.GetBySurname
@@ -96,6 +140,14 @@ func (s *SoldiersHandler) GetSoldiersBySurnameHandler(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, gin.H{"response": response})
 }
 
+// GetSoldiersByGroupNameHandler retrieves soldiers by group name.
+// @Summary Get soldiers by group name
+// @Tags Soldiers
+// @Produce json
+// @Param group_name path string true "Group Name"
+// @Success 200 {object} genprotos.GetSoldiersResponse
+// @Failure 400 {object} gin.H{"error": string}
+// @Router /soldiers/group/{group_name} [get]
 func (s *SoldiersHandler) GetSoldiersByGroupNameHandler(c *gin.Context) {
 	s.logger.Println("REQUEST RECEIVED INTO GetSoldiersByGroupNameHandler")
 	var req genprotos.GetByGroupName
@@ -109,7 +161,17 @@ func (s *SoldiersHandler) GetSoldiersByGroupNameHandler(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, gin.H{"response": response})
 }
 
+// GetAllSoldiersHandler retrieves all soldiers with pagination.
+// @Summary Get all soldiers with pagination
+// @Tags Soldiers
+// @Produce json
+// @Param limit query int true "Limit"
+// @Param offset query int true "Offset"
+// @Success 200 {object} genprotos.GetSoldiersResponse
+// @Failure 400 {object} gin.H{"error": string}
+// @Router /soldiers [get]
 func (s *SoldiersHandler) GetAllSoldiersHandler(c *gin.Context) {
+	s.logger.Println("REQUEST RECEIVED INTO GetAllSoldiersHandler")
 	var req genprotos.GetAllSoldiersRequest
 	limit, err := strconv.Atoi(c.Query("limit"))
 	if err != nil {
@@ -134,6 +196,14 @@ func (s *SoldiersHandler) GetAllSoldiersHandler(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, gin.H{"response": response})
 }
 
+// GetSoldiersByAgeHandler retrieves soldiers by age.
+// @Summary Get soldiers by age
+// @Tags Soldiers
+// @Produce json
+// @Param age path int true "Soldier Age"
+// @Success 200 {object} genprotos.GetSoldiersResponse
+// @Failure 400 {object} gin.H{"error": string}
+// @Router /soldiers/age/{age} [get]
 func (s *SoldiersHandler) GetSoldiersByAgeHandler(c *gin.Context) {
 	s.logger.Println("REQUEST RECEIVED INTO GetSoldiersByAgeHandler")
 	age, err := strconv.Atoi(c.Param("age"))
@@ -153,6 +223,15 @@ func (s *SoldiersHandler) GetSoldiersByAgeHandler(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, gin.H{"response": response})
 }
 
+// DeleteSoldierHandler deletes a soldier by ID.
+// @Summary Delete a soldier by ID
+// @Tags Soldiers
+// @Produce json
+// @Param soldier_id path string true "Soldier ID"
+// @Success 200 {object} genprotos.DeleteSoldierResponse
+// @Failure 400 {object} gin.H{"error": string}
+// @Failure 401 {object} gin.H{"error": string}
+// @Router /soldiers/{soldier_id} [delete]
 func (s *SoldiersHandler) DeleteSoldierHandler(c *gin.Context) {
 	id, err := s.auth.ExtractIDFromToken(c.GetHeader("Authorization")[8:])
 	if err != nil {
@@ -172,6 +251,16 @@ func (s *SoldiersHandler) DeleteSoldierHandler(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, gin.H{"response": response})
 }
 
+// MoveSoldierFromGroupAToGroupBHandler moves a soldier from group A to group B.
+// @Summary Move a soldier from group A to group B
+// @Tags Soldiers
+// @Accept json
+// @Produce json
+// @Param soldier_id path string true "Soldier ID"
+// @Param moveSoldier body genprotos.MoveSoldierRequest true "Move Soldier"
+// @Success 200 {object} genprotos.MoveSoldierResponse
+// @Failure 400 {object} gin.H{"error": string}
+// @Router /soldiers/{soldier_id}/move [put]
 func (s *SoldiersHandler) MoveSoldierFromGroupAToGroupBHandler(c *gin.Context) {
 	var req genprotos.MoveSoldierRequest
 	soldierId := c.Param("soldier_id")
@@ -190,16 +279,3 @@ func (s *SoldiersHandler) MoveSoldierFromGroupAToGroupBHandler(c *gin.Context) {
 	}
 	c.IndentedJSON(http.StatusOK, gin.H{"response": response})
 }
-
-/*
-	// UpdateSoldier(ctx context.Context, in *UpdateSoldierRequest, opts ...grpc.CallOption) (*UpdateOrGetSoldierResponse, error)
-    // GetSoldierById(ctx context.Context, in *GetByIdRequest, opts ...grpc.CallOption) (*UpdateOrGetSoldierResponse, error)
-    // GetSoldiersByName(ctx context.Context, in *GetByName, opts ...grpc.CallOption) (*GetSoldiersResponse, error)
-    // GetSoldiersBySurname(ctx context.Context, in *GetBySurname, opts ...grpc.CallOption) (*GetSoldiersResponse, error)
-    // GetSoldiersByGroupName(ctx context.Context, in *GetByGroupName, opts ...grpc.CallOption) (*GetSoldiersResponse, error)
-    // GetAllSoldiers(ctx context.Context, in *GetAllSoldiersRequest, opts ...grpc.CallOption) (*GetSoldiersResponse, error)
-    // GetSoldiersByAge(ctx context.Context, in *GetByAgeRequest, opts ...grpc.CallOption) (*GetSoldiersResponse, error)
-    // DeleteSoldier(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteSoldierResponse, error)
-    MoveSoldierFromGroupAToGroupB(ctx context.Context, in *MoveSoldierRequest, opts ...grpc.CallOption) (*MoveSoldierResponse, error)
-}
-*/

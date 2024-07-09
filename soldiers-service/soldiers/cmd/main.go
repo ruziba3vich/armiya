@@ -9,8 +9,21 @@ import (
 	"github.com/ruziba3vich/armiya/soldies-service/internal/config"
 	"github.com/ruziba3vich/armiya/soldies-service/internal/service"
 	"github.com/ruziba3vich/armiya/soldies-service/internal/storage"
+
+	// swaggerFiles "github.com/swaggo/files"
+    // ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @title Soldiers API
+// @version 1.0
+// @description This is a sample server for managing soldiers.
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @host localhost:8080
+// @BasePath /api/v1
 func main() {
 	var config config.Config
 
