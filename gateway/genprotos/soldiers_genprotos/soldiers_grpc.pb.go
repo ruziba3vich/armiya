@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.4.0
 // - protoc             v5.27.2
-// source: soldiers_sub/soldiers.proto
+// source: protos/soldiers_protos/soldiers.proto
 
 package genprotos
 
@@ -144,7 +144,7 @@ var AdminService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "soldiers_sub/soldiers.proto",
+	Metadata: "protos/soldiers_protos/soldiers.proto",
 }
 
 const (
@@ -311,7 +311,7 @@ var GroupsService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "soldiers_sub/soldiers.proto",
+	Metadata: "protos/soldiers_protos/soldiers.proto",
 }
 
 const (
@@ -744,7 +744,7 @@ var SoldierService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "soldiers_sub/soldiers.proto",
+	Metadata: "protos/soldiers_protos/soldiers.proto",
 }
 
 const (
@@ -1063,7 +1063,7 @@ var AttendanceService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "soldiers_sub/soldiers.proto",
+	Metadata: "protos/soldiers_protos/soldiers.proto",
 }
 
 const (
@@ -1192,5 +1192,5 @@ var TrainingsService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "soldiers_sub/soldiers.proto",
+	Metadata: "protos/soldiers_protos/soldiers.proto",
 }

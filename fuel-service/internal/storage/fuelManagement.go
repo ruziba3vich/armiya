@@ -148,7 +148,7 @@ func (s *FuelSt) DeleteFuel(ctx context.Context, req *genprotos.DeleteFuelReques
 		return nil, err
 	}
 
-	return nil, nil
+	return &genprotos.Empty{}, nil
 }
 
 func (s *FuelSt) GetFuelByChoice(ctx context.Context, req *genprotos.GetFuelsByChoiceRequest) (*genprotos.GetFuelsByChoiceResponse, error) {
