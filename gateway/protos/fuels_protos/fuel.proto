@@ -14,6 +14,7 @@ service FuelService {
     // fuel_history 
     rpc CreateFuelHistory(CreateFuelHistoryRequest) returns (FuelHistoryResponse);
     rpc GetFuelHistoriesByID(GetFuelHistoriesByIdRequest) returns (GetFuelHistoriesByIdResponse);
+    rpc DeleteFuelHistoriesByID(DeleteFuelHistoriesByIdRequest) returns (Empty);
     rpc GetFuelHistoriesByChoice(GetFuelHistoriesByChoiceRequest) returns (GetFuelHistoriesByChoiceResponse);
     rpc GetFuelHistoriesByDate(GetFuelHistoriesByDateRequest) returns (GetFuelHistoriesByDateResponse);
     rpc GetFuelHistories(Empty) returns (GetFuelHistoriesResponse);
@@ -110,6 +111,10 @@ message GetFuelHistoriesByDateResponse {
 
 message FuelHistoryResponse {
     FuelHistory fuel_history = 1;
+}
+
+message DeleteFuelHistoriesByIdRequest{
+    string id = 1;
 }
 
 message Empty {}
