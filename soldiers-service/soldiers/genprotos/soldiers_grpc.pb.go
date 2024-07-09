@@ -748,318 +748,318 @@ var SoldierService_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	AttendanecService_CreateAttendance_FullMethodName            = "/sub_protos.AttendanecService/CreateAttendance"
-	AttendanecService_AddAmmosToSoldier_FullMethodName           = "/sub_protos.AttendanecService/AddAmmosToSoldier"
-	AttendanecService_GetAttendanceByDate_FullMethodName         = "/sub_protos.AttendanecService/GetAttendanceByDate"
-	AttendanecService_GetAllAttendanceBySoldierId_FullMethodName = "/sub_protos.AttendanecService/GetAllAttendanceBySoldierId"
-	AttendanecService_GetSoldierAttendanceByDate_FullMethodName  = "/sub_protos.AttendanecService/GetSoldierAttendanceByDate"
-	AttendanecService_UpdateAttendanceBySoldierId_FullMethodName = "/sub_protos.AttendanecService/UpdateAttendanceBySoldierId"
-	AttendanecService_DeleteAttendance_FullMethodName            = "/sub_protos.AttendanecService/DeleteAttendance"
+	AttendanceService_CreateAttendance_FullMethodName            = "/sub_protos.AttendanceService/CreateAttendance"
+	AttendanceService_AddAmmosToSoldier_FullMethodName           = "/sub_protos.AttendanceService/AddAmmosToSoldier"
+	AttendanceService_GetAttendanceByDate_FullMethodName         = "/sub_protos.AttendanceService/GetAttendanceByDate"
+	AttendanceService_GetAllAttendanceBySoldierId_FullMethodName = "/sub_protos.AttendanceService/GetAllAttendanceBySoldierId"
+	AttendanceService_GetSoldierAttendanceByDate_FullMethodName  = "/sub_protos.AttendanceService/GetSoldierAttendanceByDate"
+	AttendanceService_UpdateAttendanceBySoldierId_FullMethodName = "/sub_protos.AttendanceService/UpdateAttendanceBySoldierId"
+	AttendanceService_DeleteAttendance_FullMethodName            = "/sub_protos.AttendanceService/DeleteAttendance"
 )
 
-// AttendanecServiceClient is the client API for AttendanecService service.
+// AttendanceServiceClient is the client API for AttendanceService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type AttendanecServiceClient interface {
+type AttendanceServiceClient interface {
 	CreateAttendance(ctx context.Context, in *CreateAttendanceRequest, opts ...grpc.CallOption) (*Attendance, error)
 	AddAmmosToSoldier(ctx context.Context, in *AddAmmosRequest, opts ...grpc.CallOption) (*Attendance, error)
 	GetAttendanceByDate(ctx context.Context, in *GetAttendanceByDateRequest, opts ...grpc.CallOption) (*GetAttendanceResponse, error)
-	GetAllAttendanceBySoldierId(ctx context.Context, in *GetAttendanceByDateRequest, opts ...grpc.CallOption) (*GetAttendanceResponse, error)
+	GetAllAttendanceBySoldierId(ctx context.Context, in *GetAllAttendanceBySoldierIdRequest, opts ...grpc.CallOption) (*GetAttendanceResponse, error)
 	GetSoldierAttendanceByDate(ctx context.Context, in *GetSoldierAttendanceByDateRequest, opts ...grpc.CallOption) (*GetAttendanceResponse, error)
 	UpdateAttendanceBySoldierId(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*Attendance, error)
 	DeleteAttendance(ctx context.Context, in *DeleteAttendanceRequest, opts ...grpc.CallOption) (*Attendance, error)
 }
 
-type attendanecServiceClient struct {
+type attendanceServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewAttendanecServiceClient(cc grpc.ClientConnInterface) AttendanecServiceClient {
-	return &attendanecServiceClient{cc}
+func NewAttendanceServiceClient(cc grpc.ClientConnInterface) AttendanceServiceClient {
+	return &attendanceServiceClient{cc}
 }
 
-func (c *attendanecServiceClient) CreateAttendance(ctx context.Context, in *CreateAttendanceRequest, opts ...grpc.CallOption) (*Attendance, error) {
+func (c *attendanceServiceClient) CreateAttendance(ctx context.Context, in *CreateAttendanceRequest, opts ...grpc.CallOption) (*Attendance, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Attendance)
-	err := c.cc.Invoke(ctx, AttendanecService_CreateAttendance_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AttendanceService_CreateAttendance_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *attendanecServiceClient) AddAmmosToSoldier(ctx context.Context, in *AddAmmosRequest, opts ...grpc.CallOption) (*Attendance, error) {
+func (c *attendanceServiceClient) AddAmmosToSoldier(ctx context.Context, in *AddAmmosRequest, opts ...grpc.CallOption) (*Attendance, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Attendance)
-	err := c.cc.Invoke(ctx, AttendanecService_AddAmmosToSoldier_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AttendanceService_AddAmmosToSoldier_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *attendanecServiceClient) GetAttendanceByDate(ctx context.Context, in *GetAttendanceByDateRequest, opts ...grpc.CallOption) (*GetAttendanceResponse, error) {
+func (c *attendanceServiceClient) GetAttendanceByDate(ctx context.Context, in *GetAttendanceByDateRequest, opts ...grpc.CallOption) (*GetAttendanceResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetAttendanceResponse)
-	err := c.cc.Invoke(ctx, AttendanecService_GetAttendanceByDate_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AttendanceService_GetAttendanceByDate_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *attendanecServiceClient) GetAllAttendanceBySoldierId(ctx context.Context, in *GetAttendanceByDateRequest, opts ...grpc.CallOption) (*GetAttendanceResponse, error) {
+func (c *attendanceServiceClient) GetAllAttendanceBySoldierId(ctx context.Context, in *GetAllAttendanceBySoldierIdRequest, opts ...grpc.CallOption) (*GetAttendanceResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetAttendanceResponse)
-	err := c.cc.Invoke(ctx, AttendanecService_GetAllAttendanceBySoldierId_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AttendanceService_GetAllAttendanceBySoldierId_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *attendanecServiceClient) GetSoldierAttendanceByDate(ctx context.Context, in *GetSoldierAttendanceByDateRequest, opts ...grpc.CallOption) (*GetAttendanceResponse, error) {
+func (c *attendanceServiceClient) GetSoldierAttendanceByDate(ctx context.Context, in *GetSoldierAttendanceByDateRequest, opts ...grpc.CallOption) (*GetAttendanceResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetAttendanceResponse)
-	err := c.cc.Invoke(ctx, AttendanecService_GetSoldierAttendanceByDate_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AttendanceService_GetSoldierAttendanceByDate_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *attendanecServiceClient) UpdateAttendanceBySoldierId(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*Attendance, error) {
+func (c *attendanceServiceClient) UpdateAttendanceBySoldierId(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*Attendance, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Attendance)
-	err := c.cc.Invoke(ctx, AttendanecService_UpdateAttendanceBySoldierId_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AttendanceService_UpdateAttendanceBySoldierId_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *attendanecServiceClient) DeleteAttendance(ctx context.Context, in *DeleteAttendanceRequest, opts ...grpc.CallOption) (*Attendance, error) {
+func (c *attendanceServiceClient) DeleteAttendance(ctx context.Context, in *DeleteAttendanceRequest, opts ...grpc.CallOption) (*Attendance, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Attendance)
-	err := c.cc.Invoke(ctx, AttendanecService_DeleteAttendance_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AttendanceService_DeleteAttendance_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// AttendanecServiceServer is the server API for AttendanecService service.
-// All implementations must embed UnimplementedAttendanecServiceServer
+// AttendanceServiceServer is the server API for AttendanceService service.
+// All implementations must embed UnimplementedAttendanceServiceServer
 // for forward compatibility
-type AttendanecServiceServer interface {
+type AttendanceServiceServer interface {
 	CreateAttendance(context.Context, *CreateAttendanceRequest) (*Attendance, error)
 	AddAmmosToSoldier(context.Context, *AddAmmosRequest) (*Attendance, error)
 	GetAttendanceByDate(context.Context, *GetAttendanceByDateRequest) (*GetAttendanceResponse, error)
-	GetAllAttendanceBySoldierId(context.Context, *GetAttendanceByDateRequest) (*GetAttendanceResponse, error)
+	GetAllAttendanceBySoldierId(context.Context, *GetAllAttendanceBySoldierIdRequest) (*GetAttendanceResponse, error)
 	GetSoldierAttendanceByDate(context.Context, *GetSoldierAttendanceByDateRequest) (*GetAttendanceResponse, error)
 	UpdateAttendanceBySoldierId(context.Context, *UpdateRequest) (*Attendance, error)
 	DeleteAttendance(context.Context, *DeleteAttendanceRequest) (*Attendance, error)
-	mustEmbedUnimplementedAttendanecServiceServer()
+	mustEmbedUnimplementedAttendanceServiceServer()
 }
 
-// UnimplementedAttendanecServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedAttendanecServiceServer struct {
+// UnimplementedAttendanceServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedAttendanceServiceServer struct {
 }
 
-func (UnimplementedAttendanecServiceServer) CreateAttendance(context.Context, *CreateAttendanceRequest) (*Attendance, error) {
+func (UnimplementedAttendanceServiceServer) CreateAttendance(context.Context, *CreateAttendanceRequest) (*Attendance, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAttendance not implemented")
 }
-func (UnimplementedAttendanecServiceServer) AddAmmosToSoldier(context.Context, *AddAmmosRequest) (*Attendance, error) {
+func (UnimplementedAttendanceServiceServer) AddAmmosToSoldier(context.Context, *AddAmmosRequest) (*Attendance, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddAmmosToSoldier not implemented")
 }
-func (UnimplementedAttendanecServiceServer) GetAttendanceByDate(context.Context, *GetAttendanceByDateRequest) (*GetAttendanceResponse, error) {
+func (UnimplementedAttendanceServiceServer) GetAttendanceByDate(context.Context, *GetAttendanceByDateRequest) (*GetAttendanceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAttendanceByDate not implemented")
 }
-func (UnimplementedAttendanecServiceServer) GetAllAttendanceBySoldierId(context.Context, *GetAttendanceByDateRequest) (*GetAttendanceResponse, error) {
+func (UnimplementedAttendanceServiceServer) GetAllAttendanceBySoldierId(context.Context, *GetAllAttendanceBySoldierIdRequest) (*GetAttendanceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllAttendanceBySoldierId not implemented")
 }
-func (UnimplementedAttendanecServiceServer) GetSoldierAttendanceByDate(context.Context, *GetSoldierAttendanceByDateRequest) (*GetAttendanceResponse, error) {
+func (UnimplementedAttendanceServiceServer) GetSoldierAttendanceByDate(context.Context, *GetSoldierAttendanceByDateRequest) (*GetAttendanceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSoldierAttendanceByDate not implemented")
 }
-func (UnimplementedAttendanecServiceServer) UpdateAttendanceBySoldierId(context.Context, *UpdateRequest) (*Attendance, error) {
+func (UnimplementedAttendanceServiceServer) UpdateAttendanceBySoldierId(context.Context, *UpdateRequest) (*Attendance, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateAttendanceBySoldierId not implemented")
 }
-func (UnimplementedAttendanecServiceServer) DeleteAttendance(context.Context, *DeleteAttendanceRequest) (*Attendance, error) {
+func (UnimplementedAttendanceServiceServer) DeleteAttendance(context.Context, *DeleteAttendanceRequest) (*Attendance, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAttendance not implemented")
 }
-func (UnimplementedAttendanecServiceServer) mustEmbedUnimplementedAttendanecServiceServer() {}
+func (UnimplementedAttendanceServiceServer) mustEmbedUnimplementedAttendanceServiceServer() {}
 
-// UnsafeAttendanecServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to AttendanecServiceServer will
+// UnsafeAttendanceServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AttendanceServiceServer will
 // result in compilation errors.
-type UnsafeAttendanecServiceServer interface {
-	mustEmbedUnimplementedAttendanecServiceServer()
+type UnsafeAttendanceServiceServer interface {
+	mustEmbedUnimplementedAttendanceServiceServer()
 }
 
-func RegisterAttendanecServiceServer(s grpc.ServiceRegistrar, srv AttendanecServiceServer) {
-	s.RegisterService(&AttendanecService_ServiceDesc, srv)
+func RegisterAttendanceServiceServer(s grpc.ServiceRegistrar, srv AttendanceServiceServer) {
+	s.RegisterService(&AttendanceService_ServiceDesc, srv)
 }
 
-func _AttendanecService_CreateAttendance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AttendanceService_CreateAttendance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateAttendanceRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AttendanecServiceServer).CreateAttendance(ctx, in)
+		return srv.(AttendanceServiceServer).CreateAttendance(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AttendanecService_CreateAttendance_FullMethodName,
+		FullMethod: AttendanceService_CreateAttendance_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AttendanecServiceServer).CreateAttendance(ctx, req.(*CreateAttendanceRequest))
+		return srv.(AttendanceServiceServer).CreateAttendance(ctx, req.(*CreateAttendanceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AttendanecService_AddAmmosToSoldier_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AttendanceService_AddAmmosToSoldier_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AddAmmosRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AttendanecServiceServer).AddAmmosToSoldier(ctx, in)
+		return srv.(AttendanceServiceServer).AddAmmosToSoldier(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AttendanecService_AddAmmosToSoldier_FullMethodName,
+		FullMethod: AttendanceService_AddAmmosToSoldier_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AttendanecServiceServer).AddAmmosToSoldier(ctx, req.(*AddAmmosRequest))
+		return srv.(AttendanceServiceServer).AddAmmosToSoldier(ctx, req.(*AddAmmosRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AttendanecService_GetAttendanceByDate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AttendanceService_GetAttendanceByDate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetAttendanceByDateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AttendanecServiceServer).GetAttendanceByDate(ctx, in)
+		return srv.(AttendanceServiceServer).GetAttendanceByDate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AttendanecService_GetAttendanceByDate_FullMethodName,
+		FullMethod: AttendanceService_GetAttendanceByDate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AttendanecServiceServer).GetAttendanceByDate(ctx, req.(*GetAttendanceByDateRequest))
+		return srv.(AttendanceServiceServer).GetAttendanceByDate(ctx, req.(*GetAttendanceByDateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AttendanecService_GetAllAttendanceBySoldierId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetAttendanceByDateRequest)
+func _AttendanceService_GetAllAttendanceBySoldierId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllAttendanceBySoldierIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AttendanecServiceServer).GetAllAttendanceBySoldierId(ctx, in)
+		return srv.(AttendanceServiceServer).GetAllAttendanceBySoldierId(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AttendanecService_GetAllAttendanceBySoldierId_FullMethodName,
+		FullMethod: AttendanceService_GetAllAttendanceBySoldierId_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AttendanecServiceServer).GetAllAttendanceBySoldierId(ctx, req.(*GetAttendanceByDateRequest))
+		return srv.(AttendanceServiceServer).GetAllAttendanceBySoldierId(ctx, req.(*GetAllAttendanceBySoldierIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AttendanecService_GetSoldierAttendanceByDate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AttendanceService_GetSoldierAttendanceByDate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetSoldierAttendanceByDateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AttendanecServiceServer).GetSoldierAttendanceByDate(ctx, in)
+		return srv.(AttendanceServiceServer).GetSoldierAttendanceByDate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AttendanecService_GetSoldierAttendanceByDate_FullMethodName,
+		FullMethod: AttendanceService_GetSoldierAttendanceByDate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AttendanecServiceServer).GetSoldierAttendanceByDate(ctx, req.(*GetSoldierAttendanceByDateRequest))
+		return srv.(AttendanceServiceServer).GetSoldierAttendanceByDate(ctx, req.(*GetSoldierAttendanceByDateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AttendanecService_UpdateAttendanceBySoldierId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AttendanceService_UpdateAttendanceBySoldierId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AttendanecServiceServer).UpdateAttendanceBySoldierId(ctx, in)
+		return srv.(AttendanceServiceServer).UpdateAttendanceBySoldierId(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AttendanecService_UpdateAttendanceBySoldierId_FullMethodName,
+		FullMethod: AttendanceService_UpdateAttendanceBySoldierId_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AttendanecServiceServer).UpdateAttendanceBySoldierId(ctx, req.(*UpdateRequest))
+		return srv.(AttendanceServiceServer).UpdateAttendanceBySoldierId(ctx, req.(*UpdateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AttendanecService_DeleteAttendance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AttendanceService_DeleteAttendance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteAttendanceRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AttendanecServiceServer).DeleteAttendance(ctx, in)
+		return srv.(AttendanceServiceServer).DeleteAttendance(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AttendanecService_DeleteAttendance_FullMethodName,
+		FullMethod: AttendanceService_DeleteAttendance_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AttendanecServiceServer).DeleteAttendance(ctx, req.(*DeleteAttendanceRequest))
+		return srv.(AttendanceServiceServer).DeleteAttendance(ctx, req.(*DeleteAttendanceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// AttendanecService_ServiceDesc is the grpc.ServiceDesc for AttendanecService service.
+// AttendanceService_ServiceDesc is the grpc.ServiceDesc for AttendanceService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var AttendanecService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "sub_protos.AttendanecService",
-	HandlerType: (*AttendanecServiceServer)(nil),
+var AttendanceService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "sub_protos.AttendanceService",
+	HandlerType: (*AttendanceServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CreateAttendance",
-			Handler:    _AttendanecService_CreateAttendance_Handler,
+			Handler:    _AttendanceService_CreateAttendance_Handler,
 		},
 		{
 			MethodName: "AddAmmosToSoldier",
-			Handler:    _AttendanecService_AddAmmosToSoldier_Handler,
+			Handler:    _AttendanceService_AddAmmosToSoldier_Handler,
 		},
 		{
 			MethodName: "GetAttendanceByDate",
-			Handler:    _AttendanecService_GetAttendanceByDate_Handler,
+			Handler:    _AttendanceService_GetAttendanceByDate_Handler,
 		},
 		{
 			MethodName: "GetAllAttendanceBySoldierId",
-			Handler:    _AttendanecService_GetAllAttendanceBySoldierId_Handler,
+			Handler:    _AttendanceService_GetAllAttendanceBySoldierId_Handler,
 		},
 		{
 			MethodName: "GetSoldierAttendanceByDate",
-			Handler:    _AttendanecService_GetSoldierAttendanceByDate_Handler,
+			Handler:    _AttendanceService_GetSoldierAttendanceByDate_Handler,
 		},
 		{
 			MethodName: "UpdateAttendanceBySoldierId",
-			Handler:    _AttendanecService_UpdateAttendanceBySoldierId_Handler,
+			Handler:    _AttendanceService_UpdateAttendanceBySoldierId_Handler,
 		},
 		{
 			MethodName: "DeleteAttendance",
-			Handler:    _AttendanecService_DeleteAttendance_Handler,
+			Handler:    _AttendanceService_DeleteAttendance_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
