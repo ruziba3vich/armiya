@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+option go_package = "genprotos/";
+
+
+message Equipment {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string origin_country = 4;
+    string classification = 5;
+    int64 quantity = 6;
+    string main_armament = 7;
+    int64 crew_size = 8;
+    float weight_kg = 9;
+    float length_cm = 10;
+    float width_cm = 11;
+    float height_cm = 12;
+    int64 max_speed_km = 13;
+    float operational_range_km = 14;
+    int64 year_of_introduction = 15;
+    string created_at = 16;
+}
+
+message GetRequest {
+    string id = 1;
+}
+
+message GetAllRequest {
+    int64 page = 1;
+    int64 limit = 2;
+    string order_by = 3;
+}
+
+message GetAllResponse {
+    repeated Equipment equipments = 1;
+    int64 count = 2;
+}
+
+message GetHistoryRequest {
+    string id = 1;
+}
+
+
+message EquipmentHistory {
+    string id = 1;
+    string equipment_id = 2;
+    string action = 3;
+    string actor_id = 4;
+    string action_timestamp = 5;
+}
+
+message GetAllHistoryRequest {
+    string equipment_id = 1;
+}
+
+message GetAllHistoryResponse {
+    repeated EquipmentHistory histories = 1;
+    int64 count = 2;
+}
+
+message Empty {}
+
+service EquipmentService {
+    rpc CreateEquipment (Equipment) returns (Equipment);
+    rpc GetEquipment (GetRequest) returns (Equipment);
+    rpc GetAllEquipments (GetAllRequest) returns (GetAllResponse);
+    rpc UpdateEquipment(Equipment) returns (Equipment);
+    rpc DeleteEquipment(GetRequest) returns (Empty);
+    rpc CreateEquipmentHistory (EquipmentHistory) returns (EquipmentHistory);
+    rpc GetEquipmentHistory (GetHistoryRequest) returns (EquipmentHistory);
+    rpc GetAllEquipmentHistories (GetAllHistoryRequest) returns (GetAllHistoryResponse);
+    rpc UpdateEquipmentHistory(EquipmentHistory) returns (EquipmentHistory);
+    rpc DeleteEquipmentHistory(GetRequest) returns (Empty);
+}

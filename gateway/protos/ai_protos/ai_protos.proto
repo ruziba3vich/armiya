@@ -1,0 +1,64 @@
+syntax = "proto3";
+option go_package = "genprotos/";
+
+message EquipmentAI {
+    string name = 1;
+    string description = 2;
+    string ammo_type = 3;
+    repeated UsageTutorialStepAI usage_tutorial = 4;
+}
+
+message UsageTutorialStepAI {
+    string step_number = 1;
+    string step = 2;
+}
+
+message EquipmentRequestAI {
+    string prompt = 1;
+}
+
+message ThreatData {
+  string location = 1;
+  string time = 2;
+  string details = 3;
+}
+
+message ThreatAssessmentResponse {
+  string threat_level = 1;
+  repeated string recommended_actions = 2;
+}
+
+message EquipmentData {
+  string id = 1;
+  repeated string usage_history = 2;
+  string current_condition = 3;
+}
+
+message EquipmentMaintenanceResponse {
+  repeated string maintenance_schedule = 1;
+  repeated string predicted_failures = 2;
+}
+
+message InjuryDetails {
+  string details = 1;
+}
+
+message FirstAidInstructions {
+  map<string, string> instructions = 1;
+}
+
+message FoodRecommendRequest {
+  string prompt = 1;
+}
+
+message FoodRecommendResponse {
+  map<string, string> foods = 1;
+}
+
+service AIService {
+    rpc GetEquipmentInfo (EquipmentRequestAI) returns (EquipmentAI);
+    rpc AssessThreat (ThreatData) returns (ThreatAssessmentResponse);
+    rpc PredictEquipmentMaintenance (EquipmentData) returns (EquipmentMaintenanceResponse);
+    rpc ProvideFirstAidInstructions (InjuryDetails) returns (FirstAidInstructions);
+    rpc FoodRecommendByActivity(FoodRecommendRequest) returns (FoodRecommendResponse);
+}

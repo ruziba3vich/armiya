@@ -1,0 +1,307 @@
+syntax = "proto3";
+
+package sub_protos;
+
+option go_package = "./genprotos";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+// ------------------------------------------------- Admins service ------------------------------------------------------
+
+service AdminService {
+    rpc CreateTrainer(CreateTrainerRequest) returns (Objects);
+    rpc DeleteTrainer(DeleteTrainerRequest) returns (Objects);
+}
+
+// ------------------------------------------------- Groups service ------------------------------------------------------
+
+service GroupsService {
+    rpc CreateGroup(CreateGroupRequest) returns (Group);
+    rpc DeleteGroup(DeleteGroupRequest) returns (Group);
+    rpc DesignateTeacherToGroup(DesignateTrainerRequest) returns (DesignateTrainerResponse);
+}
+
+// ------------------------------------------------- Soldiers service ------------------------------------------------------
+
+service SoldierService {
+    rpc CreateSoldier(CreateSoldierRequest) returns (Soldier);
+    rpc UpdateSoldier(UpdateSoldierRequest) returns (UpdateOrGetSoldierResponse);
+    rpc GetSoldierById(GetByIdRequest) returns (UpdateOrGetSoldierResponse); // id, name, surname
+    rpc GetSoldiersByName(GetByName) returns (GetSoldiersResponse);
+    rpc GetSoldiersBySurname(GetBySurname) returns (GetSoldiersResponse);
+    rpc GetSoldiersByGroupName(GetByGroupName) returns (GetSoldiersResponse);
+    rpc GetAllSoldiers(GetAllSoldiersRequest) returns (GetSoldiersResponse);
+    rpc GetSoldiersByAge(GetByAgeRequest) returns (GetSoldiersResponse);
+    rpc DeleteSoldier(DeleteRequest) returns (DeleteSoldierResponse);
+    rpc MoveSoldierFromGroupAToGroupB(MoveSoldierRequest) returns (MoveSoldierResponse);
+}
+
+// ------------------------------------------------- Attendance service ------------------------------------------------------
+
+service AttendanceService {
+    rpc CreateAttendance(CreateAttendanceRequest) returns (Attendance);
+    rpc AddAmmosToSoldier(AddAmmosRequest) returns (Attendance);
+    rpc GetAttendanceByDate(GetAttendanceByDateRequest) returns (GetAttendanceResponse);
+    rpc GetAllAttendanceBySoldierId(GetAllAttendanceBySoldierIdRequest) returns (GetAttendanceResponse);
+    rpc GetSoldierAttendanceByDate(GetSoldierAttendanceByDateRequest) returns (GetAttendanceResponse);
+    rpc UpdateAttendanceBySoldierId(UpdateRequest) returns (Attendance);
+    rpc DeleteAttendance(DeleteAttendanceRequest) returns (Attendance);
+}
+
+// ------------------------------------------------- Trainings for soldiers -------------------------------------------------------
+
+service TrainingsService {
+    rpc CreateTraining(CreateTrainingRequest) returns (Training);
+    rpc UpdateTrainingDescription(UpdateTrainingDescriptionRequest) returns (Training);
+}
+
+// ------------------------------------------------- Messages for trainers -------------------------------------------------------
+
+message CreateTrainerRequest {
+    string trainer_name = 1;
+    string trainer_surname = 2;
+    string role = 3;
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp deleted_at = 5;
+    bool deleted = 6;
+    google.protobuf.StringValue deleted_by = 7;
+}
+
+message Objects {
+    string object_id = 1;
+    string object_name = 2;
+    string object_surname = 3;
+    string position = 4;
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp deleted_at = 6;
+    bool deleted = 7;
+    google.protobuf.StringValue deleted_by = 8;
+}
+
+message DeleteTrainerRequest {
+    string trainer_id = 1;
+    string dleted_by = 2;
+}
+
+// ------------------------------------------------- Messages for groups -------------------------------------------------------
+
+message CreateGroupRequest {
+    string group_name = 1;
+    string created_by = 2;
+    google.protobuf.Timestamp created_at = 3;
+}
+
+message Group {
+    string group_id = 1;
+    string group_name = 2;
+    google.protobuf.Timestamp created_at = 3;
+    string created_by = 4;
+    bool deleted = 5;
+    google.protobuf.Timestamp deleted_at = 6;
+    google.protobuf.StringValue deleted_by = 7;
+}
+
+message DeleteGroupRequest {
+    google.protobuf.Timestamp deleted_at = 1;
+    google.protobuf.StringValue deleted_by = 2;
+    string group_id = 3;
+}
+
+message DesignateTrainerRequest {
+    string trainer_id = 1;
+    string group_id = 2;
+}
+
+message DesignateTrainerResponse {
+    string designation_id = 1;
+    string trainer_id = 2;
+    string group_id = 3;
+}
+
+// ------------------------------------------------- Messages for soldiers -------------------------------------------------------
+
+message MoveSoldierRequest {
+    string soldier_id = 1;
+    string new_group_id = 2;
+}
+
+message MoveSoldierResponse {
+    string message = 1;
+    UpdateOrGetSoldierResponse soldier = 2;
+}
+
+message DeleteSoldierResponse {
+    string response = 1;
+}
+
+message UpdateTrainingDescriptionRequest {
+    string description = 1;
+    string updated_by = 2;
+}
+
+message Training {
+    string training_id = 1;
+    string training_name = 2;
+    google.protobuf.StringValue training_description = 3;
+    string created_by = 4;
+    string trainer_id = 5;
+}
+
+message CreateTrainingRequest {
+    string training_name = 1;
+    google.protobuf.StringValue training_description = 2;
+    string created_by = 3;
+    string trainer_name = 4;
+}
+
+// ------------------------------------------------- Messages for soldiers -------------------------------------------------------
+
+message GetByIdRequest {
+    string soldier_id = 1;
+}
+
+message GetByName {
+    string soldier_name = 1;
+}
+
+message GetBySurname {
+    string soldier_surname = 1;
+}
+
+message GetByGroupName {
+    string group_name = 1;
+}
+
+message DeleteRequest {
+    string soldier_id = 1;
+    string deleted_by = 2;
+}
+
+message GetByAgeRequest {
+    int32 soldier_age = 1;
+}
+
+message GetSoldiersResponse {
+    repeated UpdateOrGetSoldierResponse soldiers = 1;
+}
+
+message GetAllSoldiersRequest {
+    int32 offset_value = 1;
+    int32 limit = 2;
+}
+
+message UpdateSoldierRequest {
+    string soldier_id = 1;
+    string soldier_name = 2;
+    string soldier_surname = 3;
+    google.protobuf.Timestamp birth_date = 4;
+    google.protobuf.Timestamp join_date = 5;
+    google.protobuf.Timestamp leave_date = 6;
+    string group_id = 7;
+}
+
+message Soldier {
+    string soldier_id = 1;
+    string soldier_name = 2;
+    string soldier_surname = 3;
+    google.protobuf.Timestamp birth_date = 4;
+    google.protobuf.Timestamp join_date = 5;
+    google.protobuf.Timestamp leave_date = 6;
+    string group_id = 7;
+    bool completed = 8;
+    string created_by = 9;
+}
+
+message UpdateOrGetSoldierResponse {
+    string soldier_id = 1;
+    string soldier_name = 2;
+    string soldier_surname = 3;
+    google.protobuf.Timestamp birth_date = 4;
+    google.protobuf.Timestamp join_date = 5;
+    google.protobuf.Timestamp leave_date = 6;
+    string group_name = 7;
+    bool completed = 8;
+    string created_by = 9;
+    int32 soldier_age = 10;
+}
+
+message CreateSoldierRequest {
+    string soldier_name = 1;
+    string soldier_surname = 2;
+    google.protobuf.Timestamp birth_date = 3;
+    google.protobuf.Timestamp join_date = 4;
+    google.protobuf.Timestamp leave_date = 5;
+    string group_id = 6;
+    string created_by = 7;
+}
+
+// ------------------------------------------------- Attendance messages ------------------------------------------------------
+
+message Date {
+    int32 year = 1;
+    int32 month = 2;
+    int32 day = 3;
+}
+
+message GetSoldierAttendanceByDateRequest {
+    string soldier_id = 1;
+    Date date = 2;
+}
+
+message GetAllAttendanceBySoldierIdRequest {
+    string soldier_id = 1;
+}
+
+message GetAttendanceByDateRequest {
+    Date date = 1;
+}
+
+message GetAttendanceResponse {
+    repeated Attendance attendance = 1;
+}
+
+message UpdateRequest {
+    Attendance attendance = 1;
+    string updated_by = 2;
+}
+
+message DeleteAttendanceRequest {
+    string attendance_id = 1;
+    string trainer_id = 2;
+    string deleted_by = 3;
+}
+
+message Attendance {
+    string attendance_id = 1;
+    string soldier_id = 2;
+    string training_id = 3;
+    google.protobuf.Timestamp event_time = 4;
+    int32 used_ammos = 5;
+    string used_ammo_type = 6;
+    float used_fuels = 7;
+    bool deleted = 8;
+    google.protobuf.StringValue deleted_by = 9;
+    string created_by = 10;
+}
+
+message CreateAttendanceRequest {
+    string soldier_id = 1;
+    string training_id = 2;
+    google.protobuf.Timestamp event_time = 3;
+    int32 used_ammos = 4;
+    string used_ammo_type = 5;
+    float used_fuels = 6;
+    string created_by = 7;
+}
+
+message AddAmmosRequest {
+    string id = 1;
+    string soldier_id = 2;
+    string training_id = 3;
+    google.protobuf.Timestamp event_time = 4;
+    int32 ammos_to_add = 5;
+    string used_ammo_type = 6;
+    float fuels_to_add = 7;
+    string added_by = 8;
+}
