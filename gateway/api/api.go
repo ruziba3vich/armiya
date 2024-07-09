@@ -8,3 +8,4 @@ type API struct {
 func (a *API) RUN(cfg *config.Config) error {
 	return nil
 }
+
