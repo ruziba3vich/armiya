@@ -2,32 +2,32 @@ BEGIN;
 
 -- Mock data for ammos table
 INSERT INTO ammos (id, name, caliber, description, type, quantity, last_update) VALUES
-  (uuid_generate_v4(), 'Ammo A', '9mm', 'Standard 9mm ammo', 'Handgun', 1000, NOW()),
-  (uuid_generate_v4(), 'Ammo B', '5.56mm', 'Standard 5.56mm ammo', 'Rifle', 500, NOW()),
-  (uuid_generate_v4(), 'Ammo C', '7.62mm', 'Standard 7.62mm ammo', 'Rifle', 300, NOW()),
-  (uuid_generate_v4(), 'Ammo D', '12 Gauge', 'Standard 12 Gauge ammo', 'Shotgun', 200, NOW()),
-  (uuid_generate_v4(), 'Ammo E', '45 ACP', 'Standard 45 ACP ammo', 'Handgun', 800, NOW()),
-  (uuid_generate_v4(), 'Ammo F', '40 S&W', 'Standard 40 S&W ammo', 'Handgun', 600, NOW()),
-  (uuid_generate_v4(), 'Ammo G', '380 ACP', 'Standard 380 ACP ammo', 'Handgun', 700, NOW()),
-  (uuid_generate_v4(), 'Ammo H', '10mm', 'Standard 10mm ammo', 'Handgun', 400, NOW()),
-  (uuid_generate_v4(), 'Ammo I', '308 Win', 'Standard 308 Win ammo', 'Rifle', 250, NOW()),
-  (uuid_generate_v4(), 'Ammo J', '6.5 Creedmoor', 'Standard 6.5 Creedmoor ammo', 'Rifle', 150, NOW()),
-  (uuid_generate_v4(), 'Ammo K', '300 Win Mag', 'Standard 300 Win Mag ammo', 'Rifle', 100, NOW()),
-  (uuid_generate_v4(), 'Ammo L', '50 BMG', 'Standard 50 BMG ammo', 'Rifle', 50, NOW());
+('550e8400-e29b-41d4-a716-446655440000', 'Ammo A', '9mm', 'Standard 9mm ammo', 'Handgun', 1000, '2023-10-01 10:00:00'),
+('550e8400-e29b-41d4-a716-446655440001', 'Ammo B', '5.56mm', 'Standard 5.56mm ammo', 'Rifle', 500, '2023-10-01 10:01:00'),
+('550e8400-e29b-41d4-a716-446655440002', 'Ammo C', '7.62mm', 'Standard 7.62mm ammo', 'Rifle', 300, '2023-10-01 10:02:00'),
+('550e8400-e29b-41d4-a716-446655440003', 'Ammo D', '12 Gauge', 'Standard 12 Gauge ammo', 'Shotgun', 200, '2023-10-01 10:03:00'),
+('550e8400-e29b-41d4-a716-446655440004', 'Ammo E', '45 ACP', 'Standard 45 ACP ammo', 'Handgun', 800, '2023-10-01 10:04:00'),
+('550e8400-e29b-41d4-a716-446655440005', 'Ammo F', '40 S&W', 'Standard 40 S&W ammo', 'Handgun', 600, '2023-10-01 10:05:00'),
+('550e8400-e29b-41d4-a716-446655440006', 'Ammo G', '380 ACP', 'Standard 380 ACP ammo', 'Handgun', 700, '2023-10-01 10:06:00'),
+('550e8400-e29b-41d4-a716-446655440007', 'Ammo H', '10mm', 'Standard 10mm ammo', 'Handgun', 400, '2023-10-01 10:07:00'),
+('550e8400-e29b-41d4-a716-446655440008', 'Ammo I', '308 Win', 'Standard 308 Win ammo', 'Rifle', 250, '2023-10-01 10:08:00'),
+('550e8400-e29b-41d4-a716-446655440009', 'Ammo J', '6.5 Creedmoor', 'Standard 6.5 Creedmoor ammo', 'Rifle', 150, '2023-10-01 10:09:00'),
+('550e8400-e29b-41d4-a716-44665544000A', 'Ammo K', '300 Win Mag', 'Standard 300 Win Mag ammo', 'Rifle', 100, '2023-10-01 10:10:00'),
+('550e8400-e29b-41d4-a716-44665544000B', 'Ammo L', '50 BMG', 'Standard 50 BMG ammo', 'Rifle', 50, '2023-10-01 10:11:00');
 
--- Mock data for ammos_history table
+-- Mock data for ammo_history table
 INSERT INTO ammo_history (id, ammo_id, action, actor_id, action_timestamp) VALUES
-  (uuid_generate_v4(), (SELECT id FROM ammos WHERE name = 'Ammo A'), 'Created', uuid_generate_v4(), NOW()),
-  (uuid_generate_v4(), (SELECT id FROM ammos WHERE name = 'Ammo B'), 'Created', uuid_generate_v4(), NOW()),
-  (uuid_generate_v4(), (SELECT id FROM ammos WHERE name = 'Ammo C'), 'Created', uuid_generate_v4(), NOW()),
-  (uuid_generate_v4(), (SELECT id FROM ammos WHERE name = 'Ammo D'), 'Created', uuid_generate_v4(), NOW()),
-  (uuid_generate_v4(), (SELECT id FROM ammos WHERE name = 'Ammo E'), 'Created', uuid_generate_v4(), NOW()),
-  (uuid_generate_v4(), (SELECT id FROM ammos WHERE name = 'Ammo F'), 'Created', uuid_generate_v4(), NOW()),
-  (uuid_generate_v4(), (SELECT id FROM ammos WHERE name = 'Ammo G'), 'Created', uuid_generate_v4(), NOW()),
-  (uuid_generate_v4(), (SELECT id FROM ammos WHERE name = 'Ammo H'), 'Created', uuid_generate_v4(), NOW()),
-  (uuid_generate_v4(), (SELECT id FROM ammos WHERE name = 'Ammo I'), 'Created', uuid_generate_v4(), NOW()),
-  (uuid_generate_v4(), (SELECT id FROM ammos WHERE name = 'Ammo J'), 'Created', uuid_generate_v4(), NOW()),
-  (uuid_generate_v4(), (SELECT id FROM ammos WHERE name = 'Ammo K'), 'Created', uuid_generate_v4(), NOW()),
-  (uuid_generate_v4(), (SELECT id FROM ammos WHERE name = 'Ammo L'), 'Created', uuid_generate_v4(), NOW());
+('660e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440000', 'Created', '770e8400-e29b-41d4-a716-446655440000', '2023-10-01 10:00:00'),
+('660e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440001', 'Created', '770e8400-e29b-41d4-a716-446655440001', '2023-10-01 10:01:00'),
+('660e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440002', 'Created', '770e8400-e29b-41d4-a716-446655440002', '2023-10-01 10:02:00'),
+('660e8400-e29b-41d4-a716-446655440003', '550e8400-e29b-41d4-a716-446655440003', 'Created', '770e8400-e29b-41d4-a716-446655440003', '2023-10-01 10:03:00'),
+('660e8400-e29b-41d4-a716-446655440004', '550e8400-e29b-41d4-a716-446655440004', 'Created', '770e8400-e29b-41d4-a716-446655440004', '2023-10-01 10:04:00'),
+('660e8400-e29b-41d4-a716-446655440005', '550e8400-e29b-41d4-a716-446655440005', 'Created', '770e8400-e29b-41d4-a716-446655440005', '2023-10-01 10:05:00'),
+('660e8400-e29b-41d4-a716-446655440006', '550e8400-e29b-41d4-a716-446655440006', 'Created', '770e8400-e29b-41d4-a716-446655440006', '2023-10-01 10:06:00'),
+('660e8400-e29b-41d4-a716-446655440007', '550e8400-e29b-41d4-a716-446655440007', 'Created', '770e8400-e29b-41d4-a716-446655440007', '2023-10-01 10:07:00'),
+('660e8400-e29b-41d4-a716-446655440008', '550e8400-e29b-41d4-a716-446655440008', 'Created', '770e8400-e29b-41d4-a716-446655440008', '2023-10-01 10:08:00'),
+('660e8400-e29b-41d4-a716-446655440009', '550e8400-e29b-41d4-a716-446655440009', 'Created', '770e8400-e29b-41d4-a716-446655440009', '2023-10-01 10:09:00'),
+('660e8400-e29b-41d4-a716-44665544000A', '550e8400-e29b-41d4-a716-44665544000A', 'Created', '770e8400-e29b-41d4-a716-44665544000A', '2023-10-01 10:10:00'),
+('660e8400-e29b-41d4-a716-44665544000B', '550e8400-e29b-41d4-a716-44665544000B', 'Created', '770e8400-e29b-41d4-a716-44665544000B', '2023-10-01 10:11:00');
 
 COMMIT;
