@@ -1,11 +1,23 @@
 package api
 
-import "github.com/ruziba3vich/armiya-gateway/config"
+import (
+	"log"
+
+	"github.com/ruziba3vich/armiya-gateway/config"
+)
 
 type API struct {
+	logger *log.Logger
+	cfg    *config.Config
 }
 
-func (a *API) RUN(cfg *config.Config) error {
+func New(cfg *config.Config, logger *log.Logger) *API {
+	return &API{
+		logger: logger,
+		cfg:    cfg,
+	}
+}
+
+func (a *API) RUN() error {
 	return nil
 }
-
