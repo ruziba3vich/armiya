@@ -35,6 +35,10 @@ func main() {
 			storage.NewSoldiersStorage(db, logger, sqrl),
 			logger,
 		),
+		service.NewGroupsService(
+			storage.NewGroupsStorage(db, logger, sqrl),
+			logger,
+		),
 	)
 	logger.Fatal(api.RUN(&config))
 }

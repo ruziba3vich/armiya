@@ -12,15 +12,18 @@ import (
 type API struct {
 	adminService   genprotos.AdminServiceServer
 	soldierService genprotos.SoldierServiceServer
+	groupsService  genprotos.GroupsServiceServer
 }
 
 func New(
 	adminService genprotos.AdminServiceServer,
 	soldierService genprotos.SoldierServiceServer,
+	groupsService genprotos.GroupsServiceServer,
 ) *API {
 	return &API{
 		adminService:   adminService,
 		soldierService: soldierService,
+		groupsService:  groupsService,
 	}
 }
 
@@ -33,6 +36,7 @@ func (a *API) RUN(config *config.Config) error {
 	serverRegisterer := grpc.NewServer()
 	genprotos.RegisterAdminServiceServer(serverRegisterer, a.adminService)
 	genprotos.RegisterSoldierServiceServer(serverRegisterer, a.soldierService)
+	genprotos.RegisterGroupsServiceServer(serverRegisterer, a.groupsService)
 	log.Println("SERVER HAS STARTED ON PORT", config.Server.Port)
 	return serverRegisterer.Serve(listener)
 }
