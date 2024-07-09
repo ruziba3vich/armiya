@@ -27,8 +27,8 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AdminServiceClient interface {
-	CreateTrainer(ctx context.Context, in *CreateTrainerRequest, opts ...grpc.CallOption) (*Trainer, error)
-	DeleteTrainer(ctx context.Context, in *DeleteTrainerRequest, opts ...grpc.CallOption) (*Trainer, error)
+	CreateTrainer(ctx context.Context, in *CreateTrainerRequest, opts ...grpc.CallOption) (*Objects, error)
+	DeleteTrainer(ctx context.Context, in *DeleteTrainerRequest, opts ...grpc.CallOption) (*Objects, error)
 }
 
 type adminServiceClient struct {
@@ -39,9 +39,9 @@ func NewAdminServiceClient(cc grpc.ClientConnInterface) AdminServiceClient {
 	return &adminServiceClient{cc}
 }
 
-func (c *adminServiceClient) CreateTrainer(ctx context.Context, in *CreateTrainerRequest, opts ...grpc.CallOption) (*Trainer, error) {
+func (c *adminServiceClient) CreateTrainer(ctx context.Context, in *CreateTrainerRequest, opts ...grpc.CallOption) (*Objects, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Trainer)
+	out := new(Objects)
 	err := c.cc.Invoke(ctx, AdminService_CreateTrainer_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -49,9 +49,9 @@ func (c *adminServiceClient) CreateTrainer(ctx context.Context, in *CreateTraine
 	return out, nil
 }
 
-func (c *adminServiceClient) DeleteTrainer(ctx context.Context, in *DeleteTrainerRequest, opts ...grpc.CallOption) (*Trainer, error) {
+func (c *adminServiceClient) DeleteTrainer(ctx context.Context, in *DeleteTrainerRequest, opts ...grpc.CallOption) (*Objects, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Trainer)
+	out := new(Objects)
 	err := c.cc.Invoke(ctx, AdminService_DeleteTrainer_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -63,8 +63,8 @@ func (c *adminServiceClient) DeleteTrainer(ctx context.Context, in *DeleteTraine
 // All implementations must embed UnimplementedAdminServiceServer
 // for forward compatibility
 type AdminServiceServer interface {
-	CreateTrainer(context.Context, *CreateTrainerRequest) (*Trainer, error)
-	DeleteTrainer(context.Context, *DeleteTrainerRequest) (*Trainer, error)
+	CreateTrainer(context.Context, *CreateTrainerRequest) (*Objects, error)
+	DeleteTrainer(context.Context, *DeleteTrainerRequest) (*Objects, error)
 	mustEmbedUnimplementedAdminServiceServer()
 }
 
@@ -72,10 +72,10 @@ type AdminServiceServer interface {
 type UnimplementedAdminServiceServer struct {
 }
 
-func (UnimplementedAdminServiceServer) CreateTrainer(context.Context, *CreateTrainerRequest) (*Trainer, error) {
+func (UnimplementedAdminServiceServer) CreateTrainer(context.Context, *CreateTrainerRequest) (*Objects, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTrainer not implemented")
 }
-func (UnimplementedAdminServiceServer) DeleteTrainer(context.Context, *DeleteTrainerRequest) (*Trainer, error) {
+func (UnimplementedAdminServiceServer) DeleteTrainer(context.Context, *DeleteTrainerRequest) (*Objects, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteTrainer not implemented")
 }
 func (UnimplementedAdminServiceServer) mustEmbedUnimplementedAdminServiceServer() {}
@@ -315,13 +315,16 @@ var GroupsService_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	SoldierService_CreateSoldier_FullMethodName          = "/sub_protos.SoldierService/CreateSoldier"
-	SoldierService_UpdateSoldier_FullMethodName          = "/sub_protos.SoldierService/UpdateSoldier"
-	SoldierService_GetSoldierByField_FullMethodName      = "/sub_protos.SoldierService/GetSoldierByField"
-	SoldierService_GetSoldiersByGroupName_FullMethodName = "/sub_protos.SoldierService/GetSoldiersByGroupName"
-	SoldierService_GetAllSoldiers_FullMethodName         = "/sub_protos.SoldierService/GetAllSoldiers"
-	SoldierService_GetSoldierByAge_FullMethodName        = "/sub_protos.SoldierService/GetSoldierByAge"
-	SoldierService_DeleteSoldier_FullMethodName          = "/sub_protos.SoldierService/DeleteSoldier"
+	SoldierService_CreateSoldier_FullMethodName                 = "/sub_protos.SoldierService/CreateSoldier"
+	SoldierService_UpdateSoldier_FullMethodName                 = "/sub_protos.SoldierService/UpdateSoldier"
+	SoldierService_GetSoldierById_FullMethodName                = "/sub_protos.SoldierService/GetSoldierById"
+	SoldierService_GetSoldiersByName_FullMethodName             = "/sub_protos.SoldierService/GetSoldiersByName"
+	SoldierService_GetSoldiersBySurname_FullMethodName          = "/sub_protos.SoldierService/GetSoldiersBySurname"
+	SoldierService_GetSoldiersByGroupName_FullMethodName        = "/sub_protos.SoldierService/GetSoldiersByGroupName"
+	SoldierService_GetAllSoldiers_FullMethodName                = "/sub_protos.SoldierService/GetAllSoldiers"
+	SoldierService_GetSoldiersByAge_FullMethodName              = "/sub_protos.SoldierService/GetSoldiersByAge"
+	SoldierService_DeleteSoldier_FullMethodName                 = "/sub_protos.SoldierService/DeleteSoldier"
+	SoldierService_MoveSoldierFromGroupAToGroupB_FullMethodName = "/sub_protos.SoldierService/MoveSoldierFromGroupAToGroupB"
 )
 
 // SoldierServiceClient is the client API for SoldierService service.
@@ -329,12 +332,15 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SoldierServiceClient interface {
 	CreateSoldier(ctx context.Context, in *CreateSoldierRequest, opts ...grpc.CallOption) (*Soldier, error)
-	UpdateSoldier(ctx context.Context, in *Soldier, opts ...grpc.CallOption) (*Soldier, error)
-	GetSoldierByField(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Soldier, error)
-	GetSoldiersByGroupName(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetSoldiersResponse, error)
+	UpdateSoldier(ctx context.Context, in *UpdateSoldierRequest, opts ...grpc.CallOption) (*UpdateOrGetSoldierResponse, error)
+	GetSoldierById(ctx context.Context, in *GetByIdRequest, opts ...grpc.CallOption) (*UpdateOrGetSoldierResponse, error)
+	GetSoldiersByName(ctx context.Context, in *GetByName, opts ...grpc.CallOption) (*GetSoldiersResponse, error)
+	GetSoldiersBySurname(ctx context.Context, in *GetBySurname, opts ...grpc.CallOption) (*GetSoldiersResponse, error)
+	GetSoldiersByGroupName(ctx context.Context, in *GetByGroupName, opts ...grpc.CallOption) (*GetSoldiersResponse, error)
 	GetAllSoldiers(ctx context.Context, in *GetAllSoldiersRequest, opts ...grpc.CallOption) (*GetSoldiersResponse, error)
-	GetSoldierByAge(ctx context.Context, in *GetByAgeRequest, opts ...grpc.CallOption) (*GetSoldiersResponse, error)
-	DeleteSoldier(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*Soldier, error)
+	GetSoldiersByAge(ctx context.Context, in *GetByAgeRequest, opts ...grpc.CallOption) (*GetSoldiersResponse, error)
+	DeleteSoldier(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteSoldierResponse, error)
+	MoveSoldierFromGroupAToGroupB(ctx context.Context, in *MoveSoldierRequest, opts ...grpc.CallOption) (*MoveSoldierResponse, error)
 }
 
 type soldierServiceClient struct {
@@ -355,9 +361,9 @@ func (c *soldierServiceClient) CreateSoldier(ctx context.Context, in *CreateSold
 	return out, nil
 }
 
-func (c *soldierServiceClient) UpdateSoldier(ctx context.Context, in *Soldier, opts ...grpc.CallOption) (*Soldier, error) {
+func (c *soldierServiceClient) UpdateSoldier(ctx context.Context, in *UpdateSoldierRequest, opts ...grpc.CallOption) (*UpdateOrGetSoldierResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Soldier)
+	out := new(UpdateOrGetSoldierResponse)
 	err := c.cc.Invoke(ctx, SoldierService_UpdateSoldier_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -365,17 +371,37 @@ func (c *soldierServiceClient) UpdateSoldier(ctx context.Context, in *Soldier, o
 	return out, nil
 }
 
-func (c *soldierServiceClient) GetSoldierByField(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Soldier, error) {
+func (c *soldierServiceClient) GetSoldierById(ctx context.Context, in *GetByIdRequest, opts ...grpc.CallOption) (*UpdateOrGetSoldierResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Soldier)
-	err := c.cc.Invoke(ctx, SoldierService_GetSoldierByField_FullMethodName, in, out, cOpts...)
+	out := new(UpdateOrGetSoldierResponse)
+	err := c.cc.Invoke(ctx, SoldierService_GetSoldierById_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *soldierServiceClient) GetSoldiersByGroupName(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetSoldiersResponse, error) {
+func (c *soldierServiceClient) GetSoldiersByName(ctx context.Context, in *GetByName, opts ...grpc.CallOption) (*GetSoldiersResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSoldiersResponse)
+	err := c.cc.Invoke(ctx, SoldierService_GetSoldiersByName_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *soldierServiceClient) GetSoldiersBySurname(ctx context.Context, in *GetBySurname, opts ...grpc.CallOption) (*GetSoldiersResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSoldiersResponse)
+	err := c.cc.Invoke(ctx, SoldierService_GetSoldiersBySurname_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *soldierServiceClient) GetSoldiersByGroupName(ctx context.Context, in *GetByGroupName, opts ...grpc.CallOption) (*GetSoldiersResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetSoldiersResponse)
 	err := c.cc.Invoke(ctx, SoldierService_GetSoldiersByGroupName_FullMethodName, in, out, cOpts...)
@@ -395,20 +421,30 @@ func (c *soldierServiceClient) GetAllSoldiers(ctx context.Context, in *GetAllSol
 	return out, nil
 }
 
-func (c *soldierServiceClient) GetSoldierByAge(ctx context.Context, in *GetByAgeRequest, opts ...grpc.CallOption) (*GetSoldiersResponse, error) {
+func (c *soldierServiceClient) GetSoldiersByAge(ctx context.Context, in *GetByAgeRequest, opts ...grpc.CallOption) (*GetSoldiersResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetSoldiersResponse)
-	err := c.cc.Invoke(ctx, SoldierService_GetSoldierByAge_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, SoldierService_GetSoldiersByAge_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *soldierServiceClient) DeleteSoldier(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*Soldier, error) {
+func (c *soldierServiceClient) DeleteSoldier(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteSoldierResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Soldier)
+	out := new(DeleteSoldierResponse)
 	err := c.cc.Invoke(ctx, SoldierService_DeleteSoldier_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *soldierServiceClient) MoveSoldierFromGroupAToGroupB(ctx context.Context, in *MoveSoldierRequest, opts ...grpc.CallOption) (*MoveSoldierResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MoveSoldierResponse)
+	err := c.cc.Invoke(ctx, SoldierService_MoveSoldierFromGroupAToGroupB_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -420,12 +456,15 @@ func (c *soldierServiceClient) DeleteSoldier(ctx context.Context, in *DeleteRequ
 // for forward compatibility
 type SoldierServiceServer interface {
 	CreateSoldier(context.Context, *CreateSoldierRequest) (*Soldier, error)
-	UpdateSoldier(context.Context, *Soldier) (*Soldier, error)
-	GetSoldierByField(context.Context, *GetRequest) (*Soldier, error)
-	GetSoldiersByGroupName(context.Context, *GetRequest) (*GetSoldiersResponse, error)
+	UpdateSoldier(context.Context, *UpdateSoldierRequest) (*UpdateOrGetSoldierResponse, error)
+	GetSoldierById(context.Context, *GetByIdRequest) (*UpdateOrGetSoldierResponse, error)
+	GetSoldiersByName(context.Context, *GetByName) (*GetSoldiersResponse, error)
+	GetSoldiersBySurname(context.Context, *GetBySurname) (*GetSoldiersResponse, error)
+	GetSoldiersByGroupName(context.Context, *GetByGroupName) (*GetSoldiersResponse, error)
 	GetAllSoldiers(context.Context, *GetAllSoldiersRequest) (*GetSoldiersResponse, error)
-	GetSoldierByAge(context.Context, *GetByAgeRequest) (*GetSoldiersResponse, error)
-	DeleteSoldier(context.Context, *DeleteRequest) (*Soldier, error)
+	GetSoldiersByAge(context.Context, *GetByAgeRequest) (*GetSoldiersResponse, error)
+	DeleteSoldier(context.Context, *DeleteRequest) (*DeleteSoldierResponse, error)
+	MoveSoldierFromGroupAToGroupB(context.Context, *MoveSoldierRequest) (*MoveSoldierResponse, error)
 	mustEmbedUnimplementedSoldierServiceServer()
 }
 
@@ -436,23 +475,32 @@ type UnimplementedSoldierServiceServer struct {
 func (UnimplementedSoldierServiceServer) CreateSoldier(context.Context, *CreateSoldierRequest) (*Soldier, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSoldier not implemented")
 }
-func (UnimplementedSoldierServiceServer) UpdateSoldier(context.Context, *Soldier) (*Soldier, error) {
+func (UnimplementedSoldierServiceServer) UpdateSoldier(context.Context, *UpdateSoldierRequest) (*UpdateOrGetSoldierResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateSoldier not implemented")
 }
-func (UnimplementedSoldierServiceServer) GetSoldierByField(context.Context, *GetRequest) (*Soldier, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetSoldierByField not implemented")
+func (UnimplementedSoldierServiceServer) GetSoldierById(context.Context, *GetByIdRequest) (*UpdateOrGetSoldierResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSoldierById not implemented")
 }
-func (UnimplementedSoldierServiceServer) GetSoldiersByGroupName(context.Context, *GetRequest) (*GetSoldiersResponse, error) {
+func (UnimplementedSoldierServiceServer) GetSoldiersByName(context.Context, *GetByName) (*GetSoldiersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSoldiersByName not implemented")
+}
+func (UnimplementedSoldierServiceServer) GetSoldiersBySurname(context.Context, *GetBySurname) (*GetSoldiersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSoldiersBySurname not implemented")
+}
+func (UnimplementedSoldierServiceServer) GetSoldiersByGroupName(context.Context, *GetByGroupName) (*GetSoldiersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSoldiersByGroupName not implemented")
 }
 func (UnimplementedSoldierServiceServer) GetAllSoldiers(context.Context, *GetAllSoldiersRequest) (*GetSoldiersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllSoldiers not implemented")
 }
-func (UnimplementedSoldierServiceServer) GetSoldierByAge(context.Context, *GetByAgeRequest) (*GetSoldiersResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetSoldierByAge not implemented")
+func (UnimplementedSoldierServiceServer) GetSoldiersByAge(context.Context, *GetByAgeRequest) (*GetSoldiersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSoldiersByAge not implemented")
 }
-func (UnimplementedSoldierServiceServer) DeleteSoldier(context.Context, *DeleteRequest) (*Soldier, error) {
+func (UnimplementedSoldierServiceServer) DeleteSoldier(context.Context, *DeleteRequest) (*DeleteSoldierResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteSoldier not implemented")
+}
+func (UnimplementedSoldierServiceServer) MoveSoldierFromGroupAToGroupB(context.Context, *MoveSoldierRequest) (*MoveSoldierResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MoveSoldierFromGroupAToGroupB not implemented")
 }
 func (UnimplementedSoldierServiceServer) mustEmbedUnimplementedSoldierServiceServer() {}
 
@@ -486,7 +534,7 @@ func _SoldierService_CreateSoldier_Handler(srv interface{}, ctx context.Context,
 }
 
 func _SoldierService_UpdateSoldier_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Soldier)
+	in := new(UpdateSoldierRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -498,31 +546,67 @@ func _SoldierService_UpdateSoldier_Handler(srv interface{}, ctx context.Context,
 		FullMethod: SoldierService_UpdateSoldier_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SoldierServiceServer).UpdateSoldier(ctx, req.(*Soldier))
+		return srv.(SoldierServiceServer).UpdateSoldier(ctx, req.(*UpdateSoldierRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SoldierService_GetSoldierByField_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetRequest)
+func _SoldierService_GetSoldierById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetByIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SoldierServiceServer).GetSoldierByField(ctx, in)
+		return srv.(SoldierServiceServer).GetSoldierById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SoldierService_GetSoldierByField_FullMethodName,
+		FullMethod: SoldierService_GetSoldierById_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SoldierServiceServer).GetSoldierByField(ctx, req.(*GetRequest))
+		return srv.(SoldierServiceServer).GetSoldierById(ctx, req.(*GetByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SoldierService_GetSoldiersByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetByName)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoldierServiceServer).GetSoldiersByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SoldierService_GetSoldiersByName_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoldierServiceServer).GetSoldiersByName(ctx, req.(*GetByName))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SoldierService_GetSoldiersBySurname_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBySurname)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoldierServiceServer).GetSoldiersBySurname(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SoldierService_GetSoldiersBySurname_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoldierServiceServer).GetSoldiersBySurname(ctx, req.(*GetBySurname))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _SoldierService_GetSoldiersByGroupName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetRequest)
+	in := new(GetByGroupName)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -534,7 +618,7 @@ func _SoldierService_GetSoldiersByGroupName_Handler(srv interface{}, ctx context
 		FullMethod: SoldierService_GetSoldiersByGroupName_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SoldierServiceServer).GetSoldiersByGroupName(ctx, req.(*GetRequest))
+		return srv.(SoldierServiceServer).GetSoldiersByGroupName(ctx, req.(*GetByGroupName))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -557,20 +641,20 @@ func _SoldierService_GetAllSoldiers_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SoldierService_GetSoldierByAge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SoldierService_GetSoldiersByAge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetByAgeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SoldierServiceServer).GetSoldierByAge(ctx, in)
+		return srv.(SoldierServiceServer).GetSoldiersByAge(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SoldierService_GetSoldierByAge_FullMethodName,
+		FullMethod: SoldierService_GetSoldiersByAge_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SoldierServiceServer).GetSoldierByAge(ctx, req.(*GetByAgeRequest))
+		return srv.(SoldierServiceServer).GetSoldiersByAge(ctx, req.(*GetByAgeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -593,6 +677,24 @@ func _SoldierService_DeleteSoldier_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SoldierService_MoveSoldierFromGroupAToGroupB_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MoveSoldierRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SoldierServiceServer).MoveSoldierFromGroupAToGroupB(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SoldierService_MoveSoldierFromGroupAToGroupB_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SoldierServiceServer).MoveSoldierFromGroupAToGroupB(ctx, req.(*MoveSoldierRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SoldierService_ServiceDesc is the grpc.ServiceDesc for SoldierService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -609,8 +711,16 @@ var SoldierService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _SoldierService_UpdateSoldier_Handler,
 		},
 		{
-			MethodName: "GetSoldierByField",
-			Handler:    _SoldierService_GetSoldierByField_Handler,
+			MethodName: "GetSoldierById",
+			Handler:    _SoldierService_GetSoldierById_Handler,
+		},
+		{
+			MethodName: "GetSoldiersByName",
+			Handler:    _SoldierService_GetSoldiersByName_Handler,
+		},
+		{
+			MethodName: "GetSoldiersBySurname",
+			Handler:    _SoldierService_GetSoldiersBySurname_Handler,
 		},
 		{
 			MethodName: "GetSoldiersByGroupName",
@@ -621,12 +731,16 @@ var SoldierService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _SoldierService_GetAllSoldiers_Handler,
 		},
 		{
-			MethodName: "GetSoldierByAge",
-			Handler:    _SoldierService_GetSoldierByAge_Handler,
+			MethodName: "GetSoldiersByAge",
+			Handler:    _SoldierService_GetSoldiersByAge_Handler,
 		},
 		{
 			MethodName: "DeleteSoldier",
 			Handler:    _SoldierService_DeleteSoldier_Handler,
+		},
+		{
+			MethodName: "MoveSoldierFromGroupAToGroupB",
+			Handler:    _SoldierService_MoveSoldierFromGroupAToGroupB_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
