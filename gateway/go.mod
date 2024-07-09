@@ -4,6 +4,10 @@ go 1.22.5
 
 require (
 	github.com/gin-gonic/gin v1.10.0
+<<<<<<< HEAD
+=======
+	github.com/golang-jwt/jwt v3.2.2+incompatible
+>>>>>>> 85b8ce2 (initial commit)
 	github.com/joho/godotenv v1.5.1
 	google.golang.org/grpc v1.65.0
 	google.golang.org/protobuf v1.34.2
